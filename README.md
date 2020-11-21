@@ -115,6 +115,6 @@ The "seed" is a string that acts as the seed for the random number generation.
 -----------------
 The "outputfile" is the file where the simulation output will be stored. The simulation output is appended to any existing contents of this file.
 
-Folder "conf_files_and_scripts":
+Folder "examples":
 ----------------------------------
-A few examples of different configuration files described above as well as a few python scripts to run the simulations using different seeds can be seen in the folder "conf_files_and_scripts".
+A few examples of different configuration files described above as well as a few python scripts to run the simulations using different seeds can be seen in the folder "examples".

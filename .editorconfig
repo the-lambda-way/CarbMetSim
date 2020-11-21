@@ -1,0 +1,27 @@
+# EditorConfig is a file format widely supported by IDEs, which enforces a coding style.
+# Homepage: https://editorconfig.org/
+
+# Top-most EditorConfig file
+root = true
+
+
+# Help cross-platform and environment compatibility
+[*]
+insert_final_newline = true
+end_of_line = lf
+charset = utf-8
+
+
+# Consistent formatting
+# ---------------------
+[*]
+trim_trailing_whitespace = true
+
+
+[*.{cpp,c,h}]
+indent_style = space
+indent_size = 4
+
+
+[Makefile*]
+indent_style = tab
