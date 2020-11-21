@@ -1,4 +1,6 @@
 # CarbMetSim
+Forked and refactored to increase performance and use modern programming practices.
+
 A discrete event simulator for tracking blood glucose level based on carbodydrate metabolism in human body.
 
 Authors:
@@ -27,18 +29,18 @@ id food-description serving-size-in-grams RAG-per-serving SAG-per-serving Protei
 The "id" is an integer id. The food item is referred to in "eventsfile" using this "id".
 The "food-description" is a text string (containing no space) that describes the food item.
 The "serving-size-in-grams" specifies the size in grams of one serving of this food item.
-The "RAG-per-serving" specifies the amount in grams of "Rapidly Available Glucose" (carbs that will appear in the bloodstream 
+The "RAG-per-serving" specifies the amount in grams of "Rapidly Available Glucose" (carbs that will appear in the bloodstream
 as glucose within 20 minutes of being eaten) in one serving of the food item.
-The "SAG-per-serving" specifies the amount in grams of "Slowly Available Glucose" (carbs that will appear in the bloodstream 
+The "SAG-per-serving" specifies the amount in grams of "Slowly Available Glucose" (carbs that will appear in the bloodstream
 as glucose within 120 minutes of being eaten) in one serving of the food item.
 The "Protein-per-serving" specifies the amount in grams of protein in one serving of the food item.
 The "Fat-per-serving" specifies the amount in grams of fat in one serving of the food item.
 
-For example, the following line describes a "Breakfast" with serving size 100 grams, which consists of 25 grams of RAG, 30 
+For example, the following line describes a "Breakfast" with serving size 100 grams, which consists of 25 grams of RAG, 30
 grams of SAG, 25 grams of protein and 20 grams of fat:
 
 1 Breakfast 100 25 30 25 20
- 
+
 "exercisefile":
 ----------------
 The "exercisefile" contains the description of different exercise types. Each line in this file describes a different exercise
@@ -56,8 +58,8 @@ For example, the following line describes a "SlowWalk" activity with intensity 3
 
 "paramsfile":
 -------------------
-The "paramsfile" describes the values of various parameters affecting the operation of different organs. The "paramsfile" can 
-be used to modify the values of those parameters for which the default values are not appropriate. For example, the following 
+The "paramsfile" describes the values of various parameters affecting the operation of different organs. The "paramsfile" can
+be used to modify the values of those parameters for which the default values are not appropriate. For example, the following
 lines in the "paramsfile" are setting the values of a few simulation parameters in "HumanBody" class:
 
 ALL HUMAN_BODY bodyWeight_ 57
@@ -70,7 +72,7 @@ ALL HUMAN_BODY fitnessLevel_ 50
 
 "eventsfile":
 -----------------
-The "eventsfile" specifies the events that the simulator will simulate. Each line in this file specifies a different event in 
+The "eventsfile" specifies the events that the simulator will simulate. Each line in this file specifies a different event in
 the following format:
 
 time-stamp event-type event-subtype howmuch
