@@ -3,4 +3,4 @@
 // Fix parsing bug on long TESTCASE names.
 // See https://github.com/matepek/vscode-catch2-test-adapter/blob/master/documents/support.md
 #define CATCH_CONFIG_CONSOLE_WIDTH 300
-#include "external/catch2/catch.hpp"
+#include "catch2/catch.h"
