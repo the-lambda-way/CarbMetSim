@@ -1,5 +1,20 @@
 # Issues
 
+
+## Examples
+
+In all the parameter files in the examples, there is a parameter KIDNEYS. The file HumanBody.cpp processes the token KIDNEY with no S, so the KIDNEYS parameter is never processed.
+
+
+## System Testing
+
+The file tests/system/meal-event-normal.test.cpp is unable to compile because it relies on the definitions in SimCtl.cpp, which already contains a main function. For integration within larger programs, the simulation could be designed as a library that can be imported.
+
+In tests/system/meal-event-normal.test.cpp, in theory, the call to exit(0) in Simtl::fire_event should prematurely exit the test, but due to the bug below, I haven't analyzed that issue yet.
+
+The file tests/system/meal-event-normal.test.cpp produces a segmentation fault for unknown reasons, but contained somewhere in the call to the SimCtl::run_simulation function. This might be resolved implicitly during a future refactor, so I've abandoned debugging the issue for now.
+
+
 ## Integration Testing
 
 Consider the integration test below.
@@ -35,24 +50,15 @@ SCENARIO("Fat can be directly added to adipose tissue.")
     GIVEN("A human body with some adipose tissue")
     {
         HumanBody body{};
+        double old_weight = body.bodyWeight;
 
-        WHEN("fat is directly added")
+        WHEN("a gram of fat is directly added")
         {
-            THEN("the body weight is increased by the same amount.")
+            body.adiposeTissue->addFat(1000.0);
+
+            THEN("the body weight is increased by a gram.")
             {
-                double old_weight = body.bodyWeight;
-
-                SECTION("0 mg is added")
-                {
-                    body.adiposeTissue->addFat(0.0);
-                    REQUIRE(body.bodyWeight == old_weight);
-                }
-
-                SECTION("1000 mg is added")
-                {
-                    body.adiposeTissue->addFat(1000.0);
-                    REQUIRE(body.bodyWeight == old_weight + 0.001);
-                }
+                REQUIRE(body.bodyWeight == old_weight + 0.001);
             }
         }
     }
