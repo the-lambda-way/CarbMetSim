@@ -9,7 +9,7 @@ MAIN = carbmetsim
 
 
 CXX 	 = g++
-CXXFLAGS = -std=c++11 -Wall    # -Wall turns on most, but not all, compiler warnings.
+CXXFLAGS = -std=c++17 -Wall    # -Wall turns on most, but not all, compiler warnings.
 CPPFLAGS = -MMD                # -MMD creates for each output file a file of makefile rules describing its dependencies
 INCLUDES = -Isource/ -Iexternal/
 COMPILE  = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(INCLUDES) -O3
