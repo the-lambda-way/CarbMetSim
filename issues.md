@@ -80,3 +80,9 @@ Unit tests are only meaningful for public members that don't interact with other
 ## Testing Automation
 
 Continuous integration would be helpful for future expansion of the simulation.
+
+
+## Documentation
+
+Documentation currently comes straight from the paper *CarbMetSim: A discrete-event simulator for
+carbohydrate metabolism in humans*. Literature references were removed from the documentation in anticipation that the material will be simplified in the future.
