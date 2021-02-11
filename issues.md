@@ -74,7 +74,7 @@ One solution to this issue is to add an interface for HumanBody to eliminate the
 
 ## Unit Testing
 
-Unit tests are only meaningful for public members that don't interact with other parts of the program. In the AdiposeTissue class, for instance, there is nothing to unit test because none of its state is public. It is worth considering designing features which can be unit tested if future expansion is a possibility.
+Unit tests are only meaningful for public members that don't interact with other parts of the program. In the AdiposeTissue class, for instance, there is nothing to unit test because none of its functions are public. It is worth considering designing features which can be unit tested if future expansion is a possibility.
 
 
 ## Testing Automation
@@ -86,3 +86,27 @@ Continuous integration would be helpful for future expansion of the simulation.
 
 Documentation currently comes straight from the paper *CarbMetSim: A discrete-event simulator for
 carbohydrate metabolism in humans*. Literature references were removed from the documentation in anticipation that the material will be simplified in the future.
+
+
+## Encapsulation
+
+Encapsulation needs to be improved across the board. Parameters should be accessed through public interfaces instead of variables or friendship. Some parameters in HumanBody are only used in a single organ, these should maybe be moved into those organs. More algorithms can be abstracted and put into "utility.h".
+
+
+## Changelog
+Refactored to be a library that can be integrated into other projects. Since this touches every part of the code base, I took the opportunity to do a overall refactoring as well.
+
+* Created an independent command-line interface and moved all input and output to there.
+* Replaced all output messages with diagnostic variables. Moved all the messages into the cli.
+* Replaced all input strings with input parameters. Moved all the strings into the cli.
+* Removed the main loop from SimCtl. The containing program runs its own main loop. On each iteration, it calls SimCtl::runTick(), then reads which events occurred as well as whatever parameters it needs. SimCtl::runTick() returns false after the HALT event has fired.
+* Moved the global variables into SimCtl. As a result, multiple simulators can exist side-by-side.
+* Moved externally accessed variables from private to public (encapsulation will need to be improved in the future). Moved variables only internally used from public to private.
+* Changed programmer-related error checks into assertions.
+* Simplified many things, including moving subprocesses into their own functions.
+* There was inconsistent code formatting and style, so I picked my own and applied it everywhere.
+
+
+## TODO BEFORE MERGING
+* Change runtime error strategy, the sim should not exit the program.
+* Get system tests to work.

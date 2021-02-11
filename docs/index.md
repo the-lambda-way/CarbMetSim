@@ -1,14 +1,22 @@
-# CarbMetSim Documentation
+# Introduction
 
-CarbMetSim (**Carb**ohydrate **Met**abolism **Sim**ulator) is a discrete-event simulator that predicts minute by minute Blood Glucose Level (BGL) in response to a sequence of food and exercise events. It implements broader aspects of carbohydrate metabolism in human beings with the objective of capturing the average impact of various diet/exercise activities on the BGL of people with different levels of diabetes.
+CarbMetSim (**Carb**ohydrate **Met**abolism **Sim**ulator) is a discrete-event simulator that predicts minute by minute Blood Glucose Level (BGL) in response to a sequence of food and exercise events. It implements broader aspects of carbohydrate metabolism in human beings with the objective of capturing the average impact of various diet/exercise activities on the BGL of people with different levels of diabetes. It can be used as a stand-alone command-line application or integrated into a larger project as a library.
 
-CarbMetSim implements key organs to the extent necessary to capture their impact on the production and consumption of glucose. Key metabolic pathways are accounted for in the operation of various organs. The impact of insulin and insulin resistance on the operation of various organs/pathways is captured in accordance with published research. CarbMetSim provides broad flexibility to configure the insulin production ability, the average flux along various metabolic pathways and the impact of insulin resistance on different aspects of carbohydrate metabolism. Thus, it is possible to customize the simulator for a particular user by setting appropriate values to various configurable parameters.
+CarbMetSim implements key organs to the extent necessary to capture their impact on the production and consumption of glucose. Key metabolic pathways are accounted for in the operation of the various organs. The impact of insulin and insulin resistance on the operation of various organs/pathways is captured in accordance with published research. CarbMetSim provides broad flexibility to configure the insulin production ability, the average flux along various metabolic pathways and the impact of insulin resistance on different aspects of carbohydrate metabolism. Thus, it is possible to customize the simulator for a particular user by setting appropriate values to various configurable parameters.
 
 
 
-## Quick Links
+# Getting Started
 
-[Usage](usage.md)
+To build the command line tool, run `make` at the root folder. Run with `carbmetsim foodsfile exercisefile paramsfile eventsfile seed outputfile`. See [Running on the command line](CLI.md) for an explanation of each argument.
+
+To use as a library, copy the contents of the `source/` folder into your codebase and include "SimCtl.h" in one of your source files. Instantiate an instance of `SimCtl` with an instance of `MetabolicParams`  and call `SimCtl::run_simulation()` on the object. An explanation of the fields in `MetabolicParams` can be found among the various organ documentations.
+
+
+
+# Contents
+
+[Running on the command line](CLI.md)
 
 
 
@@ -18,29 +26,11 @@ Examples
 
 
 
-## Theory
-
-[Food](Food.md)
-
-[Exercise](Exercise.md)
-
-[Insulin](Insulin.md)
-
-[Glucose Transport](Glucose Transport.md)
-
-[Glycolysis](Glycolysis.md)
-
-[Gluconeogenesis](Gluconeogenesis.md)
-
-[Glycogen Synthesis and Breakdown](Glycogen Synthesis and Breakdown)
-
-
-
 ## Simulator
 
-[Simulator](Simulator.md)
+Simulator
 
-[Human body](Human Body.md)
+Human body
 
 
 
@@ -70,13 +60,15 @@ Stomach
 
 ## Events
 
+[Overview](Events.md)
+
 Food
 
 Exercise
 
 
 
-## Future Directions
+# Future Directions
 
 Protein metabolism is implemented in a very simplified manner.
 
@@ -104,17 +96,4 @@ In CarbMetSim, the skeletal muscles are implemented as the Muscles object. Curre
 The simulator currently does not support increase in gluconeogenesis flux due to increased availability of substrates.
 
 The paper also presented a preliminary validation of CarbMetSim’s behavior in response to single meal and exercise events where the simulator’s predictions were compared against the group-level averages reported in the published literature. The simulator needs significant additional validation against continuous blood glucose data of individuals representing different demographic groups, different types & levels of Diabetes and different lifestyles before it may be considered ready for use in diabetes self-management and research-related applications.
-
-
-
-
-
-
-
-
-
-
-
-
-
 

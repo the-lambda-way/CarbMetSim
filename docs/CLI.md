@@ -1,7 +1,5 @@
 # Usage:
 
-The simulator is implemented in C++. A simple makefile has been provided.
-
 Run the simulator in the following manner:
 
 `carbmetsim foodsfile exercisefile paramsfile eventsfile seed outputfile`
@@ -63,7 +61,7 @@ ALL HUMAN_BODY fitnessLevel_ 50
 The "eventsfile" specifies the events that the simulator will simulate. Each line in this file specifies a different event in
 the following format:
 
-time-stamp event-type event-subtype howmuch
+`time-stamp event-type event-subtype howmuch`
 
 Here, "time-stamp" indicates the time when the event will be fired and is specified in the following format "day:hour:minute".
 

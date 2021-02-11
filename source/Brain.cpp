@@ -1,75 +1,58 @@
-#include <string>
-#include <iostream>
 #include "Brain.h"
+#include <random>
+#include <string>
 #include "Blood.h"
+#include "HumanBody.h"
+#include "SimCtl.h"
 
-extern SimCtl* sim;
+using namespace std;
 
-Brain::Brain(HumanBody* myBody)
+
+Brain::Brain(HumanBody* body)
+    : body{body}
 {
-    // 6 micromol per kg per minute = 6*180.1559/1000 mg per kg per minute = 1.08 mg per kg per minute
-	// 120 g per day = 83.333 mg per minute of glucose oxidized by brain
-    glucoseOxidized_ = 83.333;
-    glucoseToAlanine_ = 0;
-    bAAToGlutamine_ = 0;
-    body = myBody;
 }
 
-//Release lactate to blood
-/*void Brain::glucoseToLactate(int glucoseRateToLactate){
-    
-    glucoseRateToLactate_ = glucoseRateToLactate;
-    
-    Blood::glucose_ -= glucoseRateToLactate_;
-    Blood::lactate_ += glucoseRateToLactate_;
+// Release lactate to blood
+// void Brain::glucoseToLactate(int rate)
+// {
+//     glucoseRateToLactate = rate;
 
-    
-}*/
+//     body->blood->glucose -= rate;
+//     body->blood->lactate += rate;
+// }
 
 void Brain::processTick()
 {
-    static std::poisson_distribution<int> glucoseOxidized__(1000.0*glucoseOxidized_);
-    
-    double g = (double)(glucoseOxidized__(sim->generator))/1000.0;
-    oxidationPerTick = g;
-    body->blood->removeGlucose(g + glucoseToAlanine_);
-    body->blood->alanine += glucoseToAlanine_;
-    
-    //Brain generate glutamine from branched amino acids.
-    if( body->blood->branchedAminoAcids > bAAToGlutamine_ )
-    {
-        body->blood->branchedAminoAcids -= bAAToGlutamine_;
-        body->blood->glutamine += bAAToGlutamine_;
-    }
-    else
-    {
-        body->blood->glutamine += body->blood->branchedAminoAcids;
-        body->blood->branchedAminoAcids = 0;
-    }
-
-	//SimCtl::time_stamp();
-	//cout << " Brain:: Oxidation " << oxidationPerTick << endl;
+    oxidizeGlucose();
+    glutamineFromBlood();
 }
 
-void Brain::setParams()
+void Brain::oxidizeGlucose()
 {
-    for( ParamSet::iterator itr = body->metabolicParameters[body->bodyState][BRAIN].begin();
-        itr != body->metabolicParameters[body->bodyState][BRAIN].end(); itr++)
-    {
-        if(itr->first.compare("glucoseOxidized_") == 0)
-        {
-            glucoseOxidized_ = itr->second;
-        }
-        if(itr->first.compare("glucoseToAlanine_") == 0)
-        {
-            glucoseToAlanine_ = itr->second;
-        }
-        if(itr->first.compare("bAAToGlutamine_") == 0)
-        {
-            bAAToGlutamine_ = itr->second;
-        }
+    static std::poisson_distribution<int> glucoseOxidized__{1000.0 * glucoseOxidized};
 
-    }
-    //std::cout<<"glucoseOxidized: "<<glucoseOxidized_<<std::endl;
+    oxidationPerTick = static_cast<double>(glucoseOxidized__(body->generator())) / 1000.0;
+
+    glucoseRemoved.amount      = oxidationPerTick + glucoseToAlanine;
+    glucoseRemoved.bloodBGL    = body->blood->getBGL();
+    glucoseRemoved.bloodMinBGL = body->blood->minGlucoseLevel;
+
+    body->blood->removeGlucose(glucoseRemoved.amount);
+    body->blood->alanine += glucoseToAlanine;
 }
 
+void Brain::glutamineFromBlood()
+{
+    // Brain generates glutamine from branched amino acids.
+    double x = min(body->blood->branchedAminoAcids, bAAToGlutamine);
+    body->blood->branchedAminoAcids -= x;
+    body->blood->glutamine          += x;
+}
+
+void Brain::setParams(const BrainParams& params)
+{
+    glucoseOxidized  = params.glucoseOxidized;
+    glucoseToAlanine = params.glucoseToAlanine;
+    bAAToGlutamine   = params.bAAToGlutamine;
+}

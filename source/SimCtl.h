@@ -1,106 +1,89 @@
-#ifndef SIM_H
-#define SIM_H
+#pragma once
 
 #include <string>
-#include <chrono>
+#include <memory>
 #include <random>
+#include <queue>
+#include <utility> // std::forward
+#include <vector>
 
-using namespace std;
-
-#include "priq.h"
-
-const int TICKS_PER_DAY = 24*60; // Simulated time granularity
-const int TICKS_PER_HOUR = 60; // Simulated time granularity
+class HumanBody;
 
 
-enum EventType {FOOD = 0, EXERCISE, HALT, METFORMIN, INSULIN_SHORT, INSULIN_LONG};
+// enum class EventType {FOOD, EXERCISE, HALT, METFORMIN, INSULIN_SHORT, INSULIN_LONG};
+enum class EventType {FOOD, EXERCISE, HALT};
 
-class Event : public PriQElt {
-public:
-    inline Event(unsigned fireTime , EventType the_type);
-    unsigned fireTime_;
-    EventType eventType_;
-};
-
-//Constructor for Event
-Event::Event(unsigned fireTime, EventType the_type) : PriQElt()
+class Event
 {
-    fireTime_ = fireTime;
-    eventType_ = the_type;
-    cost0 = fireTime;
-    cost1 = 0;
-}
-
-class FoodEvent : public Event {
 public:
-    inline FoodEvent(unsigned fireTime, unsigned quantity, unsigned foodID ): Event(fireTime, FOOD)
-    {
-        quantity_ = quantity;
-        foodID_ = foodID;
-    }
-    unsigned quantity_; // in grams
-    unsigned foodID_;
+    Event(unsigned fireTime, EventType type);
+    virtual ~Event();
+
+    unsigned fireTime;
+    EventType eventType;
+
+    bool operator<(const Event& other);
 };
 
-class ExerciseEvent : public Event {
+class FoodEvent : public Event
+{
 public:
-    inline ExerciseEvent(unsigned fireTime, unsigned duration, unsigned exerciseID ): Event(fireTime, EXERCISE)
-    {
-        duration_ = duration;
-        exerciseID_ = exerciseID;
-    }
-    unsigned duration_;
-    unsigned exerciseID_;
+    FoodEvent(unsigned fireTime, unsigned quantity, unsigned foodID);
+
+    unsigned quantity; // in grams
+    unsigned foodID;
 };
 
-class HaltEvent : public Event {
+class ExerciseEvent : public Event
+{
 public:
-    inline HaltEvent(unsigned fireTime): Event(fireTime, HALT)
-    {
-    }
+    ExerciseEvent(unsigned fireTime, unsigned duration, unsigned exerciseID);
+
+    unsigned duration;
+    unsigned exerciseID;
+};
+
+class HaltEvent : public Event
+{
+public:
+    HaltEvent(unsigned fireTime);
 };
 
 
-/* The global class implementing
- * the simulation controller.
- */
-
-class SimCtl {
+class SimCtl
+{
 public:
-    static unsigned 	ticks;
-    std::default_random_engine generator;
-    
-    PriQ  eventQ;
-    SimCtl(string seed_string);
-    inline unsigned elapsed_days();
-    inline unsigned elapsed_hours();
-    inline unsigned elapsed_minutes();
-    static bool dayOver();
-    static void time_stamp();
-    
-    void readEvents(string file);
-    void addEvent(unsigned fireTime, unsigned type, unsigned subtype, unsigned howmuch);
-    int fire_event();
-    void run_simulation();
-    
+    SimCtl(std::shared_ptr<HumanBody> body, std::string seedString);
+
+    void addEvent(unsigned fireTime, EventType type, unsigned id, unsigned howmuch);
+    void addEvent(std::shared_ptr<Event> event);
+
+    bool runTick();
+    void runToHalt();
+    std::vector<std::shared_ptr<Event>> eventsFiredThisTick();
+
+    unsigned elapsedDays();
+    unsigned elapsedHours();
+    unsigned elapsedMinutes();
+    unsigned ticks();
+    static unsigned timeToTicks(unsigned days, unsigned hours, unsigned minutes);
+
+    bool dayOver();
+
+private:
     friend class HumanBody;
-    friend int main(int argc, char *argv[]);
+
+    std::shared_ptr<HumanBody> body;
+    std::default_random_engine generator{1};
+
+    unsigned tick = 0;
+    std::priority_queue<std::shared_ptr<Event>> eventQ;
+    std::vector<std::shared_ptr<Event>> currentEvents;
+    bool haltEventFired = false;
+
+    static const int TICKS_PER_DAY  = 24 * 60; // Simulated time granularity
+    static const int TICKS_PER_HOUR = 60;      // Simulated time granularity
+
+    bool fireEvent();
+    bool eventIsReady();
 };
-
-
-inline unsigned SimCtl::elapsed_days() {
-    return(ticks/TICKS_PER_DAY);
-}
-
-inline unsigned SimCtl::elapsed_hours() {
-    int x = ticks % TICKS_PER_DAY;
-    return(x/TICKS_PER_HOUR);
-}
-
-inline unsigned SimCtl::elapsed_minutes() {
-    int x = ticks % TICKS_PER_DAY;
-    return (x % TICKS_PER_HOUR);
-}
-
-#endif
-
