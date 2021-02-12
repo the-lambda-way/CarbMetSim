@@ -11,7 +11,7 @@ CXX 	 = g++
 CXXFLAGS = -std=c++17 -Wall    # -Wall turns on most, but not all, compiler warnings.
 CPPFLAGS = -MMD                # -MMD creates for each output file a file of makefile rules describing its dependencies
 INCLUDES = -Isource/ -Iexternal/
-COMPILE  = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(INCLUDES) -O3
+COMPILE  = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(INCLUDES) -ggdb
 
 
 # Finds all source files in the source/ folder and defines object files for them.
@@ -31,8 +31,8 @@ all: $(MAIN)
 # ======================================================================================================================
 # Main
 # ======================================================================================================================
-$(MAIN): $(OBJS)
-	@$(COMPILE) -o $(MAIN) $(OBJS)
+$(MAIN): $(MAIN).cpp $(OBJS)
+	@$(COMPILE) $(MAIN).cpp $(OBJS) -o $(MAIN)
 
 
 # This is a suffix replacement rule for building .o's from .c's
@@ -52,7 +52,7 @@ build/%.cpp.o: source/%.cpp source/%.h
 
 
 # ======================================================================================================================
-# Tests
+# Test Framework
 # ======================================================================================================================
 # Finds all test source files in the tests/ folder and defines executables for them. GNU Make doesn't have a recursive
 #     subdirectory wildcard, so we rely on the shell.
@@ -97,6 +97,17 @@ TEST_DEPS := $(TEST_EXES:.out=.d)
 # If your integration tests require another source file, add another rule below
 
 
+# ======================================================================================================================
+# Custom Tests
+# ======================================================================================================================
+# Put your independently created tests here which don't use the testing framework.
+
+-include tests/system/meal-event-normal/meal-event-normal.make
+
+
+.PHONY: custom-tests
+custom-tests: meal-event-normal
+
 
 # ======================================================================================================================
 # Misc
@@ -107,4 +118,11 @@ TEST_DEPS := $(TEST_EXES:.out=.d)
 clean:
 	@echo "Cleaning..."
 	@$(RM) -f $(MAIN)
+	@$(RM) -f $(MAIN).d
 	@$(RM) -rf build/
+
+.PHONY: clean-tests
+clean-tests:
+	@echo "Cleaning tests..."
+	@$(RM) -rf build/tests
+	@$(MAKE) --no-print-directory clean-meal-event-normal

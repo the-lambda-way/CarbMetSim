@@ -1,0 +1,1163 @@
+0:0:0 0  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:0 0  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:0 0  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:0 0  Intestine:: ToPortalVein 0.000
+0:0:0 0  Liver:: ToGlycogen 0.000
+0:0:0 0  Liver:: glycogen 100.000
+0:0:0 0  Liver:: FromGlycogen 0.000
+0:0:0 0  Liver:: GNG 0.000
+0:0:0 0  Liver:: Absorption 0.000
+0:0:0 0  Liver:: Glycolysis 0.000
+0:0:0 0  Liver:: Release 0.000mg, gl 100.000
+0:0:0 0  Heart:: Oxidation 13.888
+0:0:0 0  Muscles:: GlucoseAbsorbed 0.000
+0:0:0 0  Muscles:: GlycogenSynthesis 0.000
+0:0:0 0  Muscles:: GlycogenBreakdown 0.000
+0:0:0 0  Muscles:: glycogen 500.000
+0:0:0 0  Muscles:: Oxidation 0.000
+0:0:0 0  Muscles:: Glycolysis 0.000
+0:0:0 0  Kidneys:: Glycolysis 0.000
+0:0:0 0  Kidneys:: TotalExcretion 0.000
+0:0:0 0  Kidneys:: GNG 0.000
+0:0:0 0  Kidneys:: Excretion 0.000
+0:0:0 0  Blood:: insulinLevel 0.000
+0:0:0 0  98.056 100.000 500.000
+0:0:0 0  HumanBody:: BGL 98.056
+0:0:0 0  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:0 0  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:0 0  HumanBody:: TotalGNGPerTick 0.000
+0:0:0 0  HumanBody:: TotalGNGSoFar 0.000
+0:0:0 0  HumanBody:: TotalOxidationPerTick 97.185
+0:0:0 0  HumanBody:: TotalOxidationSoFar 97.185
+0:0:0 0  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.185
+0:0:0 0  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:0 0  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:0 0  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:0 0  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:0 0  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:0 0  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:0 0  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:0 0  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:1 1  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:1 1  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:1 1  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:1 1  Intestine:: ToPortalVein 0.000
+0:0:1 1  Liver:: ToGlycogen 0.000
+0:0:1 1  Liver:: glycogen 100.000
+0:0:1 1  Liver:: FromGlycogen 0.000
+0:0:1 1  Liver:: GNG 0.000
+0:0:1 1  Liver:: Absorption 0.000
+0:0:1 1  Liver:: Glycolysis 0.000
+0:0:1 1  Liver:: Release 0.000mg, gl 100.000
+0:0:1 1  Heart:: Oxidation 14.079
+0:0:1 1  Muscles:: GlucoseAbsorbed 0.000
+0:0:1 1  Muscles:: GlycogenSynthesis 0.000
+0:0:1 1  Muscles:: GlycogenBreakdown 0.000
+0:0:1 1  Muscles:: glycogen 500.000
+0:0:1 1  Muscles:: Oxidation 0.000
+0:0:1 1  Muscles:: Glycolysis 0.000
+0:0:1 1  Kidneys:: Glycolysis 0.000
+0:0:1 1  Kidneys:: TotalExcretion 0.000
+0:0:1 1  Kidneys:: GNG 0.000
+0:0:1 1  Kidneys:: Excretion 0.000
+0:0:1 1  Blood:: insulinLevel 0.000
+0:0:1 1  96.100 100.000 500.000
+0:0:1 1  HumanBody:: BGL 96.100
+0:0:1 1  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:1 1  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:1 1  HumanBody:: TotalGNGPerTick 0.000
+0:0:1 1  HumanBody:: TotalGNGSoFar 0.000
+0:0:1 1  HumanBody:: TotalOxidationPerTick 97.826
+0:0:1 1  HumanBody:: TotalOxidationSoFar 195.011
+0:0:1 1  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.826
+0:0:1 1  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:1 1  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:1 1  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:1 1  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:1 1  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:1 1  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:1 1  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:1 1  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:2 2  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:2 2  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:2 2  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:2 2  Intestine:: ToPortalVein 0.000
+0:0:2 2  Liver:: ToGlycogen 0.000
+0:0:2 2  Liver:: glycogen 100.000
+0:0:2 2  Liver:: FromGlycogen 0.000
+0:0:2 2  Liver:: GNG 0.000
+0:0:2 2  Liver:: Absorption 0.000
+0:0:2 2  Liver:: Glycolysis 0.000
+0:0:2 2  Liver:: Release 0.000mg, gl 100.000
+0:0:2 2  Heart:: Oxidation 14.062
+0:0:2 2  Muscles:: GlucoseAbsorbed 0.000
+0:0:2 2  Muscles:: GlycogenSynthesis 0.000
+0:0:2 2  Muscles:: GlycogenBreakdown 0.000
+0:0:2 2  Muscles:: glycogen 500.000
+0:0:2 2  Muscles:: Oxidation 0.000
+0:0:2 2  Muscles:: Glycolysis 0.000
+0:0:2 2  Kidneys:: Glycolysis 0.000
+0:0:2 2  Kidneys:: TotalExcretion 0.000
+0:0:2 2  Kidneys:: GNG 0.000
+0:0:2 2  Kidneys:: Excretion 0.000
+0:0:2 2  Blood:: insulinLevel 0.000
+0:0:2 2  94.153 100.000 500.000
+0:0:2 2  HumanBody:: BGL 94.153
+0:0:2 2  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:2 2  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:2 2  HumanBody:: TotalGNGPerTick 0.000
+0:0:2 2  HumanBody:: TotalGNGSoFar 0.000
+0:0:2 2  HumanBody:: TotalOxidationPerTick 97.352
+0:0:2 2  HumanBody:: TotalOxidationSoFar 292.363
+0:0:2 2  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.352
+0:0:2 2  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:2 2  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:2 2  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:2 2  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:2 2  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:2 2  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:2 2  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:2 2  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:3 3  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:3 3  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:3 3  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:3 3  Intestine:: ToPortalVein 0.000
+0:0:3 3  Liver:: ToGlycogen 0.000
+0:0:3 3  Liver:: glycogen 100.000
+0:0:3 3  Liver:: FromGlycogen 0.000
+0:0:3 3  Liver:: GNG 0.000
+0:0:3 3  Liver:: Absorption 0.000
+0:0:3 3  Liver:: Glycolysis 0.000
+0:0:3 3  Liver:: Release 0.000mg, gl 100.000
+0:0:3 3  Heart:: Oxidation 13.978
+0:0:3 3  Muscles:: GlucoseAbsorbed 0.000
+0:0:3 3  Muscles:: GlycogenSynthesis 0.000
+0:0:3 3  Muscles:: GlycogenBreakdown 0.000
+0:0:3 3  Muscles:: glycogen 500.000
+0:0:3 3  Muscles:: Oxidation 0.000
+0:0:3 3  Muscles:: Glycolysis 0.000
+0:0:3 3  Kidneys:: Glycolysis 0.000
+0:0:3 3  Kidneys:: TotalExcretion 0.000
+0:0:3 3  Kidneys:: GNG 0.000
+0:0:3 3  Kidneys:: Excretion 0.000
+0:0:3 3  Blood:: insulinLevel 0.000
+0:0:3 3  92.211 100.000 500.000
+0:0:3 3  HumanBody:: BGL 92.211
+0:0:3 3  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:3 3  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:3 3  HumanBody:: TotalGNGPerTick 0.000
+0:0:3 3  HumanBody:: TotalGNGSoFar 0.000
+0:0:3 3  HumanBody:: TotalOxidationPerTick 97.081
+0:0:3 3  HumanBody:: TotalOxidationSoFar 389.444
+0:0:3 3  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.081
+0:0:3 3  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:3 3  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:3 3  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:3 3  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:3 3  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:3 3  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:3 3  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:3 3  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:4 4  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:4 4  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:4 4  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:4 4  Intestine:: ToPortalVein 0.000
+0:0:4 4  Liver:: ToGlycogen 0.000
+0:0:4 4  Liver:: glycogen 100.000
+0:0:4 4  Liver:: FromGlycogen 0.000
+0:0:4 4  Liver:: GNG 0.000
+0:0:4 4  Liver:: Absorption 0.000
+0:0:4 4  Liver:: Glycolysis 0.000
+0:0:4 4  Liver:: Release 0.000mg, gl 100.000
+0:0:4 4  Heart:: Oxidation 13.918
+0:0:4 4  Muscles:: GlucoseAbsorbed 0.000
+0:0:4 4  Muscles:: GlycogenSynthesis 0.000
+0:0:4 4  Muscles:: GlycogenBreakdown 0.000
+0:0:4 4  Muscles:: glycogen 500.000
+0:0:4 4  Muscles:: Oxidation 0.000
+0:0:4 4  Muscles:: Glycolysis 0.000
+0:0:4 4  Kidneys:: Glycolysis 0.000
+0:0:4 4  Kidneys:: TotalExcretion 0.000
+0:0:4 4  Kidneys:: GNG 0.000
+0:0:4 4  Kidneys:: Excretion 0.000
+0:0:4 4  Blood:: insulinLevel 0.000
+0:0:4 4  90.263 100.000 500.000
+0:0:4 4  HumanBody:: BGL 90.263
+0:0:4 4  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:4 4  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:4 4  HumanBody:: TotalGNGPerTick 0.000
+0:0:4 4  HumanBody:: TotalGNGSoFar 0.000
+0:0:4 4  HumanBody:: TotalOxidationPerTick 97.392
+0:0:4 4  HumanBody:: TotalOxidationSoFar 486.836
+0:0:4 4  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.392
+0:0:4 4  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:4 4  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:4 4  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:4 4  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:4 4  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:4 4  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:4 4  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:4 4  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:5 5  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:5 5  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:5 5  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:5 5  Intestine:: ToPortalVein 0.000
+0:0:5 5  Liver:: ToGlycogen 0.000
+0:0:5 5  Liver:: glycogen 100.000
+0:0:5 5  Liver:: FromGlycogen 0.000
+0:0:5 5  Liver:: GNG 0.000
+0:0:5 5  Liver:: Absorption 0.000
+0:0:5 5  Liver:: Glycolysis 0.000
+0:0:5 5  Liver:: Release 0.000mg, gl 100.000
+0:0:5 5  Heart:: Oxidation 13.964
+0:0:5 5  Muscles:: GlucoseAbsorbed 0.000
+0:0:5 5  Muscles:: GlycogenSynthesis 0.000
+0:0:5 5  Muscles:: GlycogenBreakdown 0.000
+0:0:5 5  Muscles:: glycogen 500.000
+0:0:5 5  Muscles:: Oxidation 0.000
+0:0:5 5  Muscles:: Glycolysis 0.000
+0:0:5 5  Kidneys:: Glycolysis 0.000
+0:0:5 5  Kidneys:: TotalExcretion 0.000
+0:0:5 5  Kidneys:: GNG 0.000
+0:0:5 5  Kidneys:: Excretion 0.000
+0:0:5 5  Blood:: insulinLevel 0.000
+0:0:5 5  88.313 100.000 500.000
+0:0:5 5  HumanBody:: BGL 88.313
+0:0:5 5  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:5 5  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:5 5  HumanBody:: TotalGNGPerTick 0.000
+0:0:5 5  HumanBody:: TotalGNGSoFar 0.000
+0:0:5 5  HumanBody:: TotalOxidationPerTick 97.538
+0:0:5 5  HumanBody:: TotalOxidationSoFar 584.374
+0:0:5 5  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.538
+0:0:5 5  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:5 5  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:5 5  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:5 5  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:5 5  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:5 5  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:5 5  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:5 5  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:6 6  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:6 6  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:6 6  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:6 6  Intestine:: ToPortalVein 0.000
+0:0:6 6  Liver:: ToGlycogen 0.000
+0:0:6 6  Liver:: glycogen 100.000
+0:0:6 6  Liver:: FromGlycogen 0.000
+0:0:6 6  Liver:: GNG 0.000
+0:0:6 6  Liver:: Absorption 0.000
+0:0:6 6  Liver:: Glycolysis 0.000
+0:0:6 6  Liver:: Release 0.000mg, gl 100.000
+0:0:6 6  Heart:: Oxidation 13.919
+0:0:6 6  Muscles:: GlucoseAbsorbed 0.000
+0:0:6 6  Muscles:: GlycogenSynthesis 0.000
+0:0:6 6  Muscles:: GlycogenBreakdown 0.000
+0:0:6 6  Muscles:: glycogen 500.000
+0:0:6 6  Muscles:: Oxidation 0.000
+0:0:6 6  Muscles:: Glycolysis 0.000
+0:0:6 6  Kidneys:: Glycolysis 0.000
+0:0:6 6  Kidneys:: TotalExcretion 0.000
+0:0:6 6  Kidneys:: GNG 0.000
+0:0:6 6  Kidneys:: Excretion 0.000
+0:0:6 6  Blood:: insulinLevel 0.000
+0:0:6 6  86.371 100.000 500.000
+0:0:6 6  HumanBody:: BGL 86.371
+0:0:6 6  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:6 6  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:6 6  HumanBody:: TotalGNGPerTick 0.000
+0:0:6 6  HumanBody:: TotalGNGSoFar 0.000
+0:0:6 6  HumanBody:: TotalOxidationPerTick 97.094
+0:0:6 6  HumanBody:: TotalOxidationSoFar 681.468
+0:0:6 6  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.094
+0:0:6 6  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:6 6  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:6 6  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:6 6  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:6 6  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:6 6  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:6 6  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:6 6  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:7 7  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:7 7  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:7 7  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:7 7  Intestine:: ToPortalVein 0.000
+0:0:7 7  Liver:: ToGlycogen 0.000
+0:0:7 7  Liver:: glycogen 100.000
+0:0:7 7  Liver:: FromGlycogen 0.000
+0:0:7 7  Liver:: GNG 0.000
+0:0:7 7  Liver:: Absorption 0.000
+0:0:7 7  Liver:: Glycolysis 0.000
+0:0:7 7  Liver:: Release 0.000mg, gl 100.000
+0:0:7 7  Heart:: Oxidation 13.944
+0:0:7 7  Muscles:: GlucoseAbsorbed 0.000
+0:0:7 7  Muscles:: GlycogenSynthesis 0.000
+0:0:7 7  Muscles:: GlycogenBreakdown 0.000
+0:0:7 7  Muscles:: glycogen 500.000
+0:0:7 7  Muscles:: Oxidation 0.000
+0:0:7 7  Muscles:: Glycolysis 0.000
+0:0:7 7  Kidneys:: Glycolysis 0.000
+0:0:7 7  Kidneys:: TotalExcretion 0.000
+0:0:7 7  Kidneys:: GNG 0.000
+0:0:7 7  Kidneys:: Excretion 0.000
+0:0:7 7  Blood:: insulinLevel 0.000
+0:0:7 7  84.422 100.000 500.000
+0:0:7 7  HumanBody:: BGL 84.422
+0:0:7 7  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:7 7  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:7 7  HumanBody:: TotalGNGPerTick 0.000
+0:0:7 7  HumanBody:: TotalGNGSoFar 0.000
+0:0:7 7  HumanBody:: TotalOxidationPerTick 97.444
+0:0:7 7  HumanBody:: TotalOxidationSoFar 778.912
+0:0:7 7  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.444
+0:0:7 7  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:7 7  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:7 7  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:7 7  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:7 7  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:7 7  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:7 7  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:7 7  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:8 8  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:8 8  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:8 8  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:8 8  Intestine:: ToPortalVein 0.000
+0:0:8 8  Liver:: ToGlycogen 0.000
+0:0:8 8  Liver:: glycogen 100.000
+0:0:8 8  Liver:: FromGlycogen 0.000
+0:0:8 8  Liver:: GNG 0.000
+0:0:8 8  Liver:: Absorption 0.000
+0:0:8 8  Liver:: Glycolysis 0.000
+0:0:8 8  Liver:: Release 0.000mg, gl 100.000
+0:0:8 8  Heart:: Oxidation 14.045
+0:0:8 8  Muscles:: GlucoseAbsorbed 0.000
+0:0:8 8  Muscles:: GlycogenSynthesis 0.000
+0:0:8 8  Muscles:: GlycogenBreakdown 0.000
+0:0:8 8  Muscles:: glycogen 500.000
+0:0:8 8  Muscles:: Oxidation 0.000
+0:0:8 8  Muscles:: Glycolysis 0.000
+0:0:8 8  Kidneys:: Glycolysis 0.000
+0:0:8 8  Kidneys:: TotalExcretion 0.000
+0:0:8 8  Kidneys:: GNG 0.000
+0:0:8 8  Kidneys:: Excretion 0.000
+0:0:8 8  Blood:: insulinLevel 0.000
+0:0:8 8  82.474 100.000 500.000
+0:0:8 8  HumanBody:: BGL 82.474
+0:0:8 8  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:8 8  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:8 8  HumanBody:: TotalGNGPerTick 0.000
+0:0:8 8  HumanBody:: TotalGNGSoFar 0.000
+0:0:8 8  HumanBody:: TotalOxidationPerTick 97.368
+0:0:8 8  HumanBody:: TotalOxidationSoFar 876.280
+0:0:8 8  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.368
+0:0:8 8  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:8 8  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:8 8  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:8 8  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:8 8  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:8 8  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:8 8  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:8 8  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:9 9  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:9 9  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:9 9  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:9 9  Intestine:: ToPortalVein 0.000
+0:0:9 9  Liver:: ToGlycogen 0.000
+0:0:9 9  Liver:: glycogen 100.000
+0:0:9 9  Liver:: FromGlycogen 0.000
+0:0:9 9  Liver:: GNG 0.000
+0:0:9 9  Liver:: Absorption 0.000
+0:0:9 9  Liver:: Glycolysis 0.000
+0:0:9 9  Liver:: Release 0.000mg, gl 100.000
+0:0:9 9  Heart:: Oxidation 14.138
+0:0:9 9  Muscles:: GlucoseAbsorbed 0.000
+0:0:9 9  Muscles:: GlycogenSynthesis 0.000
+0:0:9 9  Muscles:: GlycogenBreakdown 0.000
+0:0:9 9  Muscles:: glycogen 500.000
+0:0:9 9  Muscles:: Oxidation 0.000
+0:0:9 9  Muscles:: Glycolysis 0.000
+0:0:9 9  Kidneys:: Glycolysis 0.000
+0:0:9 9  Kidneys:: TotalExcretion 0.000
+0:0:9 9  Kidneys:: GNG 0.000
+0:0:9 9  Kidneys:: Excretion 0.000
+0:0:9 9  Blood:: insulinLevel 0.000
+0:0:9 9  80.525 100.000 500.000
+0:0:9 9  HumanBody:: BGL 80.525
+0:0:9 9  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:9 9  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:9 9  HumanBody:: TotalGNGPerTick 0.000
+0:0:9 9  HumanBody:: TotalGNGSoFar 0.000
+0:0:9 9  HumanBody:: TotalOxidationPerTick 97.490
+0:0:9 9  HumanBody:: TotalOxidationSoFar 973.770
+0:0:9 9  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.490
+0:0:9 9  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:9 9  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:9 9  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:9 9  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:9 9  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:9 9  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:9 9  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:9 9  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:10 10  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:10 10  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:10 10  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:10 10  Intestine:: ToPortalVein 0.000
+0:0:10 10  Liver:: ToGlycogen 0.000
+0:0:10 10  Liver:: glycogen 100.000
+0:0:10 10  Liver:: FromGlycogen 0.000
+0:0:10 10  Liver:: GNG 0.000
+0:0:10 10  Liver:: Absorption 0.000
+0:0:10 10  Liver:: Glycolysis 0.000
+0:0:10 10  Liver:: Release 0.000mg, gl 100.000
+0:0:10 10  Heart:: Oxidation 14.027
+0:0:10 10  Muscles:: GlucoseAbsorbed 0.000
+0:0:10 10  Muscles:: GlycogenSynthesis 0.000
+0:0:10 10  Muscles:: GlycogenBreakdown 0.000
+0:0:10 10  Muscles:: glycogen 500.000
+0:0:10 10  Muscles:: Oxidation 0.000
+0:0:10 10  Muscles:: Glycolysis 0.000
+0:0:10 10  Kidneys:: Glycolysis 0.000
+0:0:10 10  Kidneys:: TotalExcretion 0.000
+0:0:10 10  Kidneys:: GNG 0.000
+0:0:10 10  Kidneys:: Excretion 0.000
+0:0:10 10  Blood:: insulinLevel 0.000
+0:0:10 10  78.575 100.000 500.000
+0:0:10 10  HumanBody:: BGL 78.575
+0:0:10 10  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:10 10  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:10 10  HumanBody:: TotalGNGPerTick 0.000
+0:0:10 10  HumanBody:: TotalGNGSoFar 0.000
+0:0:10 10  HumanBody:: TotalOxidationPerTick 97.478
+0:0:10 10  HumanBody:: TotalOxidationSoFar 1071.248
+0:0:10 10  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.478
+0:0:10 10  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:10 10  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:10 10  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:10 10  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:10 10  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:10 10  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:10 10  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:10 10  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:11 11  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:11 11  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:11 11  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:11 11  Intestine:: ToPortalVein 0.000
+0:0:11 11  Liver:: ToGlycogen 0.000
+0:0:11 11  Liver:: glycogen 100.000
+0:0:11 11  Liver:: FromGlycogen 0.000
+0:0:11 11  Liver:: GNG 0.000
+0:0:11 11  Liver:: Absorption 0.000
+0:0:11 11  Liver:: Glycolysis 0.000
+0:0:11 11  Liver:: Release 0.000mg, gl 100.000
+0:0:11 11  Heart:: Oxidation 14.107
+0:0:11 11  Muscles:: GlucoseAbsorbed 0.000
+0:0:11 11  Muscles:: GlycogenSynthesis 0.000
+0:0:11 11  Muscles:: GlycogenBreakdown 0.000
+0:0:11 11  Muscles:: glycogen 500.000
+0:0:11 11  Muscles:: Oxidation 0.000
+0:0:11 11  Muscles:: Glycolysis 0.000
+0:0:11 11  Kidneys:: Glycolysis 0.000
+0:0:11 11  Kidneys:: TotalExcretion 0.000
+0:0:11 11  Kidneys:: GNG 0.000
+0:0:11 11  Kidneys:: Excretion 0.000
+0:0:11 11  Blood:: insulinLevel 0.000
+0:0:11 11  76.632 100.000 500.000
+0:0:11 11  HumanBody:: BGL 76.632
+0:0:11 11  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:11 11  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:11 11  HumanBody:: TotalGNGPerTick 0.000
+0:0:11 11  HumanBody:: TotalGNGSoFar 0.000
+0:0:11 11  HumanBody:: TotalOxidationPerTick 97.159
+0:0:11 11  HumanBody:: TotalOxidationSoFar 1168.407
+0:0:11 11  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.159
+0:0:11 11  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:11 11  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:11 11  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:11 11  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:11 11  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:11 11  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:11 11  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:11 11  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:12 12  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:12 12  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:12 12  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:12 12  Intestine:: ToPortalVein 0.000
+0:0:12 12  Liver:: ToGlycogen 0.000
+0:0:12 12  Liver:: glycogen 100.000
+0:0:12 12  Liver:: FromGlycogen 0.000
+0:0:12 12  Liver:: GNG 0.000
+0:0:12 12  Liver:: Absorption 0.000
+0:0:12 12  Liver:: Glycolysis 0.000
+0:0:12 12  Liver:: Release 0.000mg, gl 100.000
+0:0:12 12  Heart:: Oxidation 14.112
+0:0:12 12  Muscles:: GlucoseAbsorbed 0.000
+0:0:12 12  Muscles:: GlycogenSynthesis 0.000
+0:0:12 12  Muscles:: GlycogenBreakdown 0.000
+0:0:12 12  Muscles:: glycogen 500.000
+0:0:12 12  Muscles:: Oxidation 0.000
+0:0:12 12  Muscles:: Glycolysis 0.000
+0:0:12 12  Kidneys:: Glycolysis 0.000
+0:0:12 12  Kidneys:: TotalExcretion 0.000
+0:0:12 12  Kidneys:: GNG 0.000
+0:0:12 12  Kidneys:: Excretion 0.000
+0:0:12 12  Blood:: insulinLevel 0.000
+0:0:12 12  74.691 100.000 500.000
+0:0:12 12  HumanBody:: BGL 74.691
+0:0:12 12  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:12 12  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:12 12  HumanBody:: TotalGNGPerTick 0.000
+0:0:12 12  HumanBody:: TotalGNGSoFar 0.000
+0:0:12 12  HumanBody:: TotalOxidationPerTick 97.045
+0:0:12 12  HumanBody:: TotalOxidationSoFar 1265.452
+0:0:12 12  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.045
+0:0:12 12  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:12 12  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:12 12  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:12 12  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:12 12  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:12 12  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:12 12  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:12 12  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:13 13  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:13 13  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:13 13  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:13 13  Intestine:: ToPortalVein 0.000
+0:0:13 13  Liver:: ToGlycogen 0.000
+0:0:13 13  Liver:: glycogen 100.000
+0:0:13 13  Liver:: FromGlycogen 0.000
+0:0:13 13  Liver:: GNG 0.000
+0:0:13 13  Liver:: Absorption 0.000
+0:0:13 13  Liver:: Glycolysis 0.000
+0:0:13 13  Liver:: Release 0.000mg, gl 100.000
+0:0:13 13  Heart:: Oxidation 13.987
+0:0:13 13  Muscles:: GlucoseAbsorbed 0.000
+0:0:13 13  Muscles:: GlycogenSynthesis 0.000
+0:0:13 13  Muscles:: GlycogenBreakdown 0.000
+0:0:13 13  Muscles:: glycogen 500.000
+0:0:13 13  Muscles:: Oxidation 0.000
+0:0:13 13  Muscles:: Glycolysis 0.000
+0:0:13 13  Kidneys:: Glycolysis 0.000
+0:0:13 13  Kidneys:: TotalExcretion 0.000
+0:0:13 13  Kidneys:: GNG 0.000
+0:0:13 13  Kidneys:: Excretion 0.000
+0:0:13 13  Blood:: insulinLevel 0.000
+0:0:13 13  72.747 100.000 500.000
+0:0:13 13  HumanBody:: BGL 72.747
+0:0:13 13  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:13 13  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:13 13  HumanBody:: TotalGNGPerTick 0.000
+0:0:13 13  HumanBody:: TotalGNGSoFar 0.000
+0:0:13 13  HumanBody:: TotalOxidationPerTick 97.174
+0:0:13 13  HumanBody:: TotalOxidationSoFar 1362.626
+0:0:13 13  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.174
+0:0:13 13  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:13 13  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:13 13  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:13 13  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:13 13  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:13 13  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:13 13  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:13 13  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:14 14  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:14 14  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:14 14  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:14 14  Intestine:: ToPortalVein 0.000
+0:0:14 14  Liver:: ToGlycogen 0.000
+0:0:14 14  Liver:: glycogen 100.000
+0:0:14 14  Liver:: FromGlycogen 0.000
+0:0:14 14  Liver:: GNG 0.000
+0:0:14 14  Liver:: Absorption 0.000
+0:0:14 14  Liver:: Glycolysis 0.000
+0:0:14 14  Liver:: Release 0.000mg, gl 100.000
+0:0:14 14  Heart:: Oxidation 13.886
+0:0:14 14  Muscles:: GlucoseAbsorbed 0.000
+0:0:14 14  Muscles:: GlycogenSynthesis 0.000
+0:0:14 14  Muscles:: GlycogenBreakdown 0.000
+0:0:14 14  Muscles:: glycogen 500.000
+0:0:14 14  Muscles:: Oxidation 0.000
+0:0:14 14  Muscles:: Glycolysis 0.000
+0:0:14 14  Kidneys:: Glycolysis 0.000
+0:0:14 14  Kidneys:: TotalExcretion 0.000
+0:0:14 14  Kidneys:: GNG 0.000
+0:0:14 14  Kidneys:: Excretion 0.000
+0:0:14 14  Blood:: insulinLevel 0.000
+0:0:14 14  70.804 100.000 500.000
+0:0:14 14  HumanBody:: BGL 70.804
+0:0:14 14  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:14 14  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:14 14  HumanBody:: TotalGNGPerTick 0.000
+0:0:14 14  HumanBody:: TotalGNGSoFar 0.000
+0:0:14 14  HumanBody:: TotalOxidationPerTick 97.185
+0:0:14 14  HumanBody:: TotalOxidationSoFar 1459.811
+0:0:14 14  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.185
+0:0:14 14  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:14 14  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:14 14  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:14 14  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:14 14  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:14 14  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:14 14  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:14 14  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:15 15  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:15 15  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:15 15  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:15 15  Intestine:: ToPortalVein 0.000
+0:0:15 15  Liver:: ToGlycogen 0.000
+0:0:15 15  Liver:: glycogen 100.000
+0:0:15 15  Liver:: FromGlycogen 0.000
+0:0:15 15  Liver:: GNG 0.000
+0:0:15 15  Liver:: Absorption 0.000
+0:0:15 15  Liver:: Glycolysis 0.000
+0:0:15 15  Liver:: Release 0.000mg, gl 100.000
+0:0:15 15  Heart:: Oxidation 14.044
+0:0:15 15  Muscles:: GlucoseAbsorbed 0.000
+0:0:15 15  Muscles:: GlycogenSynthesis 0.000
+0:0:15 15  Muscles:: GlycogenBreakdown 0.000
+0:0:15 15  Muscles:: glycogen 500.000
+0:0:15 15  Muscles:: Oxidation 0.000
+0:0:15 15  Muscles:: Glycolysis 0.000
+0:0:15 15  Kidneys:: Glycolysis 0.000
+0:0:15 15  Kidneys:: TotalExcretion 0.000
+0:0:15 15  Kidneys:: GNG 0.000
+0:0:15 15  Kidneys:: Excretion 0.000
+0:0:15 15  Blood:: insulinLevel 0.000
+0:0:15 15  68.867 100.000 500.000
+0:0:15 15  HumanBody:: BGL 68.867
+0:0:15 15  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:15 15  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:15 15  HumanBody:: TotalGNGPerTick 0.000
+0:0:15 15  HumanBody:: TotalGNGSoFar 0.000
+0:0:15 15  HumanBody:: TotalOxidationPerTick 96.845
+0:0:15 15  HumanBody:: TotalOxidationSoFar 1556.656
+0:0:15 15  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 96.845
+0:0:15 15  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:15 15  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:15 15  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:15 15  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:15 15  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:15 15  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:15 15  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:15 15  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:16 16  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:16 16  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:16 16  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:16 16  Intestine:: ToPortalVein 0.000
+0:0:16 16  Liver:: ToGlycogen 0.000
+0:0:16 16  Liver:: glycogen 100.000
+0:0:16 16  Liver:: FromGlycogen 0.000
+0:0:16 16  Liver:: GNG 0.000
+0:0:16 16  Liver:: Absorption 0.000
+0:0:16 16  Liver:: Glycolysis 0.000
+0:0:16 16  Liver:: Release 0.000mg, gl 100.000
+0:0:16 16  Heart:: Oxidation 14.054
+0:0:16 16  Muscles:: GlucoseAbsorbed 0.000
+0:0:16 16  Muscles:: GlycogenSynthesis 0.000
+0:0:16 16  Muscles:: GlycogenBreakdown 0.000
+0:0:16 16  Muscles:: glycogen 500.000
+0:0:16 16  Muscles:: Oxidation 0.000
+0:0:16 16  Muscles:: Glycolysis 0.000
+0:0:16 16  Kidneys:: Glycolysis 0.000
+0:0:16 16  Kidneys:: TotalExcretion 0.000
+0:0:16 16  Kidneys:: GNG 0.000
+0:0:16 16  Kidneys:: Excretion 0.000
+0:0:16 16  Blood:: insulinLevel 0.000
+0:0:16 16  66.927 100.000 500.000
+0:0:16 16  HumanBody:: BGL 66.927
+0:0:16 16  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:16 16  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:16 16  HumanBody:: TotalGNGPerTick 0.000
+0:0:16 16  HumanBody:: TotalGNGSoFar 0.000
+0:0:16 16  HumanBody:: TotalOxidationPerTick 97.008
+0:0:16 16  HumanBody:: TotalOxidationSoFar 1653.664
+0:0:16 16  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.008
+0:0:16 16  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:16 16  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:16 16  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:16 16  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:16 16  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:16 16  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:16 16  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:16 16  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:17 17  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:17 17  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:17 17  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:17 17  Intestine:: ToPortalVein 0.000
+0:0:17 17  Liver:: ToGlycogen 0.000
+0:0:17 17  Liver:: glycogen 100.000
+0:0:17 17  Liver:: FromGlycogen 0.000
+0:0:17 17  Liver:: GNG 0.000
+0:0:17 17  Liver:: Absorption 0.000
+0:0:17 17  Liver:: Glycolysis 0.000
+0:0:17 17  Liver:: Release 0.000mg, gl 100.000
+0:0:17 17  Heart:: Oxidation 14.065
+0:0:17 17  Muscles:: GlucoseAbsorbed 0.000
+0:0:17 17  Muscles:: GlycogenSynthesis 0.000
+0:0:17 17  Muscles:: GlycogenBreakdown 0.000
+0:0:17 17  Muscles:: glycogen 500.000
+0:0:17 17  Muscles:: Oxidation 0.000
+0:0:17 17  Muscles:: Glycolysis 0.000
+0:0:17 17  Kidneys:: Glycolysis 0.000
+0:0:17 17  Kidneys:: TotalExcretion 0.000
+0:0:17 17  Kidneys:: GNG 0.000
+0:0:17 17  Kidneys:: Excretion 0.000
+0:0:17 17  Blood:: insulinLevel 0.000
+0:0:17 17  64.969 100.000 500.000
+0:0:17 17  HumanBody:: BGL 64.969
+0:0:17 17  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:17 17  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:17 17  HumanBody:: TotalGNGPerTick 0.000
+0:0:17 17  HumanBody:: TotalGNGSoFar 0.000
+0:0:17 17  HumanBody:: TotalOxidationPerTick 97.872
+0:0:17 17  HumanBody:: TotalOxidationSoFar 1751.536
+0:0:17 17  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.872
+0:0:17 17  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:17 17  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:17 17  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:17 17  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:17 17  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:17 17  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:17 17  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:17 17  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:18 18  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:18 18  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:18 18  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:18 18  Intestine:: ToPortalVein 0.000
+0:0:18 18  Liver:: ToGlycogen 0.000
+0:0:18 18  Liver:: glycogen 100.000
+0:0:18 18  Liver:: FromGlycogen 0.000
+0:0:18 18  Liver:: GNG 0.000
+0:0:18 18  Liver:: Absorption 0.000
+0:0:18 18  Liver:: Glycolysis 0.000
+0:0:18 18  Liver:: Release 0.000mg, gl 100.000
+0:0:18 18  Heart:: Oxidation 13.992
+0:0:18 18  Muscles:: GlucoseAbsorbed 0.000
+0:0:18 18  Muscles:: GlycogenSynthesis 0.000
+0:0:18 18  Muscles:: GlycogenBreakdown 0.000
+0:0:18 18  Muscles:: glycogen 500.000
+0:0:18 18  Muscles:: Oxidation 0.000
+0:0:18 18  Muscles:: Glycolysis 0.000
+0:0:18 18  Kidneys:: Glycolysis 0.000
+0:0:18 18  Kidneys:: TotalExcretion 0.000
+0:0:18 18  Kidneys:: GNG 0.000
+0:0:18 18  Kidneys:: Excretion 0.000
+0:0:18 18  Blood:: insulinLevel 0.000
+0:0:18 18  63.024 100.000 500.000
+0:0:18 18  HumanBody:: BGL 63.024
+0:0:18 18  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:18 18  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:18 18  HumanBody:: TotalGNGPerTick 0.000
+0:0:18 18  HumanBody:: TotalGNGSoFar 0.000
+0:0:18 18  HumanBody:: TotalOxidationPerTick 97.247
+0:0:18 18  HumanBody:: TotalOxidationSoFar 1848.783
+0:0:18 18  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.247
+0:0:18 18  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:18 18  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:18 18  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:18 18  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:18 18  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:18 18  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:18 18  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:18 18  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:19 19  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:19 19  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:19 19  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:19 19  Intestine:: ToPortalVein 0.000
+0:0:19 19  Liver:: ToGlycogen 0.000
+0:0:19 19  Liver:: glycogen 100.000
+0:0:19 19  Liver:: FromGlycogen 0.000
+0:0:19 19  Liver:: GNG 0.000
+0:0:19 19  Liver:: Absorption 0.000
+0:0:19 19  Liver:: Glycolysis 0.000
+0:0:19 19  Liver:: Release 0.000mg, gl 100.000
+0:0:19 19  Heart:: Oxidation 14.135
+0:0:19 19  Muscles:: GlucoseAbsorbed 0.000
+0:0:19 19  Muscles:: GlycogenSynthesis 0.000
+0:0:19 19  Muscles:: GlycogenBreakdown 0.000
+0:0:19 19  Muscles:: glycogen 500.000
+0:0:19 19  Muscles:: Oxidation 0.000
+0:0:19 19  Muscles:: Glycolysis 0.000
+0:0:19 19  Kidneys:: Glycolysis 0.000
+0:0:19 19  Kidneys:: TotalExcretion 0.000
+0:0:19 19  Kidneys:: GNG 0.000
+0:0:19 19  Kidneys:: Excretion 0.000
+0:0:19 19  Blood:: insulinLevel 0.000
+0:0:19 19  61.072 100.000 500.000
+0:0:19 19  HumanBody:: BGL 61.072
+0:0:19 19  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:19 19  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:19 19  HumanBody:: TotalGNGPerTick 0.000
+0:0:19 19  HumanBody:: TotalGNGSoFar 0.000
+0:0:19 19  HumanBody:: TotalOxidationPerTick 97.596
+0:0:19 19  HumanBody:: TotalOxidationSoFar 1946.379
+0:0:19 19  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.596
+0:0:19 19  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:19 19  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:19 19  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:19 19  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:19 19  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:19 19  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:19 19  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:19 19  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:20 20  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:20 20  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:20 20  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:20 20  Intestine:: ToPortalVein 0.000
+0:0:20 20  Liver:: ToGlycogen 0.000
+0:0:20 20  Liver:: glycogen 100.000
+0:0:20 20  Liver:: FromGlycogen 0.000
+0:0:20 20  Liver:: GNG 0.000
+0:0:20 20  Liver:: Absorption 0.000
+0:0:20 20  Liver:: Glycolysis 0.000
+0:0:20 20  Liver:: Release 0.000mg, gl 100.000
+0:0:20 20  Heart:: Oxidation 13.861
+0:0:20 20  Muscles:: GlucoseAbsorbed 0.000
+0:0:20 20  Muscles:: GlycogenSynthesis 0.000
+0:0:20 20  Muscles:: GlycogenBreakdown 0.000
+0:0:20 20  Muscles:: glycogen 500.000
+0:0:20 20  Muscles:: Oxidation 0.000
+0:0:20 20  Muscles:: Glycolysis 0.000
+0:0:20 20  Kidneys:: Glycolysis 0.000
+0:0:20 20  Kidneys:: TotalExcretion 0.000
+0:0:20 20  Kidneys:: GNG 0.000
+0:0:20 20  Kidneys:: Excretion 0.000
+0:0:20 20  Blood:: insulinLevel 0.000
+0:0:20 20  59.123 100.000 500.000
+0:0:20 20  HumanBody:: BGL 59.123
+0:0:20 20  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:20 20  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:20 20  HumanBody:: TotalGNGPerTick 0.000
+0:0:20 20  HumanBody:: TotalGNGSoFar 0.000
+0:0:20 20  HumanBody:: TotalOxidationPerTick 97.470
+0:0:20 20  HumanBody:: TotalOxidationSoFar 2043.849
+0:0:20 20  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.470
+0:0:20 20  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:20 20  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:20 20  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:20 20  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:20 20  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:20 20  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:20 20  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:20 20  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:21 21  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:21 21  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:21 21  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:21 21  Intestine:: ToPortalVein 0.000
+0:0:21 21  Liver:: ToGlycogen 0.000
+0:0:21 21  Liver:: glycogen 100.000
+0:0:21 21  Liver:: FromGlycogen 0.000
+0:0:21 21  Liver:: GNG 0.000
+0:0:21 21  Liver:: Absorption 0.000
+0:0:21 21  Liver:: Glycolysis 0.000
+0:0:21 21  Liver:: Release 0.000mg, gl 100.000
+0:0:21 21  Heart:: Oxidation 14.071
+0:0:21 21  Muscles:: GlucoseAbsorbed 0.000
+0:0:21 21  Muscles:: GlycogenSynthesis 0.000
+0:0:21 21  Muscles:: GlycogenBreakdown 0.000
+0:0:21 21  Muscles:: glycogen 500.000
+0:0:21 21  Muscles:: Oxidation 0.000
+0:0:21 21  Muscles:: Glycolysis 0.000
+0:0:21 21  Kidneys:: Glycolysis 0.000
+0:0:21 21  Kidneys:: TotalExcretion 0.000
+0:0:21 21  Kidneys:: GNG 0.000
+0:0:21 21  Kidneys:: Excretion 0.000
+0:0:21 21  Blood:: insulinLevel 0.000
+0:0:21 21  57.173 100.000 500.000
+0:0:21 21  HumanBody:: BGL 57.173
+0:0:21 21  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:21 21  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:21 21  HumanBody:: TotalGNGPerTick 0.000
+0:0:21 21  HumanBody:: TotalGNGSoFar 0.000
+0:0:21 21  HumanBody:: TotalOxidationPerTick 97.504
+0:0:21 21  HumanBody:: TotalOxidationSoFar 2141.353
+0:0:21 21  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.504
+0:0:21 21  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:21 21  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:21 21  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:21 21  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:21 21  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:21 21  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:21 21  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:21 21  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:22 22  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:22 22  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:22 22  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:22 22  Intestine:: ToPortalVein 0.000
+0:0:22 22  Liver:: ToGlycogen 0.000
+0:0:22 22  Liver:: glycogen 100.000
+0:0:22 22  Liver:: FromGlycogen 0.000
+0:0:22 22  Liver:: GNG 0.000
+0:0:22 22  Liver:: Absorption 0.000
+0:0:22 22  Liver:: Glycolysis 0.000
+0:0:22 22  Liver:: Release 0.000mg, gl 100.000
+0:0:22 22  Heart:: Oxidation 14.115
+0:0:22 22  Muscles:: GlucoseAbsorbed 0.000
+0:0:22 22  Muscles:: GlycogenSynthesis 0.000
+0:0:22 22  Muscles:: GlycogenBreakdown 0.000
+0:0:22 22  Muscles:: glycogen 500.000
+0:0:22 22  Muscles:: Oxidation 0.000
+0:0:22 22  Muscles:: Glycolysis 0.000
+0:0:22 22  Kidneys:: Glycolysis 0.000
+0:0:22 22  Kidneys:: TotalExcretion 0.000
+0:0:22 22  Kidneys:: GNG 0.000
+0:0:22 22  Kidneys:: Excretion 0.000
+0:0:22 22  Blood:: insulinLevel 0.000
+0:0:22 22  55.234 100.000 500.000
+0:0:22 22  HumanBody:: BGL 55.234
+0:0:22 22  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:22 22  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:22 22  HumanBody:: TotalGNGPerTick 0.000
+0:0:22 22  HumanBody:: TotalGNGSoFar 0.000
+0:0:22 22  HumanBody:: TotalOxidationPerTick 96.933
+0:0:22 22  HumanBody:: TotalOxidationSoFar 2238.286
+0:0:22 22  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 96.933
+0:0:22 22  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:22 22  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:22 22  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:22 22  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:22 22  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:22 22  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:22 22  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:22 22  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:23 23  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:23 23  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:23 23  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:23 23  Intestine:: ToPortalVein 0.000
+0:0:23 23  Liver:: ToGlycogen 0.000
+0:0:23 23  Liver:: glycogen 100.000
+0:0:23 23  Liver:: FromGlycogen 0.000
+0:0:23 23  Liver:: GNG 0.000
+0:0:23 23  Liver:: Absorption 0.000
+0:0:23 23  Liver:: Glycolysis 0.000
+0:0:23 23  Liver:: Release 0.000mg, gl 100.000
+0:0:23 23  Heart:: Oxidation 13.943
+0:0:23 23  Muscles:: GlucoseAbsorbed 0.000
+0:0:23 23  Muscles:: GlycogenSynthesis 0.000
+0:0:23 23  Muscles:: GlycogenBreakdown 0.000
+0:0:23 23  Muscles:: glycogen 500.000
+0:0:23 23  Muscles:: Oxidation 0.000
+0:0:23 23  Muscles:: Glycolysis 0.000
+0:0:23 23  Kidneys:: Glycolysis 0.000
+0:0:23 23  Kidneys:: TotalExcretion 0.000
+0:0:23 23  Kidneys:: GNG 0.000
+0:0:23 23  Kidneys:: Excretion 0.000
+0:0:23 23  Blood:: insulinLevel 0.000
+0:0:23 23  53.284 100.000 500.000
+0:0:23 23  HumanBody:: BGL 53.284
+0:0:23 23  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:23 23  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:23 23  HumanBody:: TotalGNGPerTick 0.000
+0:0:23 23  HumanBody:: TotalGNGSoFar 0.000
+0:0:23 23  HumanBody:: TotalOxidationPerTick 97.498
+0:0:23 23  HumanBody:: TotalOxidationSoFar 2335.784
+0:0:23 23  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.498
+0:0:23 23  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:23 23  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:23 23  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:23 23  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:23 23  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:23 23  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:23 23  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:23 23  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:24 24  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:24 24  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:24 24  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:24 24  Intestine:: ToPortalVein 0.000
+0:0:24 24  Liver:: ToGlycogen 0.000
+0:0:24 24  Liver:: glycogen 100.000
+0:0:24 24  Liver:: FromGlycogen 0.000
+0:0:24 24  Liver:: GNG 0.000
+0:0:24 24  Liver:: Absorption 0.000
+0:0:24 24  Liver:: Glycolysis 0.000
+0:0:24 24  Liver:: Release 0.000mg, gl 100.000
+0:0:24 24  Heart:: Oxidation 14.120
+0:0:24 24  Muscles:: GlucoseAbsorbed 0.000
+0:0:24 24  Muscles:: GlycogenSynthesis 0.000
+0:0:24 24  Muscles:: GlycogenBreakdown 0.000
+0:0:24 24  Muscles:: glycogen 500.000
+0:0:24 24  Muscles:: Oxidation 0.000
+0:0:24 24  Muscles:: Glycolysis 0.000
+0:0:24 24  Kidneys:: Glycolysis 0.000
+0:0:24 24  Kidneys:: TotalExcretion 0.000
+0:0:24 24  Kidneys:: GNG 0.000
+0:0:24 24  Kidneys:: Excretion 0.000
+0:0:24 24  Blood:: insulinLevel 0.000
+0:0:24 24  51.334 100.000 500.000
+0:0:24 24  HumanBody:: BGL 51.334
+0:0:24 24  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:24 24  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:24 24  HumanBody:: TotalGNGPerTick 0.000
+0:0:24 24  HumanBody:: TotalGNGSoFar 0.000
+0:0:24 24  HumanBody:: TotalOxidationPerTick 97.496
+0:0:24 24  HumanBody:: TotalOxidationSoFar 2433.280
+0:0:24 24  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.496
+0:0:24 24  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:24 24  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:24 24  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:24 24  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:24 24  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:24 24  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:24 24  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:24 24  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:25 25  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:25 25  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:25 25  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:25 25  Intestine:: ToPortalVein 0.000
+0:0:25 25  Liver:: ToGlycogen 0.000
+0:0:25 25  Liver:: glycogen 100.000
+0:0:25 25  Liver:: FromGlycogen 0.000
+0:0:25 25  Liver:: GNG 0.000
+0:0:25 25  Liver:: Absorption 0.000
+0:0:25 25  Liver:: Glycolysis 0.000
+0:0:25 25  Liver:: Release 0.000mg, gl 100.000
+0:0:25 25  Heart:: Oxidation 14.133
+0:0:25 25  Muscles:: GlucoseAbsorbed 0.000
+0:0:25 25  Muscles:: GlycogenSynthesis 0.000
+0:0:25 25  Muscles:: GlycogenBreakdown 0.000
+0:0:25 25  Muscles:: glycogen 500.000
+0:0:25 25  Muscles:: Oxidation 0.000
+0:0:25 25  Muscles:: Glycolysis 0.000
+0:0:25 25  Kidneys:: Glycolysis 0.000
+0:0:25 25  Kidneys:: TotalExcretion 0.000
+0:0:25 25  Kidneys:: GNG 0.000
+0:0:25 25  Kidneys:: Excretion 0.000
+0:0:25 25  Blood:: insulinLevel 0.000
+0:0:25 25  49.378 100.000 500.000
+0:0:25 25  HumanBody:: BGL 49.378
+0:0:25 25  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:25 25  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:25 25  HumanBody:: TotalGNGPerTick 0.000
+0:0:25 25  HumanBody:: TotalGNGSoFar 0.000
+0:0:25 25  HumanBody:: TotalOxidationPerTick 97.832
+0:0:25 25  HumanBody:: TotalOxidationSoFar 2531.112
+0:0:25 25  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.832
+0:0:25 25  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:25 25  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:25 25  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:25 25  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:25 25  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:25 25  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:25 25  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:25 25  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:26 26  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:26 26  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:26 26  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:26 26  Intestine:: ToPortalVein 0.000
+0:0:26 26  Liver:: ToGlycogen 0.000
+0:0:26 26  Liver:: glycogen 100.000
+0:0:26 26  Liver:: FromGlycogen 0.000
+0:0:26 26  Liver:: GNG 0.000
+0:0:26 26  Liver:: Absorption 0.000
+0:0:26 26  Liver:: Glycolysis 0.000
+0:0:26 26  Liver:: Release 0.000mg, gl 100.000
+0:0:26 26  Heart:: Oxidation 14.167
+0:0:26 26  Muscles:: GlucoseAbsorbed 0.000
+0:0:26 26  Muscles:: GlycogenSynthesis 0.000
+0:0:26 26  Muscles:: GlycogenBreakdown 0.000
+0:0:26 26  Muscles:: glycogen 500.000
+0:0:26 26  Muscles:: Oxidation 0.000
+0:0:26 26  Muscles:: Glycolysis 0.000
+0:0:26 26  Kidneys:: Glycolysis 0.000
+0:0:26 26  Kidneys:: TotalExcretion 0.000
+0:0:26 26  Kidneys:: GNG 0.000
+0:0:26 26  Kidneys:: Excretion 0.000
+0:0:26 26  Blood:: insulinLevel 0.000
+0:0:26 26  47.429 100.000 500.000
+0:0:26 26  HumanBody:: BGL 47.429
+0:0:26 26  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:26 26  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:26 26  HumanBody:: TotalGNGPerTick 0.000
+0:0:26 26  HumanBody:: TotalGNGSoFar 0.000
+0:0:26 26  HumanBody:: TotalOxidationPerTick 97.430
+0:0:26 26  HumanBody:: TotalOxidationSoFar 2628.542
+0:0:26 26  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.430
+0:0:26 26  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:26 26  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:26 26  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:26 26  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:26 26  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:26 26  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:26 26  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:26 26  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:27 27  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:27 27  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:27 27  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:27 27  Intestine:: ToPortalVein 0.000
+0:0:27 27  Liver:: ToGlycogen 0.000
+0:0:27 27  Liver:: glycogen 100.000
+0:0:27 27  Liver:: FromGlycogen 0.000
+0:0:27 27  Liver:: GNG 0.000
+0:0:27 27  Liver:: Absorption 0.000
+0:0:27 27  Liver:: Glycolysis 0.000
+0:0:27 27  Liver:: Release 0.000mg, gl 100.000
+0:0:27 27  Heart:: Oxidation 14.039
+0:0:27 27  Muscles:: GlucoseAbsorbed 0.000
+0:0:27 27  Muscles:: GlycogenSynthesis 0.000
+0:0:27 27  Muscles:: GlycogenBreakdown 0.000
+0:0:27 27  Muscles:: glycogen 500.000
+0:0:27 27  Muscles:: Oxidation 0.000
+0:0:27 27  Muscles:: Glycolysis 0.000
+0:0:27 27  Kidneys:: Glycolysis 0.000
+0:0:27 27  Kidneys:: TotalExcretion 0.000
+0:0:27 27  Kidneys:: GNG 0.000
+0:0:27 27  Kidneys:: Excretion 0.000
+0:0:27 27  Blood:: insulinLevel 0.000
+0:0:27 27  45.486 100.000 500.000
+0:0:27 27  HumanBody:: BGL 45.486
+0:0:27 27  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:27 27  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:27 27  HumanBody:: TotalGNGPerTick 0.000
+0:0:27 27  HumanBody:: TotalGNGSoFar 0.000
+0:0:27 27  HumanBody:: TotalOxidationPerTick 97.146
+0:0:27 27  HumanBody:: TotalOxidationSoFar 2725.688
+0:0:27 27  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.146
+0:0:27 27  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:27 27  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:27 27  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:27 27  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:27 27  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:27 27  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:27 27  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:27 27  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:28 28  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:28 28  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:28 28  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
+0:0:28 28  Intestine:: ToPortalVein 0.000
+0:0:28 28  Liver:: ToGlycogen 0.000
+0:0:28 28  Liver:: glycogen 100.000
+0:0:28 28  Liver:: FromGlycogen 0.000
+0:0:28 28  Liver:: GNG 0.000
+0:0:28 28  Liver:: Absorption 0.000
+0:0:28 28  Liver:: Glycolysis 0.000
+0:0:28 28  Liver:: Release 0.000mg, gl 100.000
+0:0:28 28  Heart:: Oxidation 13.981
+0:0:28 28  Muscles:: GlucoseAbsorbed 0.000
+0:0:28 28  Muscles:: GlycogenSynthesis 0.000
+0:0:28 28  Muscles:: GlycogenBreakdown 0.000
+0:0:28 28  Muscles:: glycogen 500.000
+0:0:28 28  Muscles:: Oxidation 0.000
+0:0:28 28  Muscles:: Glycolysis 0.000
+0:0:28 28  Kidneys:: Glycolysis 0.000
+0:0:28 28  Kidneys:: TotalExcretion 0.000
+0:0:28 28  Kidneys:: GNG 0.000
+0:0:28 28  Kidneys:: Excretion 0.000
+0:0:28 28  Blood:: insulinLevel 0.000
+0:0:28 28  43.539 100.000 500.000
+0:0:28 28  HumanBody:: BGL 43.539
+0:0:28 28  HumanBody:: TotalGlycolysisPerTick 0.000
+0:0:28 28  HumanBody:: TotalGlycolysisSoFar 0.000
+0:0:28 28  HumanBody:: TotalGNGPerTick 0.000
+0:0:28 28  HumanBody:: TotalGNGSoFar 0.000
+0:0:28 28  HumanBody:: TotalOxidationPerTick 97.368
+0:0:28 28  HumanBody:: TotalOxidationSoFar 2823.056
+0:0:28 28  HumanBody:: UseOfGlucoseOutsideLiverKidneysMuscles 97.368
+0:0:28 28  HumanBody:: TotalGlycogenStoragePerTick 0.000
+0:0:28 28  HumanBody:: TotalGlycogenStorageSoFar 0.000
+0:0:28 28  HumanBody:: TotalGlycogenBreakdownPerTick 0.000
+0:0:28 28  HumanBody:: TotalGlycogenBreakdownSoFar 0.000
+0:0:28 28  HumanBody:: TotalEndogeneousGlucoseReleasePerTick 0.000
+0:0:28 28  HumanBody:: TotalEndogeneousGlucoseReleaseSoFar 0.000
+0:0:28 28  HumanBody:: TotalGlucoseReleasePerTick 0.000
+0:0:28 28  HumanBody:: TotalGlucoseReleaseSoFar 0.000
+0:0:29 29  Gastric Emptying:: Total Food 0.000 Calorific Density 0.000 geSlope 0.000 ragInBolus 0.000 sagInBolus 0.000
+0:0:29 29  Stomach:: SAG 0.000 RAG 0.000 protein 0.000 fat 0.000
+0:0:29 29  Intestine:: RAGConsumed 0.000 SAGConsumed 0.000
