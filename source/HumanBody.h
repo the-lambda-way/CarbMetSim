@@ -6,14 +6,16 @@
 #include "AdiposeTissue.h"
 #include "Blood.h"
 #include "Brain.h"
+#include "common.h"
 #include "Heart.h"
 #include "Intestine.h"
 #include "Kidneys.h"
 #include "Liver.h"
 #include "Muscles.h"
 #include "PortalVein.h"
-#include "SimCtl.h"
 #include "Stomach.h"
+
+class SimCtl;
 
 
 struct FoodType
@@ -40,20 +42,6 @@ enum class BodyOrgan {HUMAN_BODY, STOMACH, INTESTINE, PORTAL_VEIN, LIVER, BLOOD,
                       MUSCLES, BRAIN, HEART, ADIPOSE_TISSUE, KIDNEY};
 
 
-struct GlucoseState
-{
-    double amount;
-    // double bloodGlucose;
-    double bloodBGL;
-    double bloodMinBGL;
-};
-
-struct FatState
-{
-    double amount;
-    double bodyWeight;
-};
-
 struct TotalsState
 {
     double totalGlycolysisSoFar;
@@ -78,7 +66,7 @@ struct HumanParams
     double excretionKidneysImpact;
     double liverGlycogenBreakdownImpact;
     double liverGlycogenSynthesisImpact;
-    double maxLiverGlycogenBreakdownDuringExerciseImpact;
+    // double maxLiverGlycogenBreakdownDuringExerciseImpact;
     double gngImpact;
     double bodyWeight;
     double insulinImpactOnGlycolysis_Mean;
@@ -94,22 +82,22 @@ struct HumanParams
 
 struct MetabolicParams
 {
-    BloodParams      bloodParams;
-    BrainParams      brainParams;
-    HeartParams      heartParams;
-    HumanParams      humanParams;
-    IntestineParams  intestineParams;
-    KidneysParams    kidneysParams;
-    LiverParams      liverParams;
-    MusclesParams    musclesParams;
-    PortalVeinParams portalVeinParams;
-    StomachParams    stomachParams;
+    BloodParams      blood;
+    BrainParams      brain;
+    HeartParams      heart;
+    HumanParams      body;
+    IntestineParams  intestine;
+    KidneysParams    kidneys;
+    LiverParams      liver;
+    MusclesParams    muscles;
+    PortalVeinParams portalVein;
+    StomachParams    stomach;
 };
 
 class HumanBody
 {
 public:
-    HumanBody(std::shared_ptr<SimCtl> sim,
+    HumanBody(SimCtl* sim,
               std::map<BodyState, MetabolicParams> metabolicParameters,
               std::map<unsigned, FoodType> foodTypes,
               std::map<unsigned, ExerciseType> exerciseTypes);
@@ -137,16 +125,16 @@ public:
     unsigned exerciseOverAt     = 0;   // when does the current exercise event get over
     int      lastHardExerciseAt = -61; // when was the last "hard" exercise
 
-    std::unique_ptr<Stomach>       stomach       = std::make_unique<Stomach>(this);
-    std::unique_ptr<Intestine>     intestine     = std::make_unique<Intestine>(this);
-    std::unique_ptr<PortalVein>    portalVein    = std::make_unique<PortalVein>(this);
-    std::unique_ptr<Liver>         liver         = std::make_unique<Liver>(this);
-    std::unique_ptr<AdiposeTissue> adiposeTissue = std::make_unique<AdiposeTissue>(this);
-    std::unique_ptr<Brain>         brain         = std::make_unique<Brain>(this);
-    std::unique_ptr<Muscles>       muscles       = std::make_unique<Muscles>(this);
-    std::unique_ptr<Blood>         blood         = std::make_unique<Blood>(this);
-    std::unique_ptr<Heart>         heart         = std::make_unique<Heart>(this);
-    std::unique_ptr<Kidneys>       kidneys       = std::make_unique<Kidneys>(this);
+    AdiposeTissue adiposeTissue{this};
+    Blood         blood{this};
+    Brain         brain{this};
+    Heart         heart{this};
+    Intestine     intestine{this};
+    Kidneys       kidneys{this};
+    Liver         liver{this};
+    Muscles       muscles{this};
+    PortalVein    portalVein{this};
+    Stomach       stomach{this};
 
     void   processTick();
     void   processFoodEvent(unsigned foodID, unsigned howmuch);
@@ -205,7 +193,7 @@ public:
     // BodyState   oldState;
 
 private:
-    std::shared_ptr<SimCtl> sim;
+    SimCtl* sim;
 
     std::map<unsigned, FoodType>         foodTypes;
     std::map<unsigned, ExerciseType>     exerciseTypes;

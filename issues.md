@@ -34,7 +34,7 @@ public:
     HumanBody()
     {
         adiposeTissue = new AdiposeTissue(this);
-        adiposeTissue->fat = fatFraction_*bodyWeight*1000.0;
+        adiposeTissue.fat = fatFraction_*bodyWeight*1000.0;
     }
 
     ~HumanBody()
@@ -54,7 +54,7 @@ SCENARIO("Fat can be directly added to adipose tissue.")
 
         WHEN("a gram of fat is directly added")
         {
-            body.adiposeTissue->addFat(1000.0);
+            body.adiposeTissue.addFat(1000.0);
 
             THEN("the body weight is increased by a gram.")
             {
@@ -90,7 +90,7 @@ carbohydrate metabolism in humans*. Literature references were removed from the 
 
 ## Encapsulation
 
-Encapsulation needs to be improved across the board. Parameters should be accessed through public interfaces instead of variables or friendship. Some parameters in HumanBody are only used in a single organ, these should maybe be moved into those organs. More algorithms can be abstracted and put into "utility.h".
+Encapsulation needs to be improved across the board. Parameters should be accessed through public interfaces instead of variables or friendship. Some parameters in HumanBody are only used in a single organ, these should maybe be moved into those organs. More algorithms can be abstracted and put into "common.h".
 
 
 ## Changelog
@@ -101,6 +101,7 @@ Refactored to be a library that can be integrated into other projects. Since thi
 * Replaced all input strings with input parameters. Moved all the strings into the cli.
 * Removed the main loop from SimCtl. The containing program runs its own main loop. On each iteration, it calls SimCtl::runTick(), then reads which events occurred as well as whatever parameters it needs. SimCtl::runTick() returns false after the HALT event has fired.
 * Moved the global variables into SimCtl. As a result, multiple simulators can exist side-by-side.
+* SimCtl is now the main (non-textual) interface. The body and organs are accessed through SimCtl.
 * Moved externally accessed variables from private to public (encapsulation will need to be improved in the future). Moved variables only internally used from public to private.
 * Changed programmer-related error checks into assertions.
 * Simplified many things, including moving subprocesses into their own functions.

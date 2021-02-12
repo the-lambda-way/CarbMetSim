@@ -1,4 +1,5 @@
 #include "Stomach.h"
+#include <cassert>
 #include <random>
 #include "AdiposeTissue.h"
 #include "Blood.h"
@@ -65,6 +66,8 @@ void Stomach::processTick()
 
 	if (stomachEmpty)    return;
 
+    assert(((void)"Stomach should have been considered empty!", totalFood > 0.001));
+
     static std::poisson_distribution<int> geConstant__{1000.0 * geConstant};
     double x = static_cast<double>(geConstant__(body->generator())) / 1000.0;
 
@@ -85,7 +88,7 @@ void Stomach::processTick()
 	protein -= proteinInBolus;
 	fat     -= fatInBolus.amount;
 
-    body->intestine->addChyme(ragInBolus, sagInBolus, proteinInBolus, fatInBolus.amount);
+    body->intestine.addChyme(ragInBolus, sagInBolus, proteinInBolus, fatInBolus.amount);
 
 	if (RAG <= 0.001 && SAG <= 0.001 && protein <= 0.001 && fat <= 0.001)
     {

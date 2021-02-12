@@ -13,30 +13,30 @@ PortalVein::PortalVein(HumanBody* body)
 
 void PortalVein::processTick()
 {
-    double bgl = body->blood->getBGL();
+    double bgl = body->blood.getBGL();
     double glucoseFromBlood = bgl * fluidVolume;
 
-    body->blood->removeGlucose(glucoseFromBlood);
+    body->blood.removeGlucose(glucoseFromBlood);
     glucose += glucoseFromBlood;
 
     fromBlood.amount      = glucoseFromBlood;
     fromBlood.bloodBGL    = bgl;
-    fromBlood.bloodMinBGL = body->blood->minGlucoseLevel;
+    fromBlood.bloodMinBGL = body->blood.minGlucoseLevel;
 }
 
 void PortalVein::releaseAllGlucose()
 {
-    body->blood->addGlucose(glucose);
+    body->blood.addGlucose(glucose);
     glucose = 0;
 }
 
 void PortalVein::removeGlucose(double g)
 {
     glucose -= g;
-    assert(("PortalVein glucose went negative\n", glucose >= 0));
+    assert(((void)"PortalVein glucose went negative\n", glucose >= 0));
 }
 
-double PortalVein::getConcentration()
+double PortalVein::getConcentration() const
 {
     return glucose / fluidVolume;
 }
@@ -46,7 +46,7 @@ void PortalVein::addGlucose(double g)
     glucose += g;
 }
 
-double PortalVein::getGlucose()
+double PortalVein::getGlucose() const
 {
     return glucose;
 }
@@ -65,11 +65,11 @@ void PortalVein::addAminoAcids(double aa)
 void PortalVein::releaseAminoAcids()
 {
     // 93% unbranched amino acids consumed by liver to make alanine
-    body->blood->alanine              += 0.93 * unbranchedAA;
-    body->blood->unbranchedAminoAcids += 0.07 * unbranchedAA;
+    body->blood.alanine              += 0.93 * unbranchedAA;
+    body->blood.unbranchedAminoAcids += 0.07 * unbranchedAA;
     unbranchedAA = 0;
 
-    body->blood->branchedAminoAcids += branchedAA;
+    body->blood.branchedAminoAcids += branchedAA;
     branchedAA = 0;
 
     // who consumes these amino acids from blood other than liver?

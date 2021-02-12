@@ -1,6 +1,8 @@
 #pragma once
 
-#include "HumanBody.h"
+#include "common.h"
+
+class HumanBody;
 
 
 struct RBCBin
@@ -76,12 +78,12 @@ public:
     void removeGlucose(double howmuch);
     void addGlucose(double howmuch);
 
-    double getBGL();
-    double getGNGSubstrates();
+    double getBGL() const;
+    double getGNGSubstrates() const;
+    double baseBGL() const;
+    double highBGL() const;
+    double volume() const;
     double gngFromHighLactate(double rate);
-    double baseBGL();
-    double highBGL();
-    double volume();
     void updateInsulinLevel();
 
 private:
@@ -101,7 +103,7 @@ private:
 
     double glycolysisToLactate = 1.0; // what fraction of glycolysed glucose becomes lactate?
 
-    double currentHbA1c();
+    double currentHbA1c() const;
     void updateRBCs();
 
     double avgBGL            = 100.0;

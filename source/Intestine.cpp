@@ -6,7 +6,7 @@
 #include "Blood.h"
 #include "HumanBody.h"
 #include "PortalVein.h"
-#include "utility.h"
+#include "common.h"
 
 using namespace std;
 
@@ -18,12 +18,12 @@ Intestine::Intestine(HumanBody* body)
 
 void Intestine::addChyme(double rag, double sag, double proteinInChyme, double fat)
 {
-    chyme.emplace_back(rag, sag, rag, sag, body->ticks());
+    chyme.push_back({rag, sag, rag, sag, body->ticks()});
 
     protein += proteinInChyme;
 
     // very simple processing of fat for now
-    body->adiposeTissue->addFat(fat);
+    body->adiposeTissue.addFat(fat);
 }
 
 double Intestine::consumeGlucose(double& glucose, double origGlucose, double mean, double stddev, double deltaTicks)
@@ -138,7 +138,7 @@ void Intestine::absorbGlucose()
 
     // release some glucose to portal vein via Glut2s
     glEnterocytes = glucoseInEnterocytes / fluidVolumeInEnterocytes;
-    glPortalVein  = body->portalVein->getConcentration();
+    glPortalVein  = body->portalVein.getConcentration();
 
     toPortalVeinPerTick = 0;
 
@@ -151,7 +151,7 @@ void Intestine::absorbGlucose()
         toPortalVeinPerTick = min(toPortalVeinPerTick, glucoseInEnterocytes);
 
         glucoseInEnterocytes -= toPortalVeinPerTick;
-        body->portalVein->addGlucose(toPortalVeinPerTick);
+        body->portalVein.addGlucose(toPortalVeinPerTick);
     }
 
     // Modeling the glucose consumption by enterocytes: glycolysis to lactate.
@@ -164,7 +164,7 @@ void Intestine::absorbGlucose()
 
     if (diff > 0)
     {
-        body->blood->removeGlucose(diff);
+        body->blood.removeGlucose(diff);
         excessGlucoseInEnterocytes.amount = diff;
         glucoseInEnterocytes       = 0;
     }
@@ -174,17 +174,17 @@ void Intestine::absorbGlucose()
         excessGlucoseInEnterocytes.amount = 0;
     }
 
-    body->blood->lactate += glycolysisPerTick;
+    body->blood.lactate += glycolysisPerTick;
 
-    excessGlucoseInEnterocytes.bloodBGL    = body->blood->getBGL();
-    excessGlucoseInEnterocytes.bloodMinBGL = body->blood->minGlucoseLevel;
+    excessGlucoseInEnterocytes.bloodBGL    = body->blood.getBGL();
+    excessGlucoseInEnterocytes.bloodMinBGL = body->blood.minGlucoseLevel;
 
     // log all the concentrations (in mmol/l)
     // peak concentrations should be 200mmol/l (lumen), 100mmol/l(enterocytes), 10mmol/l(portal vein)
 
     glLumen       = (10.0 / 180.1559) * glucoseInLumen / fluidVolumeInLumen; // in mmol/l
     glEnterocytes = (10.0 / 180.1559) * glucoseInEnterocytes / fluidVolumeInEnterocytes;
-    x             = body->portalVein->getConcentration();
+    x             = body->portalVein.getConcentration();
     glPortalVein  = (10.0 / 180.1559) * x;
 
     glPortalVeinConcentration = x;
@@ -207,15 +207,15 @@ void Intestine::absorbAminoAcids()
     double absorbedAA = static_cast<double>(aminoAcidsAbsorptionRate__(body->generator())) / 1000.0;
     absorbedAA = min(absorbedAA, protein);
 
-    body->portalVein->addAminoAcids(absorbedAA);
+    body->portalVein.addAminoAcids(absorbedAA);
     protein -= absorbedAA;
 
     // Glutamine is oxidized
     double g = static_cast<double>(glutamineOxidationRate__(body->generator())) / 1000.0;
-    g = min(g, body->blood->glutamine);
+    g = min(g, body->blood.glutamine);
 
-    body->blood->alanine   += glutamineToAlanineFraction * g;
-    body->blood->glutamine -= g;
+    body->blood.alanine   += glutamineToAlanineFraction * g;
+    body->blood.glutamine -= g;
 }
 
 void Intestine::digestChyme()
@@ -236,7 +236,7 @@ void Intestine::digestChyme()
 
         if (chm.RAG > 0 || chm.SAG > 0)    allDigested = false;
 
-        chymeConsumed.emplace_back(chm.RAG, chm.SAG, chm.origRAG, chm.origSAG, RAGConsumed, SAGConsumed);
+        chymeConsumed.push_back({chm.RAG, chm.SAG, chm.origRAG, chm.origSAG, RAGConsumed, SAGConsumed});
     }
 
     if (allDigested)    chyme.clear();

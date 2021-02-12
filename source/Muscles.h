@@ -1,10 +1,9 @@
 #pragma once
 
 #include <random>
+#include "common.h"
 
 class HumanBody;
-class Liver;
-class GlucoseState;
 
 
 struct MusclesParams

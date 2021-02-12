@@ -1,7 +1,8 @@
 #pragma once
 
+#include "common.h"
+
 class HumanBody;
-class GlucoseState;
 
 
 struct HeartParams

@@ -1,7 +1,8 @@
 #pragma once
 
+#include "common.h"
+
 class HumanBody;
-class GlucoseState;
 
 
 struct PortalVeinParams
@@ -15,9 +16,9 @@ public:
     PortalVein(HumanBody* body);
     void processTick();
     void setParams(const PortalVeinParams& params);
-    double getConcentration();
+    double getConcentration() const;
     void addGlucose(double g);
-    double getGlucose();
+    double getGlucose() const;
     void removeGlucose(double g);
     void releaseAllGlucose();
     void addAminoAcids(double aa);

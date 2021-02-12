@@ -5,8 +5,8 @@
 #include <numeric> // std::reduce
 #include <random>
 #include <stdlib.h>
+#include "HumanBody.h"
 #include "Liver.h"
-#include "SimCtl.h"
 
 using namespace std;
 
@@ -42,7 +42,7 @@ void Blood::updateRBCs()
         int j = start_bin + i;
         if (j > MAX_AGE)    j -= MAX_AGE + 1;
 
-        assert(("RBC bin value negative", j >= 0));
+        assert(((void)"RBC bin value negative", j >= 0));
 
         killRate[i] = static_cast<double>(i) / static_cast<double>(MAX_AGE - HUNDRED_DAYS);
 
@@ -64,7 +64,7 @@ void Blood::updateRBCs()
     }
 }
 
-double Blood::currentHbA1c()
+double Blood::currentHbA1c() const
 {
     double RBCs         = 0;
     double glycatedRBCs = 0;
@@ -186,7 +186,8 @@ void Blood::updateInsulinLevel()
         {
             double restIntensity = 3.5 * 2.0 / body->vo2Max;
 
-            assert(("%VO2 less than restIntensity when body is exercising", body->percentVO2Max >= restIntensity));
+            assert(((void)"%VO2 less than restIntensity when body is exercising",
+                   body->percentVO2Max >= restIntensity));
 
             insulinLevel = baseInsulinLevel - (body->percentVO2Max - restIntensity)
                          * baseInsulinLevel / (body->intensityPeakGlucoseProd - restIntensity);
@@ -207,27 +208,27 @@ void Blood::addGlucose(double howmuch)
     glucose += howmuch;
 }
 
-double Blood::getBGL()
+double Blood::getBGL() const
 {
     return glucose / fluidVolume;
 }
 
-double Blood::getGNGSubstrates()
+double Blood::getGNGSubstrates() const
 {
     return gngSubstrates + lactate + alanine + glutamine;
 }
 
-double Blood::baseBGL()
+double Blood::baseBGL() const
 {
     return baseGlucoseLevel;
 }
 
-double Blood::highBGL()
+double Blood::highBGL() const
 {
     return highGlucoseLevel;
 }
 
-double Blood::volume()
+double Blood::volume() const
 {
     return fluidVolume;
 }

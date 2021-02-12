@@ -2,27 +2,27 @@
 #include <algorithm>
 #include <cassert>
 #include <iostream>
-#include <string>
 #include <sstream>
-#include "utility.h"
+#include "common.h"
+#include "SimCtl.h"
 
 using namespace std;
 
 
-HumanBody::HumanBody(shared_ptr<SimCtl> sim,
+HumanBody::HumanBody(SimCtl* sim,
                      map<BodyState, MetabolicParams> metabolicParameters,
                      map<unsigned, FoodType> foodTypes,
                      map<unsigned, ExerciseType> exerciseTypes)
-    : sim{move(sim)},
-      metabolicParameters{move(metabolicParameters)},
+    : sim{sim},
       foodTypes{move(foodTypes)},
-      exerciseTypes{move(exerciseTypes)}
+      exerciseTypes{move(exerciseTypes)},
+      metabolicParameters{move(metabolicParameters)}
 {
 }
 
 double HumanBody::insulinImpactOnGlycolysis()
 {
-    return cdf(blood->insulinLevel, insulinImpactOnGlycolysis_Mean, insulinImpactOnGlycolysis_StdDev);
+    return cdf(blood.insulinLevel, insulinImpactOnGlycolysis_Mean, insulinImpactOnGlycolysis_StdDev);
 }
 
 /********************************************
@@ -34,27 +34,27 @@ double HumanBody::insulinImpactOnGNG()
 
 double HumanBody::insulinImpactOnGNG()
 {
-    assert(("gngImpact less than 1", gngImpact >= 1.0));
+    assert(((void)"gngImpact less than 1", gngImpact >= 1.0));
 
-    if (blood->insulinLevel >= blood->baseInsulinLevel)
-        return 1.0 - cdf(blood->insulinLevel, insulinImpactOnGNG_Mean, insulinImpactOnGNG_StdDev);
+    if (blood.insulinLevel >= blood.baseInsulinLevel)
+        return 1.0 - cdf(blood.insulinLevel, insulinImpactOnGNG_Mean, insulinImpactOnGNG_StdDev);
     else
-        return gngImpact - blood->insulinLevel * (gngImpact - 1.0) / blood->baseInsulinLevel;
+        return gngImpact - blood.insulinLevel * (gngImpact - 1.0) / blood.baseInsulinLevel;
 }
 
 double HumanBody::insulinImpactOnGlycogenBreakdownInLiver()
 {
-    assert(("liverGlycogenBreakdownImpact less than 1", liverGlycogenBreakdownImpact >= 1.0));
+    assert(((void)"liverGlycogenBreakdownImpact less than 1", liverGlycogenBreakdownImpact >= 1.0));
 
-    if (blood->insulinLevel >= blood->baseInsulinLevel)
-        return 1.0 - cdf(blood->insulinLevel, insulinImpactGlycogenBreakdownInLiver_Mean, insulinImpactGlycogenBreakdownInLiver_StdDev);
+    if (blood.insulinLevel >= blood.baseInsulinLevel)
+        return 1.0 - cdf(blood.insulinLevel, insulinImpactGlycogenBreakdownInLiver_Mean, insulinImpactGlycogenBreakdownInLiver_StdDev);
     else
-        return liverGlycogenBreakdownImpact - blood->insulinLevel * (liverGlycogenBreakdownImpact - 1.0) / blood->baseInsulinLevel;
+        return liverGlycogenBreakdownImpact - blood.insulinLevel * (liverGlycogenBreakdownImpact - 1.0) / blood.baseInsulinLevel;
 }
 
 double HumanBody::insulinImpactOnGlycogenSynthesisInLiver()
 {
-    return cdf(blood->insulinLevel, insulinImpactGlycogenSynthesisInLiver_Mean, insulinImpactGlycogenSynthesisInLiver_StdDev);
+    return cdf(blood.insulinLevel, insulinImpactGlycogenSynthesisInLiver_Mean, insulinImpactGlycogenSynthesisInLiver_StdDev);
 }
 
 std::default_random_engine& HumanBody::generator()
@@ -101,12 +101,12 @@ void HumanBody::stomachEmpty()
 
 double HumanBody::getGlucoseNeedsOutsideMuscles()
 {
-    return intestine->glycolysisPerTick
-         + liver->glycolysisPerTick
-         + kidneys->glycolysisPerTick
-         + blood->glycolysisPerTick
-         + brain->oxidationPerTick
-         + heart->oxidationPerTick;
+    return intestine.glycolysisPerTick
+         + liver.glycolysisPerTick
+         + kidneys.glycolysisPerTick
+         + blood.glycolysisPerTick
+         + brain.oxidationPerTick
+         + heart.oxidationPerTick;
 }
 
 TotalsState HumanBody::getTotals()
@@ -145,44 +145,44 @@ void HumanBody::processTick()
     // converted to glycogen in the liver, 30% is taken up by skeletal muscle and later converted to glycogen,
     // 15% is taken up by the brain, 5% is taken up by the adipose tissue and 10% is taken up by the kidneys
 
-    portalVein->processTick();
-    stomach->processTick();
-    intestine->processTick();
-    liver->processTick();
-    adiposeTissue->processTick();
-    brain->processTick();
-    heart->processTick();
-    muscles->processTick();
-    kidneys->processTick();
-    blood->processTick();
+    portalVein.processTick();
+    stomach.processTick();
+    intestine.processTick();
+    liver.processTick();
+    adiposeTissue.processTick();
+    brain.processTick();
+    heart.processTick();
+    muscles.processTick();
+    kidneys.processTick();
+    blood.processTick();
 
-    totalGlycolysisPerTick = intestine->glycolysisPerTick + liver->glycolysisPerTick + muscles->glycolysisPerTick
-        + kidneys->glycolysisPerTick + blood->glycolysisPerTick;
+    totalGlycolysisPerTick = intestine.glycolysisPerTick + liver.glycolysisPerTick + muscles.glycolysisPerTick
+        + kidneys.glycolysisPerTick + blood.glycolysisPerTick;
     totalGlycolysisSoFar += totalGlycolysisPerTick;
 
-    totalGNGPerTick = kidneys->gngPerTick + liver->gngPerTick;
+    totalGNGPerTick = kidneys.gngPerTick + liver.gngPerTick;
     totalGNGSoFar  += totalGNGPerTick;
 
-    totalOxidationPerTick = brain->oxidationPerTick + heart->oxidationPerTick + muscles->oxidationPerTick;
+    totalOxidationPerTick = brain.oxidationPerTick + heart.oxidationPerTick + muscles.oxidationPerTick;
     totalOxidationSoFar  += totalOxidationPerTick;
 
-    totalGlycogenStoragePerTick       = liver->toGlycogenPerTick + muscles->glycogenSynthesizedPerTick;
-    totalLiverGlycogenStorageSoFar   += liver->toGlycogenPerTick;
-    totalMusclesGlycogenStorageSoFar += muscles->glycogenSynthesizedPerTick;
+    totalGlycogenStoragePerTick       = liver.toGlycogenPerTick + muscles.glycogenSynthesizedPerTick;
+    totalLiverGlycogenStorageSoFar   += liver.toGlycogenPerTick;
+    totalMusclesGlycogenStorageSoFar += muscles.glycogenSynthesizedPerTick;
 
-    totalGlycogenBreakdownPerTick       = liver->fromGlycogenPerTick + muscles->glycogenBreakdownPerTick;
-    totalLiverGlycogenBreakdownSoFar   += liver->fromGlycogenPerTick;
-    totalMusclesGlycogenBreakdownSoFar += muscles->glycogenBreakdownPerTick;
+    totalGlycogenBreakdownPerTick       = liver.fromGlycogenPerTick + muscles.glycogenBreakdownPerTick;
+    totalLiverGlycogenBreakdownSoFar   += liver.fromGlycogenPerTick;
+    totalMusclesGlycogenBreakdownSoFar += muscles.glycogenBreakdownPerTick;
 
-    totalEndogeneousGlucoseReleasePerTick = liver->fromGlycogenPerTick + kidneys->gngPerTick + liver->gngPerTick;
+    totalEndogeneousGlucoseReleasePerTick = liver.fromGlycogenPerTick + kidneys.gngPerTick + liver.gngPerTick;
     totalEndogeneousGlucoseReleaseSoFar  += totalEndogeneousGlucoseReleasePerTick;
 
-    totalGlucoseReleasePerTick = intestine->toPortalVeinPerTick + liver->fromGlycogenPerTick
-                               + kidneys->gngPerTick + liver->gngPerTick;
+    totalGlucoseReleasePerTick = intestine.toPortalVeinPerTick + liver.fromGlycogenPerTick
+                               + kidneys.gngPerTick + liver.gngPerTick;
     totalGlucoseReleaseSoFar  += totalGlucoseReleasePerTick;
 
-    totalExcretionSoFar            += kidneys->excretionPerTick;
-    totalGlucoseFromIntestineSoFar += intestine->toPortalVeinPerTick;
+    totalExcretionSoFar            += kidneys.excretionPerTick;
+    totalGlucoseFromIntestineSoFar += intestine.toPortalVeinPerTick;
 
     if (sim->dayOver())
     {
@@ -212,16 +212,16 @@ void HumanBody::processTick()
         tempGNG               = totalGNGSoFar;
         tempGlycolysis        = totalGlycolysisSoFar;
         tempOxidation         = totalOxidationSoFar;
-        tempExcretion         = kidneys->totalExcretion;
+        tempExcretion         = kidneys.totalExcretion;
         tempGlycogenStorage   = totalLiverGlycogenStorageSoFar + totalMusclesGlycogenStorageSoFar;
         tempGlycogenBreakdown = totalLiverGlycogenBreakdownSoFar + totalMusclesGlycogenBreakdownSoFar;
 
-        baseBGL = blood->getBGL();
-        peakBGL = blood->getBGL();
+        baseBGL = blood.getBGL();
+        peakBGL = blood.getBGL();
     }
 
     if (sim->ticks() > 600)
-        peakBGL = max(peakBGL, blood->getBGL());
+        peakBGL = max(peakBGL, blood.getBGL());
 }
 
 void HumanBody::setParams(const MetabolicParams& params)
@@ -237,66 +237,66 @@ void HumanBody::setParams(const MetabolicParams& params)
     4) Glycerol release via lipolysis in adipose tissue does not slow down even in presence of high insulin
     */
 
-    if (params.humanParams.age >= 80)
+    if (params.body.age >= 80)
     {
         cerr << "Age 80 and above not supported." << endl;
         exit(-1);
     }
 
-    if (params.humanParams.age < 20)
+    if (params.body.age < 20)
     {
         cerr << "Age below 20 not supported." << endl;
         exit(-1);
     }
-    age = params.humanParams.age;
+    age = params.body.age;
 
-    if (params.humanParams.gender != 0 && params.humanParams.gender != 1)
+    if (params.body.gender != 0 && params.body.gender != 1)
     {
         cerr << "Invalid gender value" << endl;
         exit(-1);
     }
-    gender = params.humanParams.gender;
+    gender = params.body.gender;
 
 
-    fitnessLevel                                  = params.humanParams.fitnessLevel;
-    glut4Impact                                   = params.humanParams.glut4Impact;
-    glycolysisMinImpact                           = params.humanParams.glycolysisMinImpact;
-    glycolysisMaxImpact                           = params.humanParams.glycolysisMaxImpact;
-    excretionKidneysImpact                        = params.humanParams.excretionKidneysImpact;
-    liverGlycogenBreakdownImpact                  = params.humanParams.liverGlycogenBreakdownImpact;
-    liverGlycogenSynthesisImpact                  = params.humanParams.liverGlycogenSynthesisImpact;
-    maxLiverGlycogenBreakdownDuringExerciseImpact = params.humanParams.maxLiverGlycogenBreakdownDuringExerciseImpact;
-    gngImpact                                     = params.humanParams.gngImpact;
+    fitnessLevel                                  = params.body.fitnessLevel;
+    glut4Impact                                   = params.body.glut4Impact;
+    glycolysisMinImpact                           = params.body.glycolysisMinImpact;
+    glycolysisMaxImpact                           = params.body.glycolysisMaxImpact;
+    excretionKidneysImpact                        = params.body.excretionKidneysImpact;
+    liverGlycogenBreakdownImpact                  = params.body.liverGlycogenBreakdownImpact;
+    liverGlycogenSynthesisImpact                  = params.body.liverGlycogenSynthesisImpact;
+    // maxLiverGlycogenBreakdownDuringExerciseImpact = params.body.maxLiverGlycogenBreakdownDuringExerciseImpact;
+    gngImpact                                     = params.body.gngImpact;
 
-    bodyWeight         = params.humanParams.bodyWeight;
-    adiposeTissue->fat = fatFraction * bodyWeight * 1000.0;
+    bodyWeight         = params.body.bodyWeight;
+    adiposeTissue.fat = fatFraction * bodyWeight * 1000.0;
 
-    insulinImpactOnGlycolysis_Mean               = params.humanParams.insulinImpactOnGlycolysis_Mean;
-    insulinImpactOnGlycolysis_StdDev             = params.humanParams.insulinImpactOnGlycolysis_StdDev;
-    insulinImpactOnGNG_Mean                      = params.humanParams.insulinImpactOnGNG_Mean;
-    insulinImpactOnGNG_StdDev                    = params.humanParams.insulinImpactOnGNG_StdDev;
-    insulinImpactGlycogenBreakdownInLiver_Mean   = params.humanParams.insulinImpactGlycogenBreakdownInLiver_Mean;
-    insulinImpactGlycogenBreakdownInLiver_StdDev = params.humanParams.insulinImpactGlycogenBreakdownInLiver_StdDev;
-    insulinImpactGlycogenSynthesisInLiver_Mean   = params.humanParams.insulinImpactGlycogenSynthesisInLiver_Mean;
-    insulinImpactGlycogenSynthesisInLiver_StdDev = params.humanParams.insulinImpactGlycogenSynthesisInLiver_StdDev;
-    intensityPeakGlucoseProd                     = params.humanParams.intensityPeakGlucoseProd;
+    insulinImpactOnGlycolysis_Mean               = params.body.insulinImpactOnGlycolysis_Mean;
+    insulinImpactOnGlycolysis_StdDev             = params.body.insulinImpactOnGlycolysis_StdDev;
+    insulinImpactOnGNG_Mean                      = params.body.insulinImpactOnGNG_Mean;
+    insulinImpactOnGNG_StdDev                    = params.body.insulinImpactOnGNG_StdDev;
+    insulinImpactGlycogenBreakdownInLiver_Mean   = params.body.insulinImpactGlycogenBreakdownInLiver_Mean;
+    insulinImpactGlycogenBreakdownInLiver_StdDev = params.body.insulinImpactGlycogenBreakdownInLiver_StdDev;
+    insulinImpactGlycogenSynthesisInLiver_Mean   = params.body.insulinImpactGlycogenSynthesisInLiver_Mean;
+    insulinImpactGlycogenSynthesisInLiver_StdDev = params.body.insulinImpactGlycogenSynthesisInLiver_StdDev;
+    intensityPeakGlucoseProd                     = params.body.intensityPeakGlucoseProd;
 
     setVO2Max();
 
 
-    stomach->setParams(params.stomachParams);
-    intestine->setParams(params.intestineParams);
-    portalVein->setParams(params.portalVeinParams);
-    liver->setParams(params.liverParams);
+    stomach.setParams(params.stomach);
+    intestine.setParams(params.intestine);
+    portalVein.setParams(params.portalVein);
+    liver.setParams(params.liver);
 
     // No parameters in Adipose Tissue
-    adiposeTissue->setParams();
+    adiposeTissue.setParams();
 
-    brain->setParams(params.brainParams);
-    heart->setParams(params.heartParams);
-    muscles->setParams(params.musclesParams);
-    blood->setParams(params.bloodParams);
-    kidneys->setParams(params.kidneysParams);
+    brain.setParams(params.brain);
+    heart.setParams(params.heart);
+    muscles.setParams(params.muscles);
+    blood.setParams(params.blood);
+    kidneys.setParams(params.kidneys);
 }
 
 void HumanBody::setVO2Max()
@@ -343,7 +343,7 @@ void HumanBody::setVO2Max()
 
 void HumanBody::processFoodEvent(unsigned foodID, unsigned howmuch)
 {
-    stomach->addFood(foodTypes[foodID], howmuch);
+    stomach.addFood(foodTypes[foodID], howmuch);
 
     // oldState = bodyState;
 

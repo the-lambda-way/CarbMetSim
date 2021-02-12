@@ -1,9 +1,9 @@
 #pragma once
 
 #include <random>
+#include "common.h"
 
 class HumanBody;
-class FatState;
 class FoodType;
 
 

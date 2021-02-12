@@ -1,9 +1,11 @@
 #include "Muscles.h"
+#include <algorithm>
 #include <cassert>
 #include <random>
 #include "AdiposeTissue.h"
 #include "Blood.h"
-#include "utility.h"
+#include "common.h"
+#include "HumanBody.h"
 
 using namespace std;
 
@@ -59,7 +61,7 @@ void Muscles::processTick()
         fattyAcidConsumptionResting();
     }
 
-    assert(("Glycogen in muscles went negative\n", glycogen >= 0));
+    assert(((void)"Glycogen in muscles went negative\n", glycogen >= 0));
 
     // aminoAcidConsumption();
 
@@ -86,12 +88,12 @@ void Muscles::glucoseAbsorption(std::poisson_distribution<int>& rand)
     {
         glucose = 0;
 
-        body->blood->removeGlucose(absorbedFromBlood);
+        body->blood.removeGlucose(absorbedFromBlood);
         glucoseAbsorbedPerTick += absorbedFromBlood;
 
         absorptionState.amount      = absorbedFromBlood;
-        absorptionState.bloodBGL    = body->blood->getBGL();
-        absorptionState.bloodMinBGL = body->blood->minGlucoseLevel;
+        absorptionState.bloodBGL    = body->blood.getBGL();
+        absorptionState.bloodMinBGL = body->blood.minGlucoseLevel;
     }
     else
         glucose -= oxidationPerTick;
@@ -122,7 +124,7 @@ void Muscles::glycogenToLactate(std::poisson_distribution<int>& glycolysisMin_)
     glycolysisPerTick = g + intensity * (glycolysisMax * body->bodyWeight - g);
 
     glycogen                 -= glycolysisPerTick;
-    body->blood->lactate     += glycolysisPerTick;
+    body->blood.lactate     += glycolysisPerTick;
     glycogenBreakdownPerTick += glycolysisPerTick;
 }
 
@@ -131,7 +133,7 @@ void Muscles::fattyAcidConsumptionActive()
     double kcalgenerated = 0.004 * (oxidationPerTick + glycogenOxidizedPerTick + glycolysisPerTick / 15.0);
 
     if (kcalgenerated < currEnergyNeed)
-        body->adiposeTissue->consumeFat(currEnergyNeed - kcalgenerated);
+        body->adiposeTissue.consumeFat(currEnergyNeed - kcalgenerated);
 }
 
 void Muscles::basalAbsorption(std::poisson_distribution<int>& rand)
@@ -141,16 +143,16 @@ void Muscles::basalAbsorption(std::poisson_distribution<int>& rand)
     double x = static_cast<double>(basalAbsorption__(body->generator()));
     double g = x * body->bodyWeight / 1000.0;
 
-    body->blood->removeGlucose(g);
+    body->blood.removeGlucose(g);
     glucoseAbsorbedPerTick = g;
     glucose               += g;
 
     basalBase.amount      = g;
-    basalBase.bloodBGL    = body->blood->getBGL();
-    basalBase.bloodMinBGL = body->blood->minGlucoseLevel;
+    basalBase.bloodBGL    = body->blood.getBGL();
+    basalBase.bloodMinBGL = body->blood.minGlucoseLevel;
 
     // Absorption via GLUT4
-    double bgl  = body->blood->getBGL();
+    double bgl  = body->blood.getBGL();
     double diff = bgl - glucose / volume;
 
     basalGLUT4Occurred = diff > 0;
@@ -158,21 +160,21 @@ void Muscles::basalAbsorption(std::poisson_distribution<int>& rand)
     {
         double scale = body->glut4Impact;
 
-        if (body->ticks() > body->lastHardExerciseAt + 60 || bgl < body->blood->baseBGL())
-            scale *= body->blood->insulinLevel;
+        if (body->ticks() > static_cast<unsigned>(body->lastHardExerciseAt + 60) || bgl < body->blood.baseBGL())
+            scale *= body->blood.insulinLevel;
 
         scale *= PeakGlut4VMAX - glycogen * (PeakGlut4VMAX - Glut4VMAX) / glycogenMax;
         scale *= diff / (diff + Glut4Km);
         x = 0.9 + static_cast<double>(rand(body->generator())) / 1000.0;
         g = scale * x * body->bodyWeight;
 
-        body->blood->removeGlucose(g);
+        body->blood.removeGlucose(g);
         glucoseAbsorbedPerTick += g;
         glucose                += g;
 
         basalGLUT4.amount      = g;
-        basalGLUT4.bloodBGL    = body->blood->getBGL();
-        basalGLUT4.bloodMinBGL = body->blood->minGlucoseLevel;
+        basalGLUT4.bloodBGL    = body->blood.getBGL();
+        basalGLUT4.bloodMinBGL = body->blood.minGlucoseLevel;
     }
 }
 
@@ -182,7 +184,7 @@ void Muscles::glycogenSynthesis()
 
     double x = static_cast<double>(glucoseToGlycogen__(body->generator()));
     glycogenSynthesizedPerTick = x * body->bodyWeight / 1000.0;
-    glycogenSynthesizedPerTick = min({glycogenSynthesizedPerTick, glucose, glycogenMax - glycogen});
+    glycogenSynthesizedPerTick = min({glycogenSynthesizedPerTick, glucose, (glycogenMax - glycogen)});
 
     glucose  -= glycogenSynthesizedPerTick;
     glycogen += glycogenSynthesizedPerTick;
@@ -194,7 +196,7 @@ void Muscles::glucoseToLactate(std::poisson_distribution<int>& glycolysisMin_)
     glycolysisPerTick = min(glucose, body->glycolysis(x, glycolysisMax));
 
     glucose              -= glycolysisPerTick;
-    body->blood->lactate += glycolysisPerTick;
+    body->blood.lactate += glycolysisPerTick;
 
 
     // double x = static_cast<double>(glycolysisMin_(body->generator())) / 1000.0;
@@ -204,7 +206,7 @@ void Muscles::glucoseToLactate(std::poisson_distribution<int>& glycolysisMin_)
     // double fromGlucose = min(toGlycolysis, glucose);
 
     // glucose              -= fromGlucose;
-    // body->blood->lactate += fromGlucose;
+    // body->blood.lactate += fromGlucose;
     // glycolysisPerTick     = fromGlucose;
 
     // double toGlycolysis -= fromGlucose;
@@ -213,7 +215,7 @@ void Muscles::glucoseToLactate(std::poisson_distribution<int>& glycolysisMin_)
     //     double fromGlycogen = min(toGlycolysis, glycogen);
 
     //     glycogen                 -= fromGlycogen;
-    //     body->blood->lactate     += fromGlycogen;
+    //     body->blood.lactate     += fromGlycogen;
     //     glycogenBreakdownPerTick += fromGlycogen;
     //     glycolysisPerTick        += fromGlycogen;
 
@@ -222,7 +224,7 @@ void Muscles::glucoseToLactate(std::poisson_distribution<int>& glycolysisMin_)
 
 void Muscles::oxidation()
 {
-    // oxidationPerTick = 0.5 * body->blood->insulinLevel * glucoseAbsorbedPerTick;
+    // oxidationPerTick = 0.5 * body->blood.insulinLevel * glucoseAbsorbedPerTick;
     oxidationPerTick = glucose;
     glucose = 0;
 }
@@ -235,15 +237,15 @@ void Muscles::fattyAcidConsumptionResting()
     // oxidation produces 15 times more energy than glycolysis
 
     if (kcalgenerated < currEnergyNeed)
-        body->adiposeTissue->consumeFat(currEnergyNeed - kcalgenerated);
+        body->adiposeTissue.consumeFat(currEnergyNeed - kcalgenerated);
 }
 
 // void Muscles::aminoAcidConsumption()
 // {
 //     static std::poisson_distribution<int> baaToGlutamine__{1000.0 * baaToGlutamine};
 //     double x = static_cast<double>(baaToGlutamine__(body->generator())) / 1000.0;
-//     double a = min(x, body->blood->branchedAminoAcids);
+//     double a = min(x, body->blood.branchedAminoAcids);
 
-//     body->blood->branchedAminoAcids -= a;
-//     body->blood->glutamine          += a;
+//     body->blood.branchedAminoAcids -= a;
+//     body->blood.glutamine          += a;
 // }

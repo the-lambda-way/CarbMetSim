@@ -1,8 +1,9 @@
 #include "Liver.h"
+#include <algorithm>
 #include <cassert>
-#include <random>
 #include "AdiposeTissue.h"
 #include "Blood.h"
+#include "HumanBody.h"
 #include "Intestine.h"
 #include "Muscles.h"
 #include "PortalVein.h"
@@ -21,7 +22,7 @@ void Liver::processTick()
     glucoseAbsorption(Glut2VMAX_);
 
     // release all portalVein glucose to blood
-    body->portalVein->releaseAllGlucose();
+    body->portalVein.releaseAllGlucose();
 
     // glycogen synthesis (depends on insulin level and insulin resistance)
     glycogenSynthesis();
@@ -44,7 +45,7 @@ void Liver::glucoseAbsorption(std::poisson_distribution<int>& Glut2VMAX_)
     absorptionPerTick       = 0;
     excessGlucoseAbsorption = 0;
 
-    double diff = body->portalVein->getConcentration() - glucose / fluidVolume;
+    double diff = body->portalVein.getConcentration() - glucose / fluidVolume;
 
     if (diff > 0)
     {
@@ -52,13 +53,13 @@ void Liver::glucoseAbsorption(std::poisson_distribution<int>& Glut2VMAX_)
         double scale = diff / (diff + Glut2Km);
         absorptionPerTick = scale * x * body->bodyWeight / 1000.0;
 
-        if (absorptionPerTick > body->portalVein->getGlucose())
+        if (absorptionPerTick > body->portalVein.getGlucose())
         {
             excessGlucoseAbsorption = absorptionPerTick;
-            absorptionPerTick = body->portalVein->getGlucose();
+            absorptionPerTick = body->portalVein.getGlucose();
         }
 
-        body->portalVein->removeGlucose(absorptionPerTick);
+        body->portalVein.removeGlucose(absorptionPerTick);
         glucose += absorptionPerTick;
     }
 }
@@ -72,7 +73,7 @@ void Liver::glycogenSynthesis()
     double x = static_cast<double>(glucoseToGlycogen__(body->generator()));
     double scale = body->liverGlycogenSynthesisImpact * body->insulinImpactOnGlycogenSynthesisInLiver();
     toGlycogenPerTick = scale * x * body->bodyWeight / 1000.0;
-    toGlycogenPerTick = min({toGlycogenPerTick, glucose, glycogenMax + maxLipogenesis - glycogen});
+    toGlycogenPerTick = min({toGlycogenPerTick, glucose, (glycogenMax + maxLipogenesis - glycogen)});
 
     glycogen += toGlycogenPerTick;
 
@@ -82,9 +83,9 @@ void Liver::glycogenSynthesis()
     {
         double toLipogenesis = glycogen - glycogenMax;
 
-        // preLiposgenesis = LipogenesisState{body->bodyWeight, toLipogenesis, body->adiposeTissue->fat};
-        body->adiposeTissue->lipogenesis(toLipogenesis);
-        // postLiposgenesis = LipogenesisState{body->bodyWeight, toLipogenesis, body->adiposeTissue->fat};
+        // preLiposgenesis = LipogenesisState{body->bodyWeight, toLipogenesis, body->adiposeTissue.fat};
+        body->adiposeTissue.lipogenesis(toLipogenesis);
+        // postLiposgenesis = LipogenesisState{body->bodyWeight, toLipogenesis, body->adiposeTissue.fat};
 
         glycogen = glycogenMax;
     }
@@ -108,11 +109,11 @@ void Liver::glycolysis(std::poisson_distribution<int>& rand)
     glycolysisPerTick = min(glucose, body->glycolysis(x, glycolysisMax));
 
     glucose              -= glycolysisPerTick;
-    body->blood->lactate += glycolysisPerTick * glycolysisToLactateFraction;
+    body->blood.lactate += glycolysisPerTick * glycolysisToLactateFraction;
 
     // gluconeogenesis.
     x = 0.9 + static_cast<double>(rand(body->generator())) / 1000.0;
-    // x = static_cast<double>(rand(sim->generator)) / 100.0;
+    // x = static_cast<double>(rand(body->generator())) / 100.0;
     double gng = gngLiver * x * body->insulinImpactOnGNG() * body->bodyWeight;
 
     glucose   += gng;
@@ -120,13 +121,13 @@ void Liver::glycolysis(std::poisson_distribution<int>& rand)
 
     postGluconeogenesis.glucose      = glucose;
     postGluconeogenesis.glycogen     = glycogen;
-    postGluconeogenesis.bloodGlucose = body->blood->glucose;
-    postGluconeogenesis.bloodLactate = body->blood->lactate;
+    postGluconeogenesis.bloodGlucose = body->blood.glucose;
+    postGluconeogenesis.bloodLactate = body->blood.lactate;
 }
 
 void Liver::glycogenBreakdown(std::poisson_distribution<int>& rand)
 {
-    // double x = static_cast<double>(rand(sim->generator)) / 100.0;
+    // double x = static_cast<double>(rand(body->generator())) / 100.0;
     double x = 0.9 + static_cast<double>(rand(body->generator())) / 1000.0;
 
     fromGlycogenPerTick = glycogenToGlucoseInLiver * x * body->insulinImpactOnGlycogenBreakdownInLiver();
@@ -140,11 +141,11 @@ void Liver::glycogenBreakdown(std::poisson_distribution<int>& rand)
 // void Liver::glucoseHomeostasis()
 // {
 //     // try to maintain glucose homeostasis.
-//     glucoseNeeded  = body->muscles->glucoseAbsorbedPerTick + body->getGlucoseNeedsOutsideMuscles();
-//     glucoseNeeded += body->muscles->glucoseAbsorbedPerTick;
-//     glucoseNeeded -= body->intestine->toPortalVeinPerTick;
+//     glucoseNeeded  = body->muscles.glucoseAbsorbedPerTick + body->getGlucoseNeedsOutsideMuscles();
+//     glucoseNeeded += body->muscles.glucoseAbsorbedPerTick;
+//     glucoseNeeded -= body->intestine.toPortalVeinPerTick;
 //     glucoseNeeded -= gngPerTick;
-//     glucoseNeeded -= body->kidneys->gngPerTick;
+//     glucoseNeeded -= body->kidneys.gngPerTick;
 //     glucoseNeeded -= fromGlycogenPerTick;
 //     glucoseNeeded  = max(glucoseNeeded, 0);
 
@@ -194,9 +195,9 @@ void Liver::aminoAcidConsumption(std::poisson_distribution<int>& Glut2VMAX_)
 
     releasePerTick = 0;
 
-    body->portalVein->releaseAminoAcids();
+    body->portalVein.releaseAminoAcids();
 
-    double diff = glucose / fluidVolume - body->blood->getBGL();
+    double diff = glucose / fluidVolume - body->blood.getBGL();
 
     if (diff > 0)
     {
@@ -204,10 +205,10 @@ void Liver::aminoAcidConsumption(std::poisson_distribution<int>& Glut2VMAX_)
         double scale = diff / (diff + Glut2Km);
         releasePerTick = scale * x * body->bodyWeight / 1000.0;
 
-        assert(("Releasing more glucose to blood than what is present in liver!", releasePerTick <= glucose));
+        assert(((void)"Releasing more glucose to blood than what is present in liver!", releasePerTick <= glucose));
 
         glucose -= releasePerTick;
-        body->blood->addGlucose(releasePerTick);
+        body->blood.addGlucose(releasePerTick);
     }
 }
 

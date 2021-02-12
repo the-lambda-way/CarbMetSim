@@ -1,7 +1,7 @@
 #include "Heart.h"
 #include <random>
 #include "Blood.h"
-#include "SimCtl.h"
+#include "HumanBody.h"
 
 using namespace std;
 
@@ -17,27 +17,27 @@ void Heart::processTick()
 
     // double x = basalGlucoseAbsorbed * body->bodyWeight;
     double x = static_cast<double>(basalGlucoseAbsorbed__(body->generator())) / 1000.0;
-    body->blood->removeGlucose(x);
+    body->blood.removeGlucose(x);
 
     oxidationPerTick = x;
 
     basalAbsorption.amount      = x;
-    basalAbsorption.bloodBGL    = body->blood->getBGL();
-    basalAbsorption.bloodMinBGL = body->blood->minGlucoseLevel;
+    basalAbsorption.bloodBGL    = body->blood.getBGL();
+    basalAbsorption.bloodMinBGL = body->blood.minGlucoseLevel;
 
    /**********
     // Absorption via GLUT4
-    double bgl = body->blood->getBGL();
-    double scale = (1.0 - body->insulinResistance) * body->blood->insulinLevel * body->bodyWeight;
+    double bgl = body->blood.getBGL();
+    double scale = (1.0 - body->insulinResistance) * body->blood.insulinLevel * body->bodyWeight;
     Glut4Absorption = scale * glut4VMAX * bgl / (bgl + glut4Km);
 
-    body->blood->removeGlucose(Glut4Absorption);
+    body->blood.removeGlucose(Glut4Absorption);
     oxidationPerTick += Glut4Absorption;
    ***************/
 
     // static std::poisson_distribution<int> lactateOxidized__{1000.0 * lactateOxidized};
     // double lactateOxidized_ = static_cast<double>(lactateOxidized__(body->generator())) / 1000.0;
-    // body->blood->lactate -= min(body->blood->lactate, lactateOxidized_)
+    // body->blood.lactate -= min(body->blood.lactate, lactateOxidized_)
 }
 
 void Heart::setParams(const HeartParams& params)

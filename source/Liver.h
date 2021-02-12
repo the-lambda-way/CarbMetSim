@@ -50,8 +50,8 @@ public:
     void processTick();
     void setParams(const LiverParams& params);
 
-    double glucose     = 100 * fluidVolume; // assuming glucose concentration to be 100mg/dl
     double fluidVolume = 12; // dl; Meyer paper on gluconeogenesis did measurements on liver volume
+    double glucose     = 100 * fluidVolume; // assuming glucose concentration to be 100mg/dl
 
     double glycogen = 100.0 * 1000.0; // equivalent of 100g of glucose
     double absorptionPerTick;

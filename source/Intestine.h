@@ -1,9 +1,9 @@
 #pragma once
 
 #include <vector>
+#include "common.h"
 
 class HumanBody;
-class GlucoseState;
 
 
 struct Chyme // undigested carbs chyme

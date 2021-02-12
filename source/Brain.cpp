@@ -1,9 +1,7 @@
 #include "Brain.h"
 #include <random>
-#include <string>
 #include "Blood.h"
 #include "HumanBody.h"
-#include "SimCtl.h"
 
 using namespace std;
 
@@ -18,8 +16,8 @@ Brain::Brain(HumanBody* body)
 // {
 //     glucoseRateToLactate = rate;
 
-//     body->blood->glucose -= rate;
-//     body->blood->lactate += rate;
+//     body->blood.glucose -= rate;
+//     body->blood.lactate += rate;
 // }
 
 void Brain::processTick()
@@ -35,19 +33,19 @@ void Brain::oxidizeGlucose()
     oxidationPerTick = static_cast<double>(glucoseOxidized__(body->generator())) / 1000.0;
 
     glucoseRemoved.amount      = oxidationPerTick + glucoseToAlanine;
-    glucoseRemoved.bloodBGL    = body->blood->getBGL();
-    glucoseRemoved.bloodMinBGL = body->blood->minGlucoseLevel;
+    glucoseRemoved.bloodBGL    = body->blood.getBGL();
+    glucoseRemoved.bloodMinBGL = body->blood.minGlucoseLevel;
 
-    body->blood->removeGlucose(glucoseRemoved.amount);
-    body->blood->alanine += glucoseToAlanine;
+    body->blood.removeGlucose(glucoseRemoved.amount);
+    body->blood.alanine += glucoseToAlanine;
 }
 
 void Brain::glutamineFromBlood()
 {
     // Brain generates glutamine from branched amino acids.
-    double x = min(body->blood->branchedAminoAcids, bAAToGlutamine);
-    body->blood->branchedAminoAcids -= x;
-    body->blood->glutamine          += x;
+    double x = min(body->blood.branchedAminoAcids, bAAToGlutamine);
+    body->blood.branchedAminoAcids -= x;
+    body->blood.glutamine          += x;
 }
 
 void Brain::setParams(const BrainParams& params)

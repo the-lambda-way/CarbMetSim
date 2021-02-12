@@ -1,6 +1,7 @@
 #include "Kidneys.h"
 #include <random>
 #include "Blood.h"
+#include "HumanBody.h"
 #include "Liver.h"
 
 using namespace std;
@@ -37,15 +38,15 @@ void Kidneys::glycolysis()
     double x = static_cast<double>(glycolysisMin__(body->generator())) / 1000.0;
     toGlycolysis = body->glycolysis(x, glycolysisMax);
 
-    body->blood->removeGlucose(toGlycolysis);
-    body->blood->lactate += toGlycolysis;
+    body->blood.removeGlucose(toGlycolysis);
+    body->blood.lactate += toGlycolysis;
 
     absorptionPerTick = toGlycolysis;
     glycolysisPerTick = toGlycolysis;
 
     postGlycolysis.amount      = toGlycolysis;
-    postGlycolysis.bloodBGL    = body->blood->getBGL();
-    postGlycolysis.bloodMinBGL = body->blood->minGlucoseLevel;
+    postGlycolysis.bloodBGL    = body->blood.getBGL();
+    postGlycolysis.bloodMinBGL = body->blood.minGlucoseLevel;
 }
 
 void Kidneys::gluconeogenesis()
@@ -57,12 +58,12 @@ void Kidneys::gluconeogenesis()
     double scale = gngKidneys * body->insulinImpactOnGNG();
     gngPerTick = scale * x * body->bodyWeight;
 
-    body->blood->addGlucose(gngPerTick);
+    body->blood.addGlucose(gngPerTick);
     releasePerTick = gngPerTick;
 
     postGluconeogenesis.amount      = gngPerTick;
-    postGluconeogenesis.bloodBGL    = body->blood->getBGL();
-    postGluconeogenesis.bloodMinBGL = body->blood->minGlucoseLevel;
+    postGluconeogenesis.bloodBGL    = body->blood.getBGL();
+    postGluconeogenesis.bloodMinBGL = body->blood.minGlucoseLevel;
 }
 
 void Kidneys::glucoseExcretionInUrine()
@@ -70,21 +71,21 @@ void Kidneys::glucoseExcretionInUrine()
     static std::poisson_distribution<int> glucoseExcretionRate__{1000.0 * glucoseExcretionRate};
     excretionPerTick = 0;
 
-    double bgl = body->blood->getBGL();
+    double bgl = body->blood.getBGL();
 
     if (bgl > reabsorptionThreshold)
     {
         double x = static_cast<double>(glucoseExcretionRate__(body->generator())) / 1000.0;
         excretionPerTick = body->excretionKidneysImpact * x * (bgl - reabsorptionThreshold);
 
-        body->blood->removeGlucose(excretionPerTick);
+        body->blood.removeGlucose(excretionPerTick);
     }
 
     totalExcretion += excretionPerTick;
 
     postGlucoseExtraction.amount      = excretionPerTick;
-    postGlucoseExtraction.bloodBGL    = body->blood->getBGL();
-    postGlucoseExtraction.bloodMinBGL = body->blood->minGlucoseLevel;
+    postGlucoseExtraction.bloodBGL    = body->blood.getBGL();
+    postGlucoseExtraction.bloodMinBGL = body->blood.minGlucoseLevel;
 }
 
 void Kidneys::setParams(const KidneysParams& params)
