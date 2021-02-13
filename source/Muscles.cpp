@@ -160,7 +160,7 @@ void Muscles::basalAbsorption(std::poisson_distribution<int>& rand)
     {
         double scale = body->glut4Impact;
 
-        if (body->ticks() > static_cast<unsigned>(body->lastHardExerciseAt + 60) || bgl < body->blood.baseBGL())
+        if (static_cast<int>(body->ticks()) > body->lastHardExerciseAt + 60 || bgl < body->blood.baseBGL())
             scale *= body->blood.insulinLevel;
 
         scale *= PeakGlut4VMAX - glycogen * (PeakGlut4VMAX - Glut4VMAX) / glycogenMax;

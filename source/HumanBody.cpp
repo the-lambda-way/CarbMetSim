@@ -1,6 +1,7 @@
 #include "HumanBody.h"
 #include <algorithm>
 #include <cassert>
+#include <exception>
 #include <iostream>
 #include <sstream>
 #include "common.h"
@@ -18,6 +19,7 @@ HumanBody::HumanBody(SimCtl* sim,
       exerciseTypes{move(exerciseTypes)},
       metabolicParameters{move(metabolicParameters)}
 {
+    setParams(this->metabolicParameters[bodyState]);
 }
 
 double HumanBody::insulinImpactOnGlycolysis()
@@ -237,24 +239,11 @@ void HumanBody::setParams(const MetabolicParams& params)
     4) Glycerol release via lipolysis in adipose tissue does not slow down even in presence of high insulin
     */
 
-    if (params.body.age >= 80)
-    {
-        cerr << "Age 80 and above not supported." << endl;
-        exit(-1);
-    }
-
-    if (params.body.age < 20)
-    {
-        cerr << "Age below 20 not supported." << endl;
-        exit(-1);
-    }
+    if (params.body.age >= 80)    throw out_of_range("Age 80 and above not supported.");
+    if (params.body.age < 20)     throw out_of_range("Age below 20 not supported.");
     age = params.body.age;
 
-    if (params.body.gender != 0 && params.body.gender != 1)
-    {
-        cerr << "Invalid gender value" << endl;
-        exit(-1);
-    }
+    if (params.body.gender != 0 && params.body.gender != 1)    throw out_of_range("Invalid gender value.");
     gender = params.body.gender;
 
 
@@ -370,26 +359,12 @@ void HumanBody::processExerciseEvent(unsigned exerciseID, unsigned duration)
     // how much calorie would be consumed per minute for this exercise?
     // where would this much calorie come from?
 
-    if (isExercising())
-    {
-        cerr << sim->elapsedDays() << ":" << sim->elapsedHours() << ":" << sim->elapsedMinutes()
-             << " " << sim->ticks() << " ";
-        cerr << "Exercise within Exercise!" << endl;
-        exit(-1);
-    }
+    if (isExercising())    throw runtime_error("Exercise within Exercise!");
 
-    if (vo2Max == 0)
-    {
-        cerr << "vo2Max not known" << endl;
-        exit(-1);
-    }
+    assert(((void)"vo2Max not known", vo2Max > 0));
 
     percentVO2Max = 3.5 * exerciseTypes[exerciseID].intensity / vo2Max;
-    if (percentVO2Max > 1.0)
-    {
-        cerr << "Exercise intensity beyond the capacity of the user" << endl;
-        exit(-1);
-    }
+    if (percentVO2Max > 1.0)    throw runtime_error("Exercise intensity beyond the capacity of the user");
 
     // oldState = bodyState;
 

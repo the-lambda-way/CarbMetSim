@@ -64,6 +64,7 @@ void Stomach::processTick()
 
 	totalFood = RAG + SAG + protein + fat;
 
+    stomachBecameEmpty = false;
 	if (stomachEmpty)    return;
 
     assert(((void)"Stomach should have been considered empty!", totalFood > 0.001));
@@ -92,7 +93,8 @@ void Stomach::processTick()
 
 	if (RAG <= 0.001 && SAG <= 0.001 && protein <= 0.001 && fat <= 0.001)
     {
-        stomachEmpty = true;
+        stomachEmpty       = true;
+        stomachBecameEmpty = true;
         body->stomachEmpty();
     }
 }

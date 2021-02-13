@@ -19,24 +19,14 @@ Liver::Liver(HumanBody* body)
 void Liver::processTick()
 {
     static std::poisson_distribution<int> Glut2VMAX_{1000.0 * Glut2VMAX};
-    glucoseAbsorption(Glut2VMAX_);
-
-    // release all portalVein glucose to blood
-    body->portalVein.releaseAllGlucose();
-
-    // glycogen synthesis (depends on insulin level and insulin resistance)
-    glycogenSynthesis();
-
-    // Glycolysis. Depends on insulin level. Some of the consumed glucose becomes lactate.
     static std::poisson_distribution<int> rand{100};
+
+    glucoseAbsorption(Glut2VMAX_);
+    body->portalVein.releaseAllGlucose();
+    glycogenSynthesis();
     glycolysis(rand);
-
-    // glycogen breakdown
     glycogenBreakdown(rand);
-
-    // try to maintain glucose homeostasis.
     // glucoseHomeostasis();
-
     aminoAcidConsumption(Glut2VMAX_);
 }
 
@@ -93,7 +83,7 @@ void Liver::glycogenSynthesis()
     glucose -= toGlycogenPerTick;
 
     postGlycogen.glycogen = glycogen;
-    postGlycogen.glucose = glucose;
+    postGlycogen.glucose  = glucose;
 }
 
 void Liver::glycolysis(std::poisson_distribution<int>& rand)
@@ -108,16 +98,15 @@ void Liver::glycolysis(std::poisson_distribution<int>& rand)
     double x = static_cast<double>(glycolysisMin__(body->generator())) / 1000.0;
     glycolysisPerTick = min(glucose, body->glycolysis(x, glycolysisMax));
 
-    glucose              -= glycolysisPerTick;
+    glucose             -= glycolysisPerTick;
     body->blood.lactate += glycolysisPerTick * glycolysisToLactateFraction;
 
     // gluconeogenesis.
     x = 0.9 + static_cast<double>(rand(body->generator())) / 1000.0;
     // x = static_cast<double>(rand(body->generator())) / 100.0;
-    double gng = gngLiver * x * body->insulinImpactOnGNG() * body->bodyWeight;
+    gngPerTick = gngLiver * x * body->insulinImpactOnGNG() * body->bodyWeight;
 
-    glucose   += gng;
-    gngPerTick = gng;
+    glucose += gngPerTick;
 
     postGluconeogenesis.glucose      = glucose;
     postGluconeogenesis.glycogen     = glycogen;
@@ -130,9 +119,9 @@ void Liver::glycogenBreakdown(std::poisson_distribution<int>& rand)
     // double x = static_cast<double>(rand(body->generator())) / 100.0;
     double x = 0.9 + static_cast<double>(rand(body->generator())) / 1000.0;
 
-    fromGlycogenPerTick = glycogenToGlucoseInLiver * x * body->insulinImpactOnGlycogenBreakdownInLiver();
+    fromGlycogenPerTick  = glycogenToGlucoseInLiver * x * body->insulinImpactOnGlycogenBreakdownInLiver();
     fromGlycogenPerTick *= body->bodyWeight;
-    fromGlycogenPerTick = min(fromGlycogenPerTick, glycogen);
+    fromGlycogenPerTick  = min(fromGlycogenPerTick, glycogen);
 
     glucose  += fromGlycogenPerTick;
     glycogen -= fromGlycogenPerTick;

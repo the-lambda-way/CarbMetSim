@@ -1,5 +1,6 @@
 #include "Intestine.h"
 #include <algorithm>
+#include <exception>
 #include <iostream>
 #include <random>
 #include "AdiposeTissue.h"
@@ -63,11 +64,7 @@ void Intestine::setParams(const IntestineParams& params)
     Glut2Km_Out                = params.Glut2Km_Out;
     sglt1Rate                  = params.sglt1Rate;
 
-    if (params.fluidVolumeInLumen <= 0)
-    {
-        cerr << "fluidVolumnInLumen not above zero" << endl;
-        exit(-1);
-    }
+    if (params.fluidVolumeInLumen <= 0)    throw out_of_range("fluidVolumeInLumen not above zero");
     fluidVolumeInLumen         = params.fluidVolumeInLumen;
 
     fluidVolumeInEnterocytes   = params.fluidVolumeInEnterocytes;
@@ -223,6 +220,8 @@ void Intestine::digestChyme()
     totalRAGConsumed = 0;
     totalSAGConsumed = 0;
     bool allDigested = true;
+
+    chymeConsumed.clear();
 
     for (auto& chm : chyme)
     {

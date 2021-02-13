@@ -1,11 +1,10 @@
 #include <algorithm>
-#include <cstring> // strcmp
+#include <cstring> // strerror
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string_view>
-#include "source/HumanBody.h"
 #include "source/SimCtl.h"
 
 using namespace std;
@@ -820,23 +819,15 @@ private:
     {
         onAddFat(sim->stomach->fatInBolus);
 
-        timeStamp();
-        output << " Gastric Emptying:: Total Food " << sim->stomach->totalFood
-               << " Calorific Density " << sim->stomach->calorificDensity
-               << " geSlope " << sim->stomach->geSlope
-               << " ragInBolus " << sim->stomach->ragInBolus
-               << " sagInBolus " << sim->stomach->sagInBolus
-               << endl;
-
-        if (sim->stomach->stomachEmpty)
+        if (sim->stomach->stomachBecameEmpty)
         {
-            // output << "STOMACH EMPTY " << sim->body->bodyState << endl;
-
-            // if (sim->body->bodyState != sim->body->oldState)
-            // {
-            //     timeStamp();
-            //     output << "Entering State " << sim->body->bodyState << endl;
-            // }
+            timeStamp();
+            output << " Gastric Emptying:: Total Food " << sim->stomach->totalFood
+                << " Calorific Density " << sim->stomach->calorificDensity
+                << " geSlope " << sim->stomach->geSlope
+                << " ragInBolus " << sim->stomach->ragInBolus
+                << " sagInBolus " << sim->stomach->sagInBolus
+                << endl;
 
             timeStamp();
             output << " Stomach:: SAG " << sim->stomach->SAG
@@ -844,6 +835,34 @@ private:
                    << " protein " << sim->stomach->protein
                    << " fat " << sim->stomach->fat
                    << endl;
+        }
+        else if (sim->stomach->stomachEmpty)
+        {
+            timeStamp();
+            output << " Gastric Emptying:: Total Food " << sim->stomach->totalFood
+                   << " Calorific Density " << 0
+                   << " geSlope " << 0
+                   << " ragInBolus " << 0
+                   << " sagInBolus " << 0
+                   << endl;
+
+            // output << "STOMACH EMPTY " << sim->body->bodyState << endl;
+
+            // if (sim->body->bodyState != sim->body->oldState)
+            // {
+            //     timeStamp();
+            //     output << "Entering State " << sim->body->bodyState << endl;
+            // }
+        }
+        else
+        {
+            timeStamp();
+            output << " Gastric Emptying:: Total Food " << sim->stomach->totalFood
+                << " Calorific Density " << sim->stomach->calorificDensity
+                << " geSlope " << sim->stomach->geSlope
+                << " ragInBolus " << sim->stomach->ragInBolus
+                << " sagInBolus " << sim->stomach->sagInBolus
+                << endl;
         }
     }
 

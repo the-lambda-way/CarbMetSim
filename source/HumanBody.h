@@ -57,27 +57,34 @@ struct TotalsState
 
 struct HumanParams
 {
-    double age;
-    double gender;
-    double fitnessLevel;
-    double glut4Impact;
-    double glycolysisMinImpact;
-    double glycolysisMaxImpact;
-    double excretionKidneysImpact;
-    double liverGlycogenBreakdownImpact;
-    double liverGlycogenSynthesisImpact;
+    double glut4Impact                  = 1.0;
+    double liverGlycogenSynthesisImpact = 1.0;
     // double maxLiverGlycogenBreakdownDuringExerciseImpact;
-    double gngImpact;
+    double glycolysisMinImpact    = 1.0;
+    double glycolysisMaxImpact    = 1.0;
+    double excretionKidneysImpact = 1.0;
+
+    double age;          // in years
+    double gender;       // 0 male, 1 female
+    double fitnessLevel; // between 0 and 100
+
     double bodyWeight;
-    double insulinImpactOnGlycolysis_Mean;
-    double insulinImpactOnGlycolysis_StdDev;
-    double insulinImpactOnGNG_Mean;
-    double insulinImpactOnGNG_StdDev;
-    double insulinImpactGlycogenBreakdownInLiver_Mean;
-    double insulinImpactGlycogenBreakdownInLiver_StdDev;
-    double insulinImpactGlycogenSynthesisInLiver_Mean;
-    double insulinImpactGlycogenSynthesisInLiver_StdDev;
-    double intensityPeakGlucoseProd;
+    // double bodyWeight = 65; // kg
+    // must specify body weight in the params
+
+    double intensityPeakGlucoseProd = 0.2; // exercise intensity in %VO2Maxat which peak GNG, glycogen breakdown takes place
+
+    double gngImpact                    = 6.0;
+    double liverGlycogenBreakdownImpact = 6.0;
+
+    double insulinImpactOnGlycolysis_Mean                = 0.5;
+    double insulinImpactOnGlycolysis_StdDev              = 0.2;
+    double insulinImpactOnGNG_Mean                       = 0.5;
+    double insulinImpactOnGNG_StdDev                     = 0.2;
+    double insulinImpactGlycogenBreakdownInLiver_Mean    = 0.1;
+    double insulinImpactGlycogenBreakdownInLiver_StdDev  = 0.02;
+    double insulinImpactGlycogenSynthesisInLiver_Mean    = 0.5;
+    double insulinImpactGlycogenSynthesisInLiver_StdDev  = 0.2;
 };
 
 struct MetabolicParams
@@ -107,10 +114,10 @@ public:
     BodyState bodyState = BodyState::POSTABSORPTIVE_RESTING;
     // BodyState oldState = BodyState::POSTABSORPTIVE_RESTING;
 
-    double glut4Impact                  = 1.0;
-    double liverGlycogenSynthesisImpact = 1.0;
+    double glut4Impact;
+    double liverGlycogenSynthesisImpact;
     // double maxLiverGlycogenBreakdownDuringExerciseImpact;
-    double excretionKidneysImpact       = 1.0;
+    double excretionKidneysImpact;
 
     int    age;           // in years
     int    gender;        // 0 male, 1 female
@@ -119,8 +126,7 @@ public:
     double percentVO2Max; // for the current exercise
 
     double bodyWeight;
-    // double bodyWeight = 65; // kg
-    // must specify body weight in the params
+
     double   fatFraction        = 0.2;
     unsigned exerciseOverAt     = 0;   // when does the current exercise event get over
     int      lastHardExerciseAt = -61; // when was the last "hard" exercise
@@ -173,10 +179,10 @@ public:
 	double baseBGL;
 	double peakBGL;
 
-    double intensityPeakGlucoseProd = 0.2; // exercise intensity in %VO2Max at which peak GNG, glycogen breakdown takes place
+    double intensityPeakGlucoseProd; // exercise intensity in %VO2Max at which peak GNG, glycogen breakdown takes place
 
-	double insulinImpactOnGNG_Mean                    = 0.5;
-	double insulinImpactGlycogenBreakdownInLiver_Mean = 0.1;
+	double insulinImpactOnGNG_Mean;
+	double insulinImpactGlycogenBreakdownInLiver_Mean;
 
     std::default_random_engine& generator();
     unsigned ticks();
@@ -201,18 +207,18 @@ private:
 
     void setVO2Max();
 
-    double gngImpact                    = 6.0;
-    double liverGlycogenBreakdownImpact = 6.0;
+    double gngImpact;
+    double liverGlycogenBreakdownImpact;
 
-	double insulinImpactOnGlycolysis_Mean               = 0.5;
-	double insulinImpactGlycogenSynthesisInLiver_Mean   = 0.5;
-	double insulinImpactOnGlycolysis_StdDev             = 0.2;
-	double insulinImpactOnGNG_StdDev                    = 0.2;
-	double insulinImpactGlycogenBreakdownInLiver_StdDev = 0.02;
-	double insulinImpactGlycogenSynthesisInLiver_StdDev = 0.2;
+	double insulinImpactOnGlycolysis_Mean;
+	double insulinImpactOnGlycolysis_StdDev;
+	double insulinImpactGlycogenSynthesisInLiver_Mean;
+	double insulinImpactGlycogenSynthesisInLiver_StdDev;
+	double insulinImpactOnGNG_StdDev;
+	double insulinImpactGlycogenBreakdownInLiver_StdDev;
 
-    double glycolysisMinImpact = 1.0;
-    double glycolysisMaxImpact = 1.0;
+    double glycolysisMinImpact;
+    double glycolysisMaxImpact;
 
     unsigned currExercise          = 0;
     double   currEnergyExpenditure = 1.0 / 60.0; // current energy expenditure in kcal/minute per kg of body weight

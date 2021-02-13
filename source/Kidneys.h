@@ -7,9 +7,15 @@ class HumanBody;
 
 struct KidneysParams
 {
-    double glycolysisMin;
-    double glycolysisMax;
-    double gngKidneys;
+    // Gerich: insulin dependent: 1 to 5 micromol per kg per minute
+    double glycolysisMin = 0.35 * 0.5 * 0.1801559; // mg per kg per minute
+    double glycolysisMax = 0.9 * 0.35 * 2.0 * 0.1801559; // mg per kg per minute
+
+    // mg per kg per minute
+    // 1 micromol per kg per minute = 0.1801559 mg per kg per minute
+    // double micromol = 0.1801559;
+    // gng = 0.42 * 2.2 * micromol;
+    double gngKidneys = 0.16;
 };
 
 class Kidneys
@@ -37,14 +43,11 @@ public:
 private:
     HumanBody* body;
 
-    // Gerich: insulin dependent: 1 to 5 micromol per kg per minute
-    double glycolysisMin = 0.35 * 0.5 * 0.1801559; // mg per kg per minute
-    double glycolysisMax = 0.9 * 0.35 * 2.0 * 0.1801559; // mg per kg per minute
+    double glycolysisMin;
+    double glycolysisMax;
 
-    // 1 micromol per kg per minute = 0.1801559 mg per kg per minute
-    // double micromol = 0.1801559;
-    // gng = 0.42 * 2.2 * micromol;
-    double gngKidneys = 0.16;
+    // mg per kg per minute
+    double gngKidneys;
 
     double reabsorptionThreshold = 11 * 180.1559 / 10; // mg/dl equivalent of 11 mmol/l
     double glucoseExcretionRate  = 100 / (11 * 180.1559 / 10); // mg per minute per(mg/dl)

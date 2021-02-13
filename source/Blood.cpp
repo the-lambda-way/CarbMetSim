@@ -1,5 +1,6 @@
 #include "Blood.h"
 #include <cassert>
+#include <exception>
 #include <iostream>
 #include <iterator> // std::cbegin, std::cend
 #include <numeric> // std::reduce
@@ -114,31 +115,18 @@ void Blood::setParams(const BloodParams& params)
     glucose             = fluidVolume * baseGlucoseLevel;
 
     if (params.baseInsulinLevel >= body->insulinImpactOnGNG_Mean)
-    {
-        cerr << "error configuring baseInsulinLevel and insulinImpactOnGNG" << endl;
-        exit(-1);
-    }
+        throw out_of_range("error configuring baseInsulinLevel and insulinImpactOnGNG");
     if (params.baseInsulinLevel >= body->insulinImpactGlycogenBreakdownInLiver_Mean)
-    {
-        cerr << "error configuring baseInsulinLevel and insulinImpactGlycogenBreakdownInLiver" << endl;
-        exit(-1);
-    }
+        throw out_of_range("error configuring baseInsulinLevel and insulinImpactGlycogenBreakdownInLiver");
     baseInsulinLevel = params.baseInsulinLevel;
 
     if (params.baseInsulinLevel >= body->insulinImpactOnGNG_Mean)
-    {
-        cerr << "error configuring baseInsulinLevel and insulinImpactOnGNG" << endl;
-        exit(-1);
-    }
+        throw out_of_range("error configuring baseInsulinLevel and insulinImpactOnGNG");
     insulinLevel = baseInsulinLevel;
 
     peakInsulinLevel = params.peakInsulinLevel;
 
-    if (params.highGlucoseLevel <= baseGlucoseLevel)
-    {
-        cerr << "highGlucoseLevel <= baseGlucoseLevel" << endl;
-        exit(-1);
-    }
+    if (params.highGlucoseLevel <= baseGlucoseLevel)    throw out_of_range("highGlucoseLevel <= baseGlucoseLevel");
     highGlucoseLevel = params.highGlucoseLevel;
 
     highLactateLevel    = params.highLactateLevel;

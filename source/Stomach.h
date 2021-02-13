@@ -9,8 +9,8 @@ class FoodType;
 
 struct StomachParams
 {
-    double geConstant;
-    double geSlopeMin;
+    double geConstant = 500.0; // mg
+    double geSlopeMin = 0.03; // Min value for GE slope (applicable to fat)
 };
 
 
@@ -36,12 +36,13 @@ public:
     double sagInBolus       = 0;
     double proteinInBolus   = 0;
     FatState fatInBolus;
-    bool stomachEmpty = true;
+    bool stomachEmpty       = true;
+    bool stomachBecameEmpty = false;
 
 private:
     HumanBody* body;
 
-    double geConstant = 500.0; // mg
-    double geSlopeMin = 0.03; // Min value for GE slope (applicable to fat)
+    double geConstant; // mg
+    double geSlopeMin; // Min value for GE slope (applicable to fat)
    	// the amount of gastric emptying (mg per minute) = geConstant + geSlope * (total food in stomach in milligrams)
 };

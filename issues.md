@@ -93,6 +93,11 @@ carbohydrate metabolism in humans*. Literature references were removed from the 
 Encapsulation needs to be improved across the board. Parameters should be accessed through public interfaces instead of variables or friendship. Some parameters in HumanBody are only used in a single organ, these should maybe be moved into those organs. More algorithms can be abstracted and put into "common.h".
 
 
+## Body State Parameters
+
+I noticed that changing the metabolic parameters through HumanBody::setParams() is only done once and is commented out elsewhere, so the sim does not currently support different parameters for different body states. Should be able to just uncomment these? Were they commented out because they haven't been experimentally validated yet?
+
+
 ## Changelog
 Refactored to be a library that can be integrated into other projects. Since this touches every part of the code base, I took the opportunity to do a overall refactoring as well.
 
@@ -103,11 +108,6 @@ Refactored to be a library that can be integrated into other projects. Since thi
 * Moved the global variables into SimCtl. As a result, multiple simulators can exist side-by-side.
 * SimCtl is now the main (non-textual) interface. The body and organs are accessed through SimCtl.
 * Moved externally accessed variables from private to public (encapsulation will need to be improved in the future). Moved variables only internally used from public to private.
-* Changed programmer-related error checks into assertions.
+* Changed programmer-related error checks into assertions. Changed user-related errors into exceptions.
 * Simplified many things, including moving subprocesses into their own functions.
 * There was inconsistent code formatting and style, so I picked my own and applied it everywhere.
-
-
-## TODO BEFORE MERGING
-* Change runtime error strategy, the sim should not exit the program.
-* Get system tests to work.

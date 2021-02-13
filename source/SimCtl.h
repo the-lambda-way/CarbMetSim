@@ -4,7 +4,6 @@
 #include <memory>
 #include <random>
 #include <queue>
-#include <utility> // std::forward
 #include <vector>
 #include "HumanBody.h"
 

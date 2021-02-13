@@ -7,7 +7,7 @@ class HumanBody;
 
 struct PortalVeinParams
 {
-    double fluidVolume;
+    double fluidVolume = 5; // dl
 };
 
 class PortalVein
@@ -28,9 +28,10 @@ public:
     GlucoseState fromBlood;
 
 private:
+    HumanBody* body;
+    
     double glucose      = 0; // mg
     double branchedAA   = 0; // mg
     double unbranchedAA = 0; // mg
-    double fluidVolume  = 5; // dl
-    HumanBody* body;
+    double fluidVolume;
 };

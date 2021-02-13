@@ -16,6 +16,9 @@ meal-event-normal:
 	$(RM) -f $(MAIN); \
 	if [ $$RESULT -eq 0 ]; then \
 		diff -u --color outNormal.alpha outNormal.expected.alpha | head -n 100; \
+	fi; \
+	if [ $$? -eq 0 ]; then \
+		echo "Success!"; \
 	fi
 
 
