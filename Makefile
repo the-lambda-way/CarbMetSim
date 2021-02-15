@@ -32,7 +32,7 @@ all: $(MAIN)
 # Main
 # ======================================================================================================================
 $(MAIN): $(MAIN).cpp $(OBJS)
-	@echo "Building $@ ..."
+	@echo "Building $(@F) ..."
 	@$(COMPILE) $(MAIN).cpp $(OBJS) -o $(MAIN)
 
 
@@ -42,13 +42,13 @@ $(MAIN): $(MAIN).cpp $(OBJS)
 # (see the gnu make manual section about automatic variables)
 build/%.c.o: source/%.c source/%.h
 	@mkdir -p build
-	@echo "Building $@ ..."
+	@echo "Building $(@F) ..."
 	@$(COMPILE) -c $< -o $@
 
 
 build/%.cpp.o: source/%.cpp source/%.h
 	@mkdir -p build
-	@echo "Building $@ ..."
+	@echo "Building $(@F) ..."
 	@$(COMPILE) -c $< -o $@
 
 
@@ -119,12 +119,14 @@ custom-tests: meal-event-normal meal-event-diabetic
 .PHONY: clean
 clean:
 	@echo "Cleaning..."
-	@$(RM) -f $(MAIN)
-	@$(RM) -f $(MAIN).d
+	@$(RM) -f $(MAIN) $(MAIN).d
 	@$(RM) -rf build/
 
 .PHONY: clean-tests
 clean-tests:
 	@echo "Cleaning tests..."
 	@$(RM) -rf build/tests
-	@$(MAKE) --no-print-directory clean-meal-event-normal
+	@$(MAKE) --no-print-directory clean-meal-event-normal clean-meal-event-diabetic
+
+.PHONY: clean-all
+clean-all: clean clean-tests

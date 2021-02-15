@@ -93,7 +93,7 @@ private:
     unsigned tick = -1; // tick count advanced at the beginning of each tick, and we want to start at 0
     std::priority_queue<std::shared_ptr<Event>> eventQ;
     std::vector<std::shared_ptr<Event>> currentEvents;
-    bool eventsFired = false;
+    bool eventsFired    = false;
     bool haltEventFired = false;
 
     static const int TICKS_PER_DAY  = 24 * 60; // Simulated time granularity

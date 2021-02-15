@@ -1,5 +1,14 @@
 # CarbMetSim
-Forked and refactored to increase performance and use modern programming practices.
+
+Redesigned to be usable as a library.
+
+
+# Todo
+
+Update documentation and this readme.
+
+
+# Original Readme
 
 A discrete event simulator for tracking blood glucose level based on carbodydrate metabolism in human body.
 
