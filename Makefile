@@ -32,6 +32,7 @@ all: $(MAIN)
 # Main
 # ======================================================================================================================
 $(MAIN): $(MAIN).cpp $(OBJS)
+	@echo "Building $@ ..."
 	@$(COMPILE) $(MAIN).cpp $(OBJS) -o $(MAIN)
 
 
@@ -103,10 +104,11 @@ TEST_DEPS := $(TEST_EXES:.out=.d)
 # Put your independently created tests here which don't use the testing framework.
 
 -include tests/system/meal-event-normal/meal-event-normal.make
+-include tests/system/meal-event-diabetic/meal-event-diabetic.make
 
 
 .PHONY: custom-tests
-custom-tests: meal-event-normal
+custom-tests: meal-event-normal meal-event-diabetic
 
 
 # ======================================================================================================================

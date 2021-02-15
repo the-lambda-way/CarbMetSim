@@ -1,4 +1,12 @@
 build/
+
 carbmetsim
 carbmetsim.d
-**/outNormal.alpha
+
+tests/system/meal-event-normal/output
+tests/system/meal-event-normal/outNormal.diff
+
+tests/system/meal-event-diabetic/output
+tests/system/meal-event-diabetic/outNormal.diff
+
+examples/validation_meal_event/output
