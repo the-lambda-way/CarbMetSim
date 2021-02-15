@@ -30,4 +30,3 @@ if not os.path.exists('output/'):
 
 execute_sims_normal()
 execute_sims_diab()
-
