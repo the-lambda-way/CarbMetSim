@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cmath>   // abs
 #include <cstring> // strerror
 #include <fstream>
 #include <iomanip>
@@ -819,10 +820,17 @@ private:
     {
         onAddFat(sim->stomach->fatInBolus);
 
+        // Workaround for negative underflow, not a correct bug fix. Remove these checks at your discretion.
+        double totalFood = abs(sim->stomach->totalFood);
+        double SAG       = abs(sim->stomach->SAG);
+        double RAG       = abs(sim->stomach->RAG);
+        double fat       = abs(sim->stomach->fat);
+        // /workaround
+
         if (sim->stomach->stomachBecameEmpty)
         {
             timeStamp();
-            output << " Gastric Emptying:: Total Food " << sim->stomach->totalFood
+            output << " Gastric Emptying:: Total Food " << totalFood
                 << " Calorific Density " << sim->stomach->calorificDensity
                 << " geSlope " << sim->stomach->geSlope
                 << " ragInBolus " << sim->stomach->ragInBolus
@@ -830,16 +838,16 @@ private:
                 << endl;
 
             timeStamp();
-            output << " Stomach:: SAG " << sim->stomach->SAG
-                   << " RAG " << sim->stomach->RAG
+            output << " Stomach:: SAG " << SAG
+                   << " RAG " << RAG
                    << " protein " << sim->stomach->protein
-                   << " fat " << sim->stomach->fat
+                   << " fat " << fat
                    << endl;
         }
         else if (sim->stomach->stomachEmpty)
         {
             timeStamp();
-            output << " Gastric Emptying:: Total Food " << sim->stomach->totalFood
+            output << " Gastric Emptying:: Total Food " << totalFood
                    << " Calorific Density " << 0
                    << " geSlope " << 0
                    << " ragInBolus " << 0
