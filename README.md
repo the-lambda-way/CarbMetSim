@@ -1,11 +1,30 @@
 # CarbMetSim
 
-Redesigned to be usable as a library.
+Redesigned to be usable either as the original command-line program or as a library.
 
 
-# Todo
+# Roadmap to version 1.0
 
-Update documentation and this readme.
+Due to the number of changes I made, I've decided to release an upcoming commit as version 1.0.
+
+Features of version 1.0:
+
+* Organized the code into folders that will be useful as an open-source library.
+* Moved from C++11 to C++17 since it is common and adds useful features.
+* Separated the command-line interface from the simulator. This includes moving all string input and output into the cli, replacing all input strings with input parameters, and replacing all output strings with diagnostic variables. Additionally, the main loops was removed from SimCtl. The containing program should run its own main loop and call SimCtl::runTick() on each iteration. It can then read which events occurred and whatever parameters it needs. SimCtl::runTick()) returns false after the HALT event has fired.
+* SimCtl is now the main library (i.e. non-textual) interface. Previously global variables were moved into SimCtl. The body and organs are accessed through public SimCtl pointers.
+* Moved externally accessed variables from private to public (encapsulation will need to be improved in the future). Moved variables only internally used from public to private.
+* Changed programmer-related error checks into assertions. Changed user-related errors into exceptions.
+* Simplified many things, including moving subprocesses into their own functions.
+* There was inconsistent code formatting and style, so I picked my own and applied it everywhere.
+* Implemented a workaround for negative zero in the output. This is a bug in the simulator output that needs to be fixed.
+* Added system tests corresponding to each one of the example simulations. Added catch2 as a third-party library for adding future unit and integration tests.
+* Added documentation.
+
+
+# Todo before version 1.0 can be released
+
+Update documentation to reflect the new design, and update this readme.
 
 
 # Original Readme
