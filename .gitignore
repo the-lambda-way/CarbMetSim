@@ -9,6 +9,13 @@ tests/system/meal-event-normal/output
 tests/system/meal-event-normal/outNormal.diff
 
 tests/system/meal-event-diabetic/output
-tests/system/meal-event-diabetic/outNormal.diff
+tests/system/meal-event-diabetic/outDiab.diff
 
-examples/validation_meal_event/output
+tests/system/exercise-event-Ahlborg58/output
+tests/system/exercise-event-Ahlborg58/outAhlborg58.diff
+
+tests/system/exercise-event-AhlborgArm30/output
+tests/system/exercise-event-AhlborgArm30/outAhlborgArm30.diff
+
+tests/system/exercise-event-AhlborgLeg30/output
+tests/system/exercise-event-AhlborgLeg30/outAhlborgLeg30.diff

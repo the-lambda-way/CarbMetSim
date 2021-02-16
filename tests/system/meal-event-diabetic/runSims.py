@@ -16,15 +16,15 @@ def recreate_output_folder():
     os.mkdir("output")
 
 
-def run_sim(seed, params_file):
+def run_sim(seed):
     output_file = "output/outDiab." + seed
-    command = ["../../../carbmetsim", "Food.txt", "Exercise.txt", params_file, "Events.txt", seed, output_file]
+    command = ["../../../carbmetsim", "Food.txt", "Exercise.txt", "ParamsDiab.txt", "Events.txt", seed, output_file]
 
     return subprocess.run(command).returncode == 0
 
 
 def diff_output(seed):
-    output_file = "output/outDiab." + seed
+    output_file   = "output/outDiab." + seed
     expected_file = "expected/outDiab." + seed + ".expected"
     command = "diff -u --color " + output_file + " " + expected_file + " > outDiab.diff"
 
@@ -37,7 +37,7 @@ recreate_output_folder()
 
 with open('seeds') as seed_file:
     for seed in seed_file.read().splitlines():
-        if not run_sim(seed, "ParamsDiab.txt"):
+        if not run_sim(seed):
             print("Failed to complete at seed", seed)
             break
 

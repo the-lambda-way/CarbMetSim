@@ -319,7 +319,7 @@ void HumanBody::setVO2Max()
     };
 
     auto upperAge = upper_bound(begin(upperAges), end(upperAges), age);
-    int row = distance(upperAges, upperAge) - 1;
+    int row = distance(upperAges, upperAge);
 
     auto upperLevel = lower_bound(begin(fitnessLevels), end(fitnessLevels), fitnessLevel);
     int col = distance(fitnessLevels, upperLevel);

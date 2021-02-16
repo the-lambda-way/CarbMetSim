@@ -78,7 +78,9 @@ bool SimCtl::runTick()
     // Increment the tick first so that after each runTick(), tick() will return what the organs just saw
     ++tick;
 
+    currentEvents.clear();
     eventsFired = false;
+
     while (fireEvent());
     if (haltEventFired)    return false;
 

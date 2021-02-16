@@ -103,12 +103,16 @@ TEST_DEPS := $(TEST_EXES:.out=.d)
 # ======================================================================================================================
 # Put your independently created tests here which don't use the testing framework.
 
--include tests/system/meal-event-normal/meal-event-normal.make
--include tests/system/meal-event-diabetic/meal-event-diabetic.make
+-include tests/system/meal-event-normal/Makefile
+-include tests/system/meal-event-diabetic/Makefile
+-include tests/system/exercise-event-Ahlborg58/Makefile
+-include tests/system/exercise-event-AhlborgArm30/Makefile
+-include tests/system/exercise-event-AhlborgLeg30/Makefile
 
 
 .PHONY: custom-tests
-custom-tests: meal-event-normal meal-event-diabetic
+custom-tests: meal-event-normal meal-event-diabetic exercise-event-Ahlborg58 exercise-event-AhlborgArm30
+custom-tests: exercise-event-AhlborgLeg30
 
 
 # ======================================================================================================================
@@ -122,11 +126,13 @@ clean:
 	@$(RM) -f $(MAIN) $(MAIN).d
 	@$(RM) -rf build/
 
+
 .PHONY: clean-tests
-clean-tests:
-	@echo "Cleaning tests..."
+clean-tests: clean-meal-event-normal clean-meal-event-diabetic clean-exercise-event-Ahlborg58
+clean-tests: clean-exercise-event-AhlborgArm30 clean-exercise-event-AhlborgLeg30
+	@echo "Cleaning unit and integration tests..."
 	@$(RM) -rf build/tests
-	@$(MAKE) --no-print-directory clean-meal-event-normal clean-meal-event-diabetic
+
 
 .PHONY: clean-all
 clean-all: clean clean-tests

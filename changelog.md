@@ -17,3 +17,4 @@ Refactored to be a library that can be integrated into other projects. Since thi
 * Simplified many things, including moving subprocesses into their own functions.
 * There was inconsistent code formatting and style, so I picked my own and applied it everywhere.
 * Implemented a workaround for negative zero in the output. This is a bug in the simulator output that needs to be fixed.
+* Added system tests corresponding to each one of the example simulations.
