@@ -4,8 +4,12 @@
 using namespace std;
 
 
-bool Event::operator<(const Event& other) {
-    return fireTime < other.fireTime;
+bool EventGreater::operator()(const std::shared_ptr<Event>& lhs, const std::shared_ptr<Event>& rhs)
+{
+    // Should return true if lhs comes before rhs, where the largest element becomes the top of the queue.
+    // We want the smallest fireTime to be on top, therefore we invert the order. On a tie order of insertion should be
+    // maintained, so we do not want to compare equality.
+    return lhs->fireTime > rhs->fireTime;
 }
 
 Event::Event(unsigned fireTime, EventType type)

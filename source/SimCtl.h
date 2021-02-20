@@ -19,8 +19,12 @@ public:
 
     unsigned fireTime;
     EventType eventType;
+};
 
-    bool operator<(const Event& other);
+// The priority queue holds shared_ptr<Event>, so we need a custom comparator.
+struct EventGreater
+{
+    bool operator()(const std::shared_ptr<Event>& lhs, const std::shared_ptr<Event>& rhs);
 };
 
 class FoodEvent : public Event
@@ -77,10 +81,10 @@ public:
     const Blood*         blood;
     const HumanBody*     body;
     const Brain*         brain;
-    const Liver*         liver;
     const Heart*         heart;
     const Intestine*     intestine;
     const Kidneys*       kidneys;
+    const Liver*         liver;
     const Muscles*       muscles;
     const PortalVein*    portalVein;
     const Stomach*       stomach;
@@ -91,7 +95,7 @@ private:
     std::default_random_engine generator{1};
 
     unsigned tick = -1; // tick count advanced at the beginning of each tick, and we want to start at 0
-    std::priority_queue<std::shared_ptr<Event>> eventQ;
+    std::priority_queue<std::shared_ptr<Event>, std::vector<std::shared_ptr<Event>>, EventGreater> eventQ;
     std::vector<std::shared_ptr<Event>> currentEvents;
     bool eventsFired    = false;
     bool haltEventFired = false;
