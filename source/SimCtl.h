@@ -65,6 +65,7 @@ public:
 
     bool runTick();
     void runToHalt();
+    
     bool eventsWereFired() const;
     std::vector<std::shared_ptr<Event>> eventsFiredThisTick() const;
 
@@ -95,14 +96,18 @@ private:
     std::default_random_engine generator{1};
 
     unsigned tick = -1; // tick count advanced at the beginning of each tick, and we want to start at 0
+    static const int TICKS_PER_DAY  = 24 * 60; // Simulated time granularity
+    static const int TICKS_PER_HOUR = 60;      // Simulated time granularity
+
     std::priority_queue<std::shared_ptr<Event>, std::vector<std::shared_ptr<Event>>, EventGreater> eventQ;
+    unsigned nextFireTime = -1; // should begin at largest number
+
     std::vector<std::shared_ptr<Event>> currentEvents;
     bool eventsFired    = false;
     bool haltEventFired = false;
 
-    static const int TICKS_PER_DAY  = 24 * 60; // Simulated time granularity
-    static const int TICKS_PER_HOUR = 60;      // Simulated time granularity
-
-    bool fireEvent();
+    void updateNextFireTime();
     bool eventIsReady() const;
+    std::shared_ptr<Event> getNextEvent();
+    bool fireEvent();
 };

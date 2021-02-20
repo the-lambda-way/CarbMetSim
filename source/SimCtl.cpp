@@ -70,11 +70,14 @@ void SimCtl::addEvent(unsigned fireTime, EventType type, unsigned id, unsigned h
         default:
             break;
     }
+
+    updateNextFireTime();
 }
 
 void SimCtl::addEvent(shared_ptr<Event> event)
 {
     eventQ.push(move(event));
+    updateNextFireTime();
 }
 
 bool SimCtl::runTick()
@@ -145,9 +148,8 @@ bool SimCtl::fireEvent()
     if (!eventIsReady())    return false;
     eventsFired = true;
 
-    shared_ptr<Event> event = eventQ.top();
+    shared_ptr<Event> event = getNextEvent();
     currentEvents.push_back(event);
-    eventQ.pop();
 
     switch (event->eventType)
     {
@@ -171,7 +173,22 @@ bool SimCtl::fireEvent()
     return true;
 }
 
+shared_ptr<Event> SimCtl::getNextEvent()
+{
+    shared_ptr<Event> out = eventQ.top();
+    eventQ.pop();
+
+    updateNextFireTime();
+
+    return out;
+}
+
+void SimCtl::updateNextFireTime()
+{
+    nextFireTime = eventQ.top()->fireTime;
+}
+
 bool SimCtl::eventIsReady() const
 {
-    return !eventQ.empty() && eventQ.top()->fireTime <= tick;
+    return nextFireTime <= tick;
 }
