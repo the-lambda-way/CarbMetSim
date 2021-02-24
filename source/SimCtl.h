@@ -5,6 +5,7 @@
 #include <random>
 #include <queue>
 #include <vector>
+#include "discrete_event_queue.h"
 #include "HumanBody.h"
 
 
@@ -21,10 +22,10 @@ public:
     EventType eventType;
 };
 
-// The priority queue holds shared_ptr<Event>, so we need a custom comparator.
-struct EventGreater
+// The priority queue holds shared_ptr<Event>, so we need a custom projection.
+struct EventFireTime
 {
-    bool operator()(const std::shared_ptr<Event>& lhs, const std::shared_ptr<Event>& rhs);
+    unsigned operator()(const std::shared_ptr<Event>& event) const;
 };
 
 class FoodEvent : public Event
@@ -65,9 +66,9 @@ public:
 
     bool runTick();
     void runToHalt();
-    
+
     bool eventsWereFired() const;
-    std::vector<std::shared_ptr<Event>> eventsFiredThisTick() const;
+    std::vector<std::shared_ptr<Event>> getFiredEvents() const;
 
     unsigned elapsedDays() const;
     unsigned elapsedHours() const;
@@ -94,20 +95,11 @@ private:
     friend class HumanBody;
     HumanBody humanBody;
     std::default_random_engine generator{1};
+    discrete_event_queue<std::shared_ptr<Event>, EventFireTime> queue;
 
-    unsigned tick = -1; // tick count advanced at the beginning of each tick, and we want to start at 0
     static const int TICKS_PER_DAY  = 24 * 60; // Simulated time granularity
     static const int TICKS_PER_HOUR = 60;      // Simulated time granularity
 
-    std::priority_queue<std::shared_ptr<Event>, std::vector<std::shared_ptr<Event>>, EventGreater> eventQ;
-    unsigned nextFireTime = -1; // should begin at largest number
-
-    std::vector<std::shared_ptr<Event>> currentEvents;
-    bool eventsFired    = false;
     bool haltEventFired = false;
-
-    void updateNextFireTime();
-    bool eventIsReady() const;
-    std::shared_ptr<Event> getNextEvent();
-    bool fireEvent();
+    void handleEvents();
 };

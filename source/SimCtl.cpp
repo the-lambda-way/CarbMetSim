@@ -1,15 +1,12 @@
 #include "SimCtl.h"
-#include "HumanBody.h"
+#include <algorithm>
 
 using namespace std;
 
 
-bool EventGreater::operator()(const std::shared_ptr<Event>& lhs, const std::shared_ptr<Event>& rhs)
+unsigned EventFireTime::operator()(const std::shared_ptr<Event>& event) const
 {
-    // Should return true if lhs comes before rhs, where the largest element becomes the top of the queue.
-    // We want the smallest fireTime to be on top, therefore we invert the order. On a tie order of insertion should be
-    // maintained, so we do not want to compare equality.
-    return lhs->fireTime > rhs->fireTime;
+    return event->fireTime;
 }
 
 Event::Event(unsigned fireTime, EventType type)
@@ -59,37 +56,33 @@ void SimCtl::addEvent(unsigned fireTime, EventType type, unsigned id, unsigned h
     switch (type)
     {
         case EventType::FOOD:
-            eventQ.emplace(new FoodEvent{fireTime, howmuch, id});
+            queue.emplace(new FoodEvent{fireTime, howmuch, id});
             break;
         case EventType::EXERCISE:
-            eventQ.emplace(new ExerciseEvent{fireTime, howmuch, id});
+            queue.emplace(new ExerciseEvent{fireTime, howmuch, id});
             break;
         case EventType::HALT:
-            eventQ.emplace(new HaltEvent{fireTime});
+            queue.emplace(new HaltEvent{fireTime});
             break;
         default:
             break;
     }
-
-    updateNextFireTime();
 }
 
 void SimCtl::addEvent(shared_ptr<Event> event)
 {
-    eventQ.push(move(event));
-    updateNextFireTime();
+    queue.add(move(event));
 }
 
 bool SimCtl::runTick()
 {
-    // Increment the tick first so that after each runTick(), tick() will return what the organs just saw
-    ++tick;
+    queue.advance();
 
-    currentEvents.clear();
-    eventsFired = false;
-
-    while (fireEvent());
-    if (haltEventFired)    return false;
+    if (queue.events_were_fired())
+    {
+        handleEvents();
+        if (haltEventFired)    return false;
+    }
 
     humanBody.processTick();
 
@@ -103,34 +96,34 @@ void SimCtl::runToHalt()
 
 bool SimCtl::eventsWereFired() const
 {
-    return eventsFired;
+    return queue.events_were_fired();
 }
 
-vector<shared_ptr<Event>> SimCtl::eventsFiredThisTick() const
+vector<shared_ptr<Event>> SimCtl::getFiredEvents() const
 {
-    return currentEvents;
+    return queue.get_fired_events();
 }
 
 unsigned SimCtl::elapsedDays() const
 {
-    return tick / TICKS_PER_DAY;
+    return queue.ticks() / TICKS_PER_DAY;
 }
 
 unsigned SimCtl::elapsedHours() const
 {
-    int x = tick % TICKS_PER_DAY;
+    int x = queue.ticks() % TICKS_PER_DAY;
     return x / TICKS_PER_HOUR;
 }
 
 unsigned SimCtl::elapsedMinutes() const
 {
-    int x = tick % TICKS_PER_DAY;
+    int x = queue.ticks() % TICKS_PER_DAY;
     return x % TICKS_PER_HOUR;
 }
 
 unsigned SimCtl::ticks() const
 {
-    return tick;
+    return queue.ticks();
 }
 
 unsigned SimCtl::timeToTicks(unsigned days, unsigned hours, unsigned minutes)
@@ -140,55 +133,30 @@ unsigned SimCtl::timeToTicks(unsigned days, unsigned hours, unsigned minutes)
 
 bool SimCtl::dayOver() const
 {
-    return tick % TICKS_PER_DAY == 0 && tick != 0;
+    return queue.ticks() % TICKS_PER_DAY == 0 && queue.ticks() != 0;
 }
 
-bool SimCtl::fireEvent()
+void SimCtl::handleEvents()
 {
-    if (!eventIsReady())    return false;
-    eventsFired = true;
-
-    shared_ptr<Event> event = getNextEvent();
-    currentEvents.push_back(event);
-
-    switch (event->eventType)
+    for (const auto& event : queue.get_fired_events())
     {
-        case EventType::FOOD:
+        switch (event->eventType)
         {
-            shared_ptr<FoodEvent> food = dynamic_pointer_cast<FoodEvent>(event);
-            humanBody.processFoodEvent(food->foodID, food->quantity);
-            break;
+            case EventType::FOOD:
+            {
+                shared_ptr<FoodEvent> food = dynamic_pointer_cast<FoodEvent>(event);
+                humanBody.processFoodEvent(food->foodID, food->quantity);
+                break;
+            }
+            case EventType::EXERCISE:
+            {
+                shared_ptr<ExerciseEvent> exercise = dynamic_pointer_cast<ExerciseEvent>(event);
+                humanBody.processExerciseEvent(exercise->exerciseID, exercise->duration);
+                break;
+            }
+            case EventType::HALT:
+                haltEventFired = true;
+                return;
         }
-        case EventType::EXERCISE:
-        {
-            shared_ptr<ExerciseEvent> exercise = dynamic_pointer_cast<ExerciseEvent>(event);
-            humanBody.processExerciseEvent(exercise->exerciseID, exercise->duration);
-            break;
-        }
-        case EventType::HALT:
-            haltEventFired = true;
-            return false;
     }
-
-    return true;
-}
-
-shared_ptr<Event> SimCtl::getNextEvent()
-{
-    shared_ptr<Event> out = eventQ.top();
-    eventQ.pop();
-
-    updateNextFireTime();
-
-    return out;
-}
-
-void SimCtl::updateNextFireTime()
-{
-    nextFireTime = eventQ.top()->fireTime;
-}
-
-bool SimCtl::eventIsReady() const
-{
-    return nextFireTime <= tick;
 }
