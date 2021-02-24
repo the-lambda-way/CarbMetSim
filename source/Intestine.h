@@ -28,7 +28,7 @@ struct ChymeConsumed
 struct IntestineParams
 {
     // Amino Acid Absorption
-    double aminoAcidsAbsorptionRate   = 1; //mg per minute;
+    double aminoAcidsAbsorptionRate   = 1; // mg per minute;
     double glutamineOxidationRate     = 1; // mg per minute;
     double glutamineToAlanineFraction = 0.5;
 
@@ -79,7 +79,7 @@ public:
     double glEnterocytes              = 0;
     double glPortalVein               = 0;
     double glPortalVeinConcentration  = 0;
-    GlucoseState excessGlucoseInEnterocytes;
+    GlucoseState glucoseFromBlood;
 
 private:
     HumanBody* body;
@@ -122,8 +122,11 @@ private:
     double SAG_Mean;
     double SAG_StdDev;
 
-    void absorbGlucose();
-    double consumeGlucose(double& glucose, double origGlucose, double mean, double stddev, double deltaTicks);
-    void absorbAminoAcids();
     void digestChyme();
+    void absorbGlucose();
+    void absorbAminoAcids();
+    void glucoseFromLumen();
+    void glucoseToPortalVein();
+    void glycolysisToLactate();
+    double consumeGlucose(double& glucose, double origGlucose, double mean, double stddev, double deltaTicks);
 };

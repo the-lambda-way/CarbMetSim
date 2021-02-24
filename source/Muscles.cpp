@@ -16,7 +16,7 @@ void Muscles::setParams(const MusclesParams& params)
     glycogenMax                        = 1000.0 * params.glycogenMax;
     Glut4Km                            = params.Glut4Km;
     Glut4VMAX                          = params.Glut4VMAX;
-    PeakGlut4VMAX                      = params.PeakGlut4VMAX;
+    peakGlut4VMAX                      = params.peakGlut4VMAX;
     maxGlucoseAbsorptionDuringExercise = params.maxGlucoseAbsorptionDuringExercise;
     basalGlucoseAbsorbed               = params.basalGlucoseAbsorbed;
     baaToGlutamine                     = params.baaToGlutamine;
@@ -124,7 +124,7 @@ void Muscles::glycogenToLactate(std::poisson_distribution<int>& glycolysisMin_)
     glycolysisPerTick = g + intensity * (glycolysisMax * body->bodyWeight - g);
 
     glycogen                 -= glycolysisPerTick;
-    body->blood.lactate     += glycolysisPerTick;
+    body->blood.lactate      += glycolysisPerTick;
     glycogenBreakdownPerTick += glycolysisPerTick;
 }
 
@@ -158,15 +158,16 @@ void Muscles::basalAbsorption(std::poisson_distribution<int>& rand)
     basalGLUT4Occurred = diff > 0;
     if (basalGLUT4Occurred)
     {
+        double Vmax = 0.9 + static_cast<double>(rand(body->generator())) / 1000.0;
+
         double scale = body->glut4Impact;
 
         if (static_cast<int>(body->ticks()) > body->lastHardExerciseAt + 60 || bgl < body->blood.baseBGL())
             scale *= body->blood.insulinLevel;
 
-        scale *= PeakGlut4VMAX - glycogen * (PeakGlut4VMAX - Glut4VMAX) / glycogenMax;
-        scale *= diff / (diff + Glut4Km);
-        x = 0.9 + static_cast<double>(rand(body->generator())) / 1000.0;
-        g = scale * x * body->bodyWeight;
+        scale *= peakGlut4VMAX - glycogen * (peakGlut4VMAX - Glut4VMAX) / glycogenMax;
+        scale *= mmk(Vmax, diff, Glut4Km);
+        g = scale * body->bodyWeight;
 
         body->blood.removeGlucose(g);
         glucoseAbsorbedPerTick += g;
@@ -195,7 +196,7 @@ void Muscles::glucoseToLactate(std::poisson_distribution<int>& glycolysisMin_)
     double x = static_cast<double>(glycolysisMin_(body->generator())) / 1000.0;
     glycolysisPerTick = min(glucose, body->glycolysis(x, glycolysisMax));
 
-    glucose              -= glycolysisPerTick;
+    glucose             -= glycolysisPerTick;
     body->blood.lactate += glycolysisPerTick;
 
 
@@ -205,9 +206,9 @@ void Muscles::glucoseToLactate(std::poisson_distribution<int>& glycolysisMin_)
     // double toGlycolysis = glycolysisPerTick;
     // double fromGlucose = min(toGlycolysis, glucose);
 
-    // glucose              -= fromGlucose;
+    // glucose             -= fromGlucose;
     // body->blood.lactate += fromGlucose;
-    // glycolysisPerTick     = fromGlucose;
+    // glycolysisPerTick    = fromGlucose;
 
     // double toGlycolysis -= fromGlucose;
     // if (toGlycolysis > 0)
@@ -215,7 +216,7 @@ void Muscles::glucoseToLactate(std::poisson_distribution<int>& glycolysisMin_)
     //     double fromGlycogen = min(toGlycolysis, glycogen);
 
     //     glycogen                 -= fromGlycogen;
-    //     body->blood.lactate     += fromGlycogen;
+    //     body->blood.lactate      += fromGlycogen;
     //     glycogenBreakdownPerTick += fromGlycogen;
     //     glycolysisPerTick        += fromGlycogen;
 

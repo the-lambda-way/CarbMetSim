@@ -76,115 +76,109 @@ void Intestine::setParams(const IntestineParams& params)
     SAG_StdDev                 = params.SAG_StdDev;
 }
 
-void Intestine::absorbGlucose()
+void Intestine::glucoseFromLumen()
 {
-    // some of the glucose is absorbed by the enterocytes (some of which moves to the portal vein)
-
-    double x; // to hold the random samples
-    activeAbsorption  = 0;
-    passiveAbsorption = 0;
-
-    glLumen       = 0;
-    glEnterocytes = 0;
-    glPortalVein  = 0;
-
     static std::poisson_distribution<int> basalAbsorption__{1000.0 * sglt1Rate};
     static std::poisson_distribution<int> Glut2VMAX_In__{1000.0 * Glut2VMAX_In};
-    static std::poisson_distribution<int> Glut2VMAX_Out__{1000.0 * Glut2VMAX_Out};
-    static std::poisson_distribution<int> glycolysisMin__{1000.0 * glycolysisMin};
 
-    // first, absorb some glucose from intestinal lumen
+    // Active transport first
+    activeAbsorption = static_cast<double>(basalAbsorption__(body->generator())) / 1000.0;
+    activeAbsorption = min(activeAbsorption, glucoseInLumen);
+
+    glucoseInLumen       -= activeAbsorption;
+    glucoseInEnterocytes += activeAbsorption;
 
     if (glucoseInLumen > 0)
     {
-        // Active transport first
-        activeAbsorption = static_cast<double>(basalAbsorption__(body->generator())) / 1000.0;
+        // passive transport via GLUT2s now
+        glLumen       = glucoseInLumen / fluidVolumeInLumen;
+        glEnterocytes = glucoseInEnterocytes / fluidVolumeInEnterocytes;
+        double excess = glLumen - glEnterocytes;
 
-        if (activeAbsorption >= glucoseInLumen)
+        if (excess > 0)
         {
-            activeAbsorption      = glucoseInLumen;
-            glucoseInEnterocytes += activeAbsorption;
-            glucoseInLumen        = 0;
-        }
-        else
-        {
-            glucoseInEnterocytes += activeAbsorption;
-            glucoseInLumen       -= activeAbsorption;
+            // glucose concentration in lumen decides the number of GLUT2s available for transport.
+            // so, Vmax depends on glucose concentration in lumen
+            double x = static_cast<double>(Glut2VMAX_In__(body->generator())) / 1000.0;
+            double effectiveVmax = x * glLumen / peakGlucoseConcentrationInLumen;
+            effectiveVmax        = min(effectiveVmax, Glut2VMAX_In);
 
-            // passive transport via GLUT2s now
-            glLumen       = glucoseInLumen / fluidVolumeInLumen;
-            glEnterocytes = glucoseInEnterocytes / fluidVolumeInEnterocytes;
-            double diff   = glLumen - glEnterocytes;
+            passiveAbsorption = mmk(effectiveVmax, excess, Glut2Km_In);
+            passiveAbsorption = min(passiveAbsorption, glucoseInLumen);
 
-            if (diff > 0)
-            {
-                // glucose concentration in lumen decides the number of GLUT2s available for transport.
-                // so, Vmax depends on glucose concentration in lumen
-                x = static_cast<double>(Glut2VMAX_In__(body->generator())) / 1000.0;
-                double effectiveVmax = x * glLumen / peakGlucoseConcentrationInLumen;
-                effectiveVmax        = min(effectiveVmax, Glut2VMAX_In);
-
-                passiveAbsorption = effectiveVmax * diff / (diff + Glut2Km_In);
-                passiveAbsorption = min(passiveAbsorption, glucoseInLumen);
-
-                glucoseInEnterocytes += passiveAbsorption;
-                glucoseInLumen       -= passiveAbsorption;
-            }
+            glucoseInLumen       -= passiveAbsorption;
+            glucoseInEnterocytes += passiveAbsorption;
         }
     }
+}
 
-    // release some glucose to portal vein via Glut2s
+void Intestine::glucoseToPortalVein()
+{
+    static std::poisson_distribution<int> Glut2VMAX_Out__{1000.0 * Glut2VMAX_Out};
+
     glEnterocytes = glucoseInEnterocytes / fluidVolumeInEnterocytes;
     glPortalVein  = body->portalVein.getConcentration();
 
     toPortalVeinPerTick = 0;
 
-    double diff = glEnterocytes - glPortalVein;
+    double excess = glEnterocytes - glPortalVein;
 
-    if (diff > 0)
+    if (excess > 0)
     {
-        x = static_cast<double>(Glut2VMAX_Out__(body->generator())) / 1000.0;
-        toPortalVeinPerTick = x * diff / (diff + Glut2Km_Out);
+        double x = static_cast<double>(Glut2VMAX_Out__(body->generator())) / 1000.0;
+        toPortalVeinPerTick = mmk(x, excess, Glut2Km_Out);
         toPortalVeinPerTick = min(toPortalVeinPerTick, glucoseInEnterocytes);
 
         glucoseInEnterocytes -= toPortalVeinPerTick;
         body->portalVein.addGlucose(toPortalVeinPerTick);
     }
+}
 
-    // Modeling the glucose consumption by enterocytes: glycolysis to lactate.
-    // Glycolysis depends on insulin level. Consumed glucose becomes lactate (Ref: Gerich).
+void Intestine::glycolysisToLactate()
+{
+    static std::poisson_distribution<int> glycolysisMin__{1000.0 * glycolysisMin};
 
-    x = static_cast<double>(glycolysisMin__(body->generator())) / 1000.0;
+    double x = static_cast<double>(glycolysisMin__(body->generator())) / 1000.0;
     glycolysisPerTick = body->glycolysis(x, glycolysisMax);
 
-    diff = glycolysisPerTick - glucoseInEnterocytes;
+    double fromEnterocytes = min(glucoseInEnterocytes, glycolysisPerTick);
+    glucoseInEnterocytes -= fromEnterocytes;
 
-    if (diff > 0)
-    {
-        body->blood.removeGlucose(diff);
-        excessGlucoseInEnterocytes.amount = diff;
-        glucoseInEnterocytes       = 0;
-    }
-    else
-    {
-        glucoseInEnterocytes      -= glycolysisPerTick;
-        excessGlucoseInEnterocytes.amount = 0;
-    }
+    double needed = glycolysisPerTick - fromEnterocytes;
+    body->blood.removeGlucose(needed);
 
     body->blood.lactate += glycolysisPerTick;
 
-    excessGlucoseInEnterocytes.bloodBGL    = body->blood.getBGL();
-    excessGlucoseInEnterocytes.bloodMinBGL = body->blood.minGlucoseLevel;
+    // Diagnostics
+    glucoseFromBlood.amount      = needed;
+    glucoseFromBlood.bloodBGL    = body->blood.getBGL();
+    glucoseFromBlood.bloodMinBGL = body->blood.minGlucoseLevel;
+}
+
+void Intestine::absorbGlucose()
+{
+    // some of the glucose is absorbed by the enterocytes (some of which moves to the portal vein)
+
+    activeAbsorption  = 0;
+    passiveAbsorption = 0;
+
+    // first, absorb some glucose from intestinal lumen
+    if (glucoseInLumen > 0)    glucoseFromLumen();
+
+    // release some glucose to portal vein via Glut2s
+    glucoseToPortalVein();
+
+    // Modeling the glucose consumption by enterocytes: glycolysis to lactate.
+    // Glycolysis depends on insulin level. Consumed glucose becomes lactate (Ref: Gerich).
+    glycolysisToLactate();
 
     // log all the concentrations (in mmol/l)
     // peak concentrations should be 200mmol/l (lumen), 100mmol/l(enterocytes), 10mmol/l(portal vein)
 
-    glLumen       = (10.0 / 180.1559) * glucoseInLumen / fluidVolumeInLumen; // in mmol/l
-    glEnterocytes = (10.0 / 180.1559) * glucoseInEnterocytes / fluidVolumeInEnterocytes;
-    x             = body->portalVein.getConcentration();
-    glPortalVein  = (10.0 / 180.1559) * x;
-
-    glPortalVeinConcentration = x;
+    glLumen                   = (10.0 / 180.1559) * glucoseInLumen / fluidVolumeInLumen; // in mmol/l
+    glEnterocytes             = (10.0 / 180.1559) * glucoseInEnterocytes / fluidVolumeInEnterocytes;
+    glPortalVeinConcentration = body->portalVein.getConcentration();
+    glPortalVein              = (10.0 / 180.1559) * glPortalVeinConcentration;
 }
 
 // The BCAAs, leucine, isoleucine, and valine, represent 3 of the 20 amino acids that are used in the formation of

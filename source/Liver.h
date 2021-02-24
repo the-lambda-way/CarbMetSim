@@ -36,16 +36,16 @@ struct LiverParams
     double glucoseToNEFA = 0;
 
     double fluidVolume = 12; // dl; Meyer paper on gluconeogenesis did measurements on liver volume
-    double Glut2Km   = 20 * 180.1559 / 10.0; // mg/deciliter equal to 20 mmol/l (Frayn Table 2.2.1)
-    double Glut2VMAX = 50; //mg per kg per minute
+    double Glut2Km     = 20 * 180.1559 / 10.0; // mg/deciliter equal to 20 mmol/l (Frayn Table 2.2.1)
+    double Glut2VMAX   = 50; // mg per kg per minute
 };
 
-struct LipogenesisState
-{
-    double bodyWeight;
-    double toLipogenesis;
-    double fat;
-};
+// struct LipogenesisState
+// {
+//     double bodyWeight;
+//     double toLipogenesis;
+//     double fat;
+// };
 
 struct GlycogenSynthesisState
 {

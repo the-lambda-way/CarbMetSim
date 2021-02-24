@@ -38,7 +38,7 @@ struct MusclesParams
 
     double Glut4Km       = 5 * 180.1559 / 10.0; // mg/dl equivalent of 5 mmol/l
     double Glut4VMAX     = 3.5; // mg per kg per minute
-    double PeakGlut4VMAX = 2*3.5; // mg per kg per minute
+    double peakGlut4VMAX = 2 * 3.5; // mg per kg per minute
 };
 
 class Muscles
@@ -85,7 +85,7 @@ private:
 
     double Glut4Km;
     double Glut4VMAX;     // mg per kg per minute
-    double PeakGlut4VMAX; // mg per kg per minute
+    double peakGlut4VMAX; // mg per kg per minute
 
     double totalGlucoseAbsorbed = 0;
     double currEnergyNeed;

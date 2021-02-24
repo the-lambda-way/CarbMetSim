@@ -39,9 +39,10 @@ void Liver::glucoseAbsorption(std::poisson_distribution<int>& Glut2VMAX_)
 
     if (diff > 0)
     {
-        double x = static_cast<double>(Glut2VMAX_(body->generator()));
-        double scale = diff / (diff + Glut2Km);
-        absorptionPerTick = scale * x * body->bodyWeight / 1000.0;
+        double Vmax = static_cast<double>(Glut2VMAX_(body->generator()));
+        double scale = mmk(Vmax, diff, Glut2Km);
+
+        absorptionPerTick = scale * body->bodyWeight / 1000.0;
 
         if (absorptionPerTick > body->portalVein.getGlucose())
         {
@@ -82,6 +83,7 @@ void Liver::glycogenSynthesis()
 
     glucose -= toGlycogenPerTick;
 
+    // Diagnostics
     postGlycogen.glycogen = glycogen;
     postGlycogen.glucose  = glucose;
 }
@@ -190,9 +192,9 @@ void Liver::aminoAcidConsumption(std::poisson_distribution<int>& Glut2VMAX_)
 
     if (diff > 0)
     {
-        double x = static_cast<double>(Glut2VMAX_(body->generator()));
-        double scale = diff / (diff + Glut2Km);
-        releasePerTick = scale * x * body->bodyWeight / 1000.0;
+        double Vmax = static_cast<double>(Glut2VMAX_(body->generator()));
+        double scale = mmk(Vmax, diff, Glut2Km);
+        releasePerTick = scale * body->bodyWeight / 1000.0;
 
         assert(((void)"Releasing more glucose to blood than what is present in liver!", releasePerTick <= glucose));
 
