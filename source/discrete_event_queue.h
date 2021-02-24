@@ -38,7 +38,6 @@ class discrete_event_queue
     //               "Return value of the projection of Type must be an unsigned integer.");
 
 public:
-
     // Member types ----------------------------------------------------------------------------------------------------
     using value_type     = typename Container::value_type;
     using reference      = typename Container::reference;
@@ -137,12 +136,12 @@ public:
         return tick;
     }
 
-    unsigned get_next_fire_time()
+    unsigned get_next_fire_time() const
     {
         return next_fire_time;
     }
 
-    Container get_fired_events()
+    Container get_fired_events() const
     {
         return fired_events;
     }
@@ -182,7 +181,7 @@ public:
 
     void reset_ticks()
     {
-        tick = 0;
+        tick = -1;
     }
 
     void add(const value_type& v)
@@ -246,10 +245,10 @@ public:
 private:
     Container  events;
     Projection get_fire_time;
-    unsigned   tick = 0;
+    unsigned   tick = -1; // -1 allows users to start the clock at 0 with the first call to advance
 
     Container fired_events;
-    unsigned  next_fire_time = -1; // should begin at largest number
+    unsigned  next_fire_time = -1; // should begin at largest number so nothing gets fired
 
 
     class event_greater
@@ -292,7 +291,7 @@ private:
     {
         fired_events.clear();
 
-        // This single check is an optimization, since checking a cached value is potentially faster than projecting
+        // This additional check is an optimization, since checking a cached value is potentially faster than projecting
         // on every tick (at the least, caching will not slow it down).
         if (tick < next_fire_time)    return;
 
@@ -327,7 +326,7 @@ namespace DEQDetail
 
     template<class Alloc>
     struct is_allocator<Alloc, std::void_t<typename Alloc::value_type,
-	                                       decltype(std::declval<Alloc&>{}.allocate(std::size_t{}))>>
+	                                       decltype(std::declval<Alloc&>().allocate(std::size_t{}))>>
         : std::true_type
     {};
 

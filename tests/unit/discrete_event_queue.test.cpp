@@ -72,9 +72,9 @@ SCENARIO("Measure and advance ticks.")
 
         WHEN("the queue has not advanced")
         {
-            THEN("the tick count is 0.")
+            THEN("the tick count is unsigned(-1).")
             {
-                REQUIRE(queue.ticks() == 0);
+                REQUIRE(queue.ticks() == unsigned(-1));
             }
         }
 
@@ -82,14 +82,15 @@ SCENARIO("Measure and advance ticks.")
         {
             queue.advance();
 
-            THEN("the tick count is 1.")
+            THEN("the tick count is 0.")
             {
-                REQUIRE(queue.ticks() == 1);
+                REQUIRE(queue.ticks() == 0);
             }
         }
 
         WHEN("the queue has advanced by many ticks")
         {
+            queue.advance();
             queue.advance(5);
 
             THEN("the tick count is increased by that amount.")
@@ -111,9 +112,9 @@ SCENARIO("Reset ticks.")
         {
             queue.reset_ticks();
 
-            THEN("the tick count is zero.")
+            THEN("the tick count is unsigned(-1).")
             {
-                REQUIRE(queue.ticks() == 0);
+                REQUIRE(queue.ticks() == unsigned(-1));
             }
         }
     }
@@ -302,7 +303,7 @@ SCENARIO("Fire events.")
 
         WHEN("advance is called until the tick equals the tick count of the front event")
         {
-            for (unsigned i = 0; i != vals.front(); ++i)    queue.advance();
+            while (queue.ticks() != vals.front())    queue.advance();
 
             THEN("all the events equal to that tick are removed from the queue.")
             {
@@ -322,7 +323,7 @@ SCENARIO("Fire events.")
 
         WHEN("advance is called past an event and no more events are ready to fire")
         {
-            for (unsigned i = 0; i != vals.front(); ++i)    queue.advance();
+            while (queue.ticks() != vals.front())    queue.advance();
             queue.advance();
 
             THEN("no events should be removed from the queue.")
@@ -343,6 +344,7 @@ SCENARIO("Fire events.")
 
         WHEN("advance(unsigned) advances the tick to equal the tick count of the front event")
         {
+            queue.advance();
             queue.advance(10);
 
             THEN("all the events equal to that tick are removed from the queue.")
@@ -363,6 +365,7 @@ SCENARIO("Fire events.")
 
         WHEN("advance(unsigned) advances the tick to greater than the tick count of the front event")
         {
+            queue.advance();
             queue.advance(11);
 
             THEN("all the events less than that tick are removed from the queue.")
