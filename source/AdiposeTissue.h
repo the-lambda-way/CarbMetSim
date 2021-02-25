@@ -1,23 +1,12 @@
-//
-//  AdiposeTissue.h
-//  HumanBody
-//
-
-#ifndef __HumanBody__AdiposeTissue__
-#define __HumanBody__AdiposeTissue__
+#pragma once
 
 class HumanBody;
 
+
 class AdiposeTissue
 {
-    friend class HumanBody;
-
-    double fat; // fat in body in grams
-    HumanBody* body;
 public:
-
-    //Set Default Values
-    AdiposeTissue(HumanBody* myBody);
+    AdiposeTissue(HumanBody* body);
 
     void processTick();
     void setParams();
@@ -25,8 +14,9 @@ public:
     void lipogenesis(double glucoseInMG);
     void consumeFat(double kcal);
     void addFat(double newFatInMG);
+
+    double fat; // fat in body in grams
+
+private:
+    HumanBody* body;
 };
-
-
-
-#endif /* defined(__HumanBody__AdiposeTissue__) */

@@ -1,27 +1,45 @@
-#ifndef __HumanBody__Heart__
-#define __HumanBody__Heart__
+#pragma once
 
-#include "HumanBody.h"
+#include "common.h"
+
+class HumanBody;
+
+
+struct HeartParams
+{
+    // The heart absorbs glucose and some lactate (depends on its concentration). Glucose is absorbed via glut4. So,
+    // high insulin concentration (i.e. fed state) is required for the heart to use glucose for its energy needs. The
+    // following paper has numbers for how much glucose and lactate is used by the heart.
+    // Skeletal Muscle Glycolysis, Oxidation, and Storage of an Oral Glucose Load- Kelley et.al.
+    double basalGlucoseAbsorbed = 14; // mg per minute;
+
+    double Glut4Km   = 5 * 180.1559 / 10.0; // mg/dl equivalent of 5 mmol/l;
+    double Glut4VMAX = 0; // mg per kg per minute
+
+    double lactateOxidized = 0;
+};
+
 
 class Heart
 {
-    friend class HumanBody;
+public:
+    Heart(HumanBody* body);
 
-    double basalGlucoseAbsorbed_;
-    double Glut4Km_;
-    double Glut4VMAX_;
-    
+    void processTick();
+    void setParams(const HeartParams& params);
+
     double oxidationPerTick;
 
-    double lactateOxidized_;
-    HumanBody* body;
-    
-public:
-    Heart(HumanBody* mybody);
-    
-//The heart absorbs glucose and some lactate (depends on its concentration). Glucose is absorbed via glut4. So, high insulin concentration (i.e. fed state) is required for the heart to use glucose for its energy needs. The following paper has numbers for how much glucose and lactate is used by the heart.
-    void processTick();
-    void setParams();
-};
+    // Diagnostics
+    GlucoseState basalAbsorption;
+    // double glut4Absorption;
 
-#endif /* defined(__HumanBody__Heart__) */
+private:
+    HumanBody* body;
+
+    double basalGlucoseAbsorbed;
+    double Glut4Km;
+    double Glut4VMAX;
+
+    double lactateOxidized;
+};

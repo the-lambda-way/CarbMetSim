@@ -1,23 +1,39 @@
-#ifndef __HumanBody__Brain__
-#define __HumanBody__Brain__
+#pragma once
 
-#include <stdio.h>
-#include "HumanBody.h"
+#include "common.h"
+
+class HumanBody;
+
+
+struct BrainParams
+{
+    // 6 micromol per kg per minute = 6*180.1559/1000 mg per kg per minute = 1.08 mg per kg per minute
+	// 120 g per day = 83.333 mg per minute of glucose oxidized by brain
+    double glucoseOxidized  = 83.333; // mg per minute
+    double glucoseToAlanine = 0;
+    double bAAToGlutamine   = 0;
+};
 
 class Brain
 {
-    friend class HumanBody;
-
-    double glucoseOxidized_; // mg per minute
-    double glucoseToAlanine_;
-    double bAAToGlutamine_;
-    double oxidationPerTick;
-    HumanBody* body;
 public:
-    
-    Brain(HumanBody* myBody);
+    Brain(HumanBody* body);
     void processTick();
-    void setParams();
-};
+    void setParams(const BrainParams& params);
+    // void glucoseToLactate(int rate);
 
-#endif /* defined(__HumanBody__Brain__) */
+    double oxidationPerTick;
+
+    // Diagnostics
+    GlucoseState glucoseRemoved;
+
+private:
+    HumanBody* body;
+
+    double glucoseOxidized;
+    double glucoseToAlanine;
+    double bAAToGlutamine;
+
+    void oxidizeGlucose();
+    void glutamineFromBlood();
+};

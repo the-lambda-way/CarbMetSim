@@ -1,29 +1,48 @@
-#ifndef __HumanBody__Stomach__
-#define __HumanBody__Stomach__
+#pragma once
 
-#include "HumanBody.h"
+#include <random>
+#include "common.h"
+
+class HumanBody;
+class FoodType;
+
+
+struct StomachParams
+{
+    double geConstant = 500.0; // mg
+    double geSlopeMin = 0.03; // Min value for GE slope (applicable to fat)
+};
+
 
 class Stomach
 {
-    double geConstant_; // mg
-    double geSlopeMin_; // Min value for GE slope (applicable to fat) 
-   	// the amount of gastric emptying (mg per minute) = geConstant_ + geSlope*(total food in stomach in milligrams)
- 
-    double RAG; //  mg
-    double SAG; // mg
-    double protein; //mg
-    double fat; //mg
-
-    bool stomachEmpty;
-    
-    HumanBody* body;
 public:
-    //Set Default Values
-    Stomach(HumanBody* body_);
-    
-    void addFood(unsigned foodID, double howmuch);
-    void setParams();
-    void processTick();
-};
+    Stomach(HumanBody* body);
 
-#endif 
+    void addFood(const FoodType& food, double howmuch);
+    void setParams(const StomachParams& params);
+    void processTick();
+
+    double RAG     = 0; // mg
+    double SAG     = 0; // mg
+    double protein = 0; // mg
+    double fat     = 0; // mg
+
+    // Diagnostics
+    double totalFood        = 0;
+    double calorificDensity = 0;
+    double geSlope          = 0;
+    double ragInBolus       = 0;
+    double sagInBolus       = 0;
+    double proteinInBolus   = 0;
+    FatState fatInBolus;
+    bool stomachEmpty       = true;
+    bool stomachBecameEmpty = false;
+
+private:
+    HumanBody* body;
+
+    double geConstant; // mg
+    double geSlopeMin; // Min value for GE slope (applicable to fat)
+   	// the amount of gastric emptying (mg per minute) = geConstant + geSlope * (total food in stomach in milligrams)
+};

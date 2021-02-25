@@ -1,83 +1,78 @@
-#include <iostream>
-#include <math.h>
 #include "PortalVein.h"
+#include <cassert>
 #include "Blood.h"
 #include "HumanBody.h"
 
-PortalVein::PortalVein(HumanBody* body_)
+using namespace std;
+
+
+PortalVein::PortalVein(HumanBody* body)
+    : body{body}
 {
-    body = body_;
-    glucose = 0;
-    branchedAA = 0;
-    unbranchedAA = 0;
-    fluidVolume_ = 5; // dl
 }
 
 void PortalVein::processTick()
 {
-    double bgl = body->blood->getBGL();
-    double glucoseFromBlood = bgl*fluidVolume_;
-    body->blood->removeGlucose(glucoseFromBlood);
+    double bgl = body->blood.getBGL();
+    double glucoseFromBlood = bgl * fluidVolume;
+
+    body->blood.removeGlucose(glucoseFromBlood);
     glucose += glucoseFromBlood;
-    
-    //SimCtl::time_stamp();
-    //cout << " PortalVein:: " << glucose << " " << glucose/fluidVolume_ << " " << branchedAA << " " <<unbranchedAA << endl;
+
+    // Diagnostics
+    fromBlood.amount      = glucoseFromBlood;
+    fromBlood.bloodBGL    = bgl;
+    fromBlood.bloodMinBGL = body->blood.minGlucoseLevel;
 }
 
 void PortalVein::releaseAllGlucose()
 {
-    body->blood->addGlucose(glucose);
+    body->blood.addGlucose(glucose);
     glucose = 0;
 }
 
 void PortalVein::removeGlucose(double g)
 {
     glucose -= g;
-    if( glucose < 0 )
-    {
-        cout << "PortalVein glucose went negative\n";
-        exit(-1);
-    }
+    assert(((void)"PortalVein glucose went negative\n", glucose >= 0));
 }
 
-double PortalVein::getConcentration()
+double PortalVein::getConcentration() const
 {
-    double gl = glucose/fluidVolume_;
-    
-    //SimCtl::time_stamp();
-    //cout << "GL in Portal Vein: " << gl << endl;
-    
-    return gl;
+    return glucose / fluidVolume;
 }
 
-void PortalVein::setParams()
+void PortalVein::addGlucose(double g)
 {
-    for( ParamSet::iterator itr = body->metabolicParameters[body->bodyState][PORTAL_VEIN].begin();
-        itr != body->metabolicParameters[body->bodyState][PORTAL_VEIN].end(); itr++)
-    {
-        if(itr->first.compare("fluidVolume_") == 0)
-        {
-            fluidVolume_ = itr->second;
-        }
-    }
+    glucose += g;
+}
+
+double PortalVein::getGlucose() const
+{
+    return glucose;
+}
+
+void PortalVein::setParams(const PortalVeinParams& params)
+{
+    fluidVolume = params.fluidVolume;
 }
 
 void PortalVein::addAminoAcids(double aa)
 {
-    branchedAA += 0.15*aa;
-    unbranchedAA += 0.85*aa;
-    //SimCtl::time_stamp();
-    //cout << " PortalVein: bAA " << branchedAA << ", uAA " << unbranchedAA << endl;
+    branchedAA   += 0.15 * aa;
+    unbranchedAA += 0.85 * aa;
 }
 
 void PortalVein::releaseAminoAcids()
 {
     // 93% unbranched amino acids consumed by liver to make alanine
-    body->blood->alanine += 0.93*unbranchedAA;
-    body->blood->unbranchedAminoAcids += 0.07*unbranchedAA;
+    body->blood.alanine              += 0.93 * unbranchedAA;
+    body->blood.unbranchedAminoAcids += 0.07 * unbranchedAA;
     unbranchedAA = 0;
-    body->blood->branchedAminoAcids += branchedAA;
+
+    body->blood.branchedAminoAcids += branchedAA;
     branchedAA = 0;
+
     // who consumes these amino acids from blood other than liver?
     // brain consumes branched amino acids
 }

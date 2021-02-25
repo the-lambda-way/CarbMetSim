@@ -1,49 +1,39 @@
 #include "AdiposeTissue.h"
-#include "Blood.h"
-#include <stdlib.h>
-#include <iostream>
+#include "HumanBody.h"
+
+using namespace std;
+
 
 void AdiposeTissue::processTick()
 {
-    //SimCtl::time_stamp();
-    //cout << " BodyWeight: " << body->bodyWeight_ << endl;
 }
 
 void AdiposeTissue::setParams()
 {
 }
 
-
-AdiposeTissue::AdiposeTissue(HumanBody* myBody)
+AdiposeTissue::AdiposeTissue(HumanBody* body)
+    : body{body}
 {
-    body = myBody;
-    //fat = (body->fatFraction_)*(body->bodyWeight)*1000.0;
+    // fat = body->fatFraction * body->bodyWeight * 1000.0;
     // will be set by HumanBody once it gets the bodyWeight
 }
 
 void AdiposeTissue::lipogenesis(double glucoseInMG)
 {
-    // one gram of glucose has 4kcal of energy
+    // one gram of glucose has 4 kcal of energy
     // one gram of TAG has 9 kcal of energy
-    //cout << "BodyWeight: Lipogenesis " << body->bodyWeight_ << " glucose " << glucoseInMG << " fat " << fat << endl;
-    body->bodyWeight -= fat/1000.0;
-    fat += (glucoseInMG/1000.0)*4.0/9.0;
-    body->bodyWeight += fat/1000.0;
-    //cout << "BodyWeight: Lipogenesis " << body->bodyWeight_ << " glucose " << glucoseInMG << " fat " << fat << endl;
+    addFat(glucoseInMG * 4.0 / 9.0);
 }
 
 void AdiposeTissue::consumeFat(double kcal)
 {
-    body->bodyWeight -= fat/1000.0;
-    fat -= kcal/9.0;
-    body->bodyWeight += fat/1000.0;
+    addFat(-1000.0 * kcal / 9.0);
 }
 
 void AdiposeTissue::addFat(double newFatInMG)
 {
-    body->bodyWeight -= fat/1000.0;
-    fat += newFatInMG/1000.0;
-    body->bodyWeight += fat/1000.0;
-    //cout << "BodyWeight: addFat " << body->bodyWeight_ << " newfat " << newFatInMG << endl;
+    double newFat = newFatInMG / 1000.0;
+    fat += newFat;
+    body->bodyWeight += newFat / 1000.0;
 }
-

@@ -1,338 +1,237 @@
 #include "Blood.h"
-#include "Liver.h"
-#include <stdlib.h>
+#include <cassert>
+#include <exception>
 #include <iostream>
-#include "SimCtl.h"
-#include <math.h>
+#include <iterator> // std::cbegin, std::cend
+#include <numeric> // std::reduce
+#include <random>
+#include <stdlib.h>
+#include "HumanBody.h"
+#include "Liver.h"
 
-extern SimCtl* sim;
+using namespace std;
 
-Blood::Blood(HumanBody* myBody)
+
+Blood::Blood(HumanBody* body)
+    : body{body}
 {
-    body = myBody;
-
-    //tracking RBCs
-    bin0 = 1;
-    rbcBirthRate_ = 144.0*60*24; // in millions per day (144 million RBCs take birth every minute)
-    glycationProbSlope_ = 0.085/10000.0;
-    glycationProbConst_ = 0;
-    
-    // all contents are in units of milligrams of glucose
-    fluidVolume_ = 50.0; // in deciliters
-    
-    gngSubstrates = 0;
-    alanine = 0;
-    branchedAminoAcids = 0;
-    unbranchedAminoAcids = 0;
-    glutamine = 0;
-    //baseInsulinLevel_ = 1.0/6.0;
-    baseInsulinLevel_ = 0;
-    peakInsulinLevel_ = 1.0;
-    insulinLevel = baseInsulinLevel_;
-
-    //Gerich: insulin dependent: 0.5 to 5 micromol per kg per minute
-    glycolysisMin_ = 0.35 * 0.5 * 0.1801559;
-    //glycolysisMax_ = 0.35 * 5 * 0.1801559;
-    glycolysisMax_ = 0.9*0.35 * 2 * 0.1801559;
-    
-    glycolysisToLactate_ = 1.0;
-
-    baseGlucoseLevel_ = 100; //mg/dl
-    glucose = baseGlucoseLevel_ * fluidVolume_;
-    highGlucoseLevel_ = 200; //mg/dl
-    minGlucoseLevel_ = 40; //mg/dl
-    highLactateLevel_ = 4053.51; // mg
-    // 9 mmol/l of lactate = 4.5 mmol/l of glucose = 4.5*180.1559*5 mg of glucose = 4053.51mg of glucose
-    lactate = 450.39; //mg
-    // 1mmol/l of lactate = 0.5mmol/l of glucose = 0.5*180.1559*5 mg of glucose = 450.39 mg of glucose
-
     // initial number of RBCs
-    for(int i = 0; i <= MAXAGE; i++)
+    for (auto& bin : ageBins)
     {
-        AgeBins[i].RBCs = 0.94*rbcBirthRate_;
-        AgeBins[i].glycatedRBCs = 0.06*rbcBirthRate_;
+        bin.RBCs         = 0.94 * rbcBirthRate;
+        bin.glycatedRBCs = 0.06 * rbcBirthRate;
     }
-    
-    avgBGL = 100.0;
-
-    avgBGLOneDay = 0;
-    avgBGLOneDaySum = 0;
-    avgBGLOneDayCount = 0;
-
-	totalGlycolysisSoFar = 0;
 }
 
 void Blood::updateRBCs()
 {
     // will be called once a day
-    
-    bin0--;
-    
-    if( bin0 < 0 )
-        bin0 = MAXAGE;
-    
-    //New RBCs take birth
-    AgeBins[bin0].RBCs = rbcBirthRate_;
-    AgeBins[bin0].glycatedRBCs = 0;
-    
-    //std::cout << "New RBCs: " << AgeBins[bin0].RBCs << " bin0 " << bin0 << std::endl;
-    
+
+    --bin0;
+    if (bin0 < 0)    bin0 = MAX_AGE;
+
+    // New RBCs take birth
+    ageBins[bin0].RBCs         = rbcBirthRate;
+    ageBins[bin0].glycatedRBCs = 0;
+
     // Old (100 to 120 days old) RBCs die
-    int start_bin = bin0 + HUNDREDDAYS;
-    
-    if( start_bin > MAXAGE )
-        start_bin -= (MAXAGE + 1);
-    
-    //std::cout << "Old RBCs Die\n";
-    
-    for(int i = 0; i <= (MAXAGE-HUNDREDDAYS); i++)
+    int start_bin = bin0 + HUNDRED_DAYS;
+    if (start_bin > MAX_AGE)    start_bin -= MAX_AGE + 1;
+
+    for (int i = 0; i <= MAX_AGE - HUNDRED_DAYS; ++i)
     {
         int j = start_bin + i;
-        
-        if( j < 0 )
-        {
-            SimCtl::time_stamp();
-            cout << " RBC bin value negative " << j << endl;
-            exit(-1);
-        }
-        
-        if( j > MAXAGE )
-            j -= (MAXAGE + 1);
-            
-        double kill_rate = ((double)(i))/((double)(MAXAGE-HUNDREDDAYS));
-        
-        AgeBins[j].RBCs *= (1.0 - kill_rate);
-        AgeBins[j].glycatedRBCs *= (1.0 - kill_rate);
-        
-        //std::cout << "bin: " << j << ", RBCs " << AgeBins[j].RBCs << ", Glycated RBCs " << AgeBins[j].glycatedRBCs << " killrate " << kill_rate << std::endl;
+        if (j > MAX_AGE)    j -= MAX_AGE + 1;
+
+        assert(((void)"RBC bin value negative", j >= 0));
+
+        killRate[i] = static_cast<double>(i) / static_cast<double>(MAX_AGE - HUNDRED_DAYS);
+
+        ageBins[j].RBCs         *= 1.0 - killRate[i];
+        ageBins[j].glycatedRBCs *= 1.0 - killRate[i];
+
+        killBin[i] = j;
     }
-    
-    //glycate the RBCs
-    double glycation_prob = avgBGLOneDay * glycationProbSlope_ + glycationProbConst_;
-    
-    //std::cout << "RBCs glycate\n";
-    
-    for(int i = 0; i <= MAXAGE; i++)
+
+    // glycate the RBCs
+    double glycationProb = avgBGLOneDay * glycationProbSlope + glycationProbConst;
+
+    for (auto& bin : ageBins)
     {
-        double newly_glycated = glycation_prob * AgeBins[i].RBCs;
-        
-        AgeBins[i].RBCs -= newly_glycated;
-        AgeBins[i].glycatedRBCs += newly_glycated;
-        
-        //std::cout << "bin: " << i << ", RBCs " << AgeBins[i].RBCs << ", Glycated RBCs " << AgeBins[i].glycatedRBCs << std::endl;
+        double newlyGlycated = glycationProb * bin.RBCs;
+
+        bin.RBCs         -= newlyGlycated;
+        bin.glycatedRBCs += newlyGlycated;
     }
-    
-    //SimCtl::time_stamp();
-    //std::cout << " New HbA1c: " << currentHbA1c() << std::endl;
 }
 
-double Blood::currentHbA1c()
+double Blood::currentHbA1c() const
 {
-    double rbcs = 0;
-    double glycated_rbcs = 0;
-    
-    for(int i = 0; i <= MAXAGE; i++)
+    double RBCs         = 0;
+    double glycatedRBCs = 0;
+
+    for (const auto& bin : ageBins)
     {
-        rbcs += AgeBins[i].RBCs;
-        rbcs += AgeBins[i].glycatedRBCs;
-        glycated_rbcs += AgeBins[i].glycatedRBCs;
+        RBCs         += bin.RBCs;
+        glycatedRBCs += bin.glycatedRBCs;
     }
-    
-    if(rbcs == 0)
+
+    assert(RBCs > 0);
+
+    return glycatedRBCs / (RBCs + glycatedRBCs);
+}
+
+void Blood::processTick()
+{
+    glycolysis();
+    updateInsulinLevel();
+
+    // calculating average bgl during a day
+
+    if (avgBGLOneDayCount == ONE_DAY)
     {
-        std::cerr << "Error in Bloody::currentHbA1c\n";
-        exit(1);
+        avgBGLOneDay      = avgBGLOneDaySum / ONE_DAY;
+        avgBGLOneDaySum   = 0;
+        avgBGLOneDayCount = 0;
+
+        updateRBCs();
+        RBCsUpdated = true;
     }
-    
-    return glycated_rbcs/rbcs;
+    else
+        RBCsUpdated = false;
+
+    avgBGLOneDaySum += getBGL();
+    ++avgBGLOneDayCount;
+
+}
+
+void Blood::setParams(const BloodParams& params)
+{
+    rbcBirthRate        = params.rbcBirthRate;
+    glycationProbSlope  = params.glycationProbSlope;
+    glycationProbConst  = params.glycationProbConst;
+    minGlucoseLevel     = params.minGlucoseLevel;
+    baseGlucoseLevel    = params.baseGlucoseLevel;
+    glucose             = fluidVolume * baseGlucoseLevel;
+
+    if (params.baseInsulinLevel >= body->insulinImpactOnGNG_Mean)
+        throw out_of_range("error configuring baseInsulinLevel and insulinImpactOnGNG");
+    if (params.baseInsulinLevel >= body->insulinImpactGlycogenBreakdownInLiver_Mean)
+        throw out_of_range("error configuring baseInsulinLevel and insulinImpactGlycogenBreakdownInLiver");
+    baseInsulinLevel = params.baseInsulinLevel;
+
+    if (params.baseInsulinLevel >= body->insulinImpactOnGNG_Mean)
+        throw out_of_range("error configuring baseInsulinLevel and insulinImpactOnGNG");
+    insulinLevel = baseInsulinLevel;
+
+    peakInsulinLevel = params.peakInsulinLevel;
+
+    if (params.highGlucoseLevel <= baseGlucoseLevel)    throw out_of_range("highGlucoseLevel <= baseGlucoseLevel");
+    highGlucoseLevel = params.highGlucoseLevel;
+
+    highLactateLevel    = params.highLactateLevel;
+    glycolysisMin       = params.glycolysisMin;
+    glycolysisMax       = params.glycolysisMax;
+    glycolysisToLactate = params.glycolysisToLactate;
+}
+
+void Blood::glycolysis()
+{
+    static std::poisson_distribution<int> glycolysisMin__ (1000.0 * glycolysisMin);
+
+    // RBCs consume about 25mg of glucose every minute and convert it to lactate via glycolysis.
+    // Gerich: Glycolysis. Depends on insulin level. Some of the consumed glucose becomes lactate.
+
+    double x = static_cast<double>(glycolysisMin__(body->generator())) / 1000.0;
+    glycolysisPerTick = min(glucose, body->glycolysis(x, glycolysisMax));
+
+    glucose -= glycolysisPerTick;
+    lactate += glycolysisToLactate * glycolysisPerTick;
+
+    totalGlycolysisSoFar += glycolysisPerTick;
 }
 
 void Blood::updateInsulinLevel()
 {
-    	double bgl = glucose/fluidVolume_;
-        if( bgl >= highGlucoseLevel_)
-                insulinLevel = peakInsulinLevel_;
+    double bgl = glucose / fluidVolume;
+
+    if (bgl >= highGlucoseLevel)
+        insulinLevel = peakInsulinLevel;
+
+    else if (bgl <= minGlucoseLevel)
+        insulinLevel = 0;
+
+    else if (bgl >= baseGlucoseLevel)
+        insulinLevel = baseInsulinLevel + (peakInsulinLevel - baseInsulinLevel)
+                     * (bgl - baseGlucoseLevel) / (highGlucoseLevel - baseGlucoseLevel);
+
+    else if (body->isExercising())
+    {
+        if (body->percentVO2Max >= body->intensityPeakGlucoseProd)
+            insulinLevel = 0;
+
         else
         {
-                if( bgl <= minGlucoseLevel_ )
-                        insulinLevel = 0;
-                else
-                {
-                                if( bgl >= baseGlucoseLevel_ )
-                                        insulinLevel = baseInsulinLevel_ + (peakInsulinLevel_ - baseInsulinLevel_)
-                                                *(bgl - baseGlucoseLevel_)/(highGlucoseLevel_ - baseGlucoseLevel_);
-                                else
-                                {
-                                        if( body->isExercising() )
-                                        {
-                                                if( body->percentVO2Max >= body->intensityPeakGlucoseProd_ )
-                                                {
-                                                        insulinLevel = 0;
-                                                }
-                                                else
-                                                {
-                                                        double restIntensity = 3.5*2.0/(body->vo2Max);
-                                                        if( body->percentVO2Max < restIntensity )
-                                                        {
-                                                                cout << "%VO2 less than restIntensity when body is exercising" << endl;
-                                                                exit(-1);
-                                                        }
-                                                        insulinLevel = baseInsulinLevel_ - (body->percentVO2Max - restIntensity)*
-                                                                        (baseInsulinLevel_)/(body->intensityPeakGlucoseProd_ - restIntensity);
-                                                }
-                                        }
-                                        else
-                                        {
-                                           insulinLevel = (baseInsulinLevel_)*(bgl - minGlucoseLevel_)/(baseGlucoseLevel_ - minGlucoseLevel_);
-                                        }
-                                }
-                }
+            double restIntensity = 3.5 * 2.0 / body->VO2Max;
+
+            assert(((void)"%VO2 less than restIntensity when body is exercising",
+                   body->percentVO2Max >= restIntensity));
+
+            insulinLevel = baseInsulinLevel - (body->percentVO2Max - restIntensity)
+                         * baseInsulinLevel / (body->intensityPeakGlucoseProd - restIntensity);
         }
-}
-
-void Blood::processTick(){
-    
-    double x; // to hold the random samples
-
-    static std::poisson_distribution<int> glycolysisMin__ (1000.0*glycolysisMin_);
-    
-    //RBCs consume about 25mg of glucose every minute and convert it to lactate via glycolysis.
-    //Gerich: Glycolysis. Depends on insulin level. Some of the consumed glucose becomes lactate.
-    
-    x = (double)(glycolysisMin__(sim->generator))/1000.0;
-    double toGlycolysis = body->glycolysis(x,glycolysisMax_);
-
-    if( toGlycolysis > glucose)
-        toGlycolysis = glucose;
-    
-    glucose -= toGlycolysis;
-    glycolysisPerTick = toGlycolysis;
-    body->blood->lactate += glycolysisToLactate_*toGlycolysis;
-    
-    
-    //update insulin level
-
-    updateInsulinLevel();
-
-    //calculating average bgl during a day
-    
-    if( avgBGLOneDayCount == ONEDAY )
-    {
-        avgBGLOneDay = avgBGLOneDaySum/avgBGLOneDayCount;
-        avgBGLOneDaySum = 0;
-        avgBGLOneDayCount = 0;
-        updateRBCs();
-        //SimCtl::time_stamp();
-        //cout << " Blood::avgBGL " << avgBGLOneDay << endl;
-    }
-    
-    double bgl = glucose/fluidVolume_;
-    avgBGLOneDaySum += bgl;
-    avgBGLOneDayCount++;
-
-    //SimCtl::time_stamp();
-    //cout << " Blood:: glycolysis " << glycolysisPerTick << endl;
-    totalGlycolysisSoFar += glycolysisPerTick;
-    //SimCtl::time_stamp();
-    //cout << " Blood:: totalGlycolysis " << totalGlycolysisSoFar << endl;
-    SimCtl::time_stamp();
-    cout << " Blood:: insulinLevel " << insulinLevel << endl;
-    //" lactate " << lactate << " glutamine " << glutamine << " alanine " << alanine << " gngsubs " << gngSubstrates << " bAA " << branchedAminoAcids << " uAA " <<  unbranchedAminoAcids << endl;
-}
-
-void Blood::setParams()
-{
-    for( ParamSet::iterator itr = body->metabolicParameters[body->bodyState][BLOOD].begin();
-        itr != body->metabolicParameters[body->bodyState][BLOOD].end(); itr++)
-    {
-        if(itr->first.compare("rbcBirthRate_") == 0)
-            rbcBirthRate_= itr->second;
-        
-        if(itr->first.compare("glycationProbSlope_") == 0)
-            glycationProbSlope_= itr->second;
-
-        if(itr->first.compare("glycationProbConst_") == 0)
-            glycationProbConst_= itr->second;
-
-        if(itr->first.compare("minGlucoseLevel_") == 0)
-             minGlucoseLevel_= itr->second;
-    
-        if(itr->first.compare("baseGlucoseLevel_") == 0)
-	{
-             baseGlucoseLevel_= itr->second;
-	     glucose = fluidVolume_ * baseGlucoseLevel_; 
-	}
-
-        if(itr->first.compare("baseInsulinLevel_") == 0)
-	{
-             baseInsulinLevel_= itr->second;
-	     insulinLevel = baseInsulinLevel_; 
-	}
-        if(itr->first.compare("peakInsulinLevel_") == 0)
-	{
-             peakInsulinLevel_= itr->second;
-	}
-
-        if(itr->first.compare("highGlucoseLevel_") == 0)
-            highGlucoseLevel_= itr->second;
-        
-        if(itr->first.compare("highLactateLevel_") == 0)
-            highLactateLevel_= itr->second;
-        
-        if(itr->first.compare("glycolysisMin_") == 0)
-             glycolysisMin_= itr->second;
-        
-        if(itr->first.compare("glycolysisMax_") == 0)
-            glycolysisMax_= itr->second;
-        
-        if(itr->first.compare("glycolysisToLactate_") == 0)
-            glycolysisToLactate_= itr->second;
     }
 
-    if( highGlucoseLevel_ <= baseGlucoseLevel_ )
-    {
-	cout << "highGlucoseLevel_ <= baseGlucoseLevel_" << endl;
-	exit(-1);
-    }
+    else
+        insulinLevel = baseInsulinLevel * (bgl - minGlucoseLevel) / (baseGlucoseLevel - minGlucoseLevel);
 }
 
 void Blood::removeGlucose(double howmuch)
 {
     glucose -= howmuch;
-    
-    //std::cout << "Glucose consumed " << howmuch << " ,glucose left " << glucose << std::endl;
-    
-    if( getBGL() <= minGlucoseLevel_ )
-    {
-        SimCtl::time_stamp();
-        std::cout << " bgl dips to: " << getBGL() << std::endl;
-        exit(-1);
-    }
-    
 }
 
 void Blood::addGlucose(double howmuch)
 {
     glucose += howmuch;
-    //SimCtl::time_stamp();
-    //std::cout << " BGL: " << getBGL() << std::endl;
 }
 
-double Blood::gngFromHighLactate(double rate_)
+double Blood::getBGL() const
 {
-    //Gluconeogenesis will occur even in the presence of high insulin in proportion to lactate concentration. High lactate concentration (e.g. due to high glycolytic activity) would cause gluconeogenesis to happen even if insulin concentration is high. But then Gluconeogenesis would contribute to glycogen store of the liver (rather than generating glucose).
-    // rate_ is in units of mg per kg per minute
-    
-    double x = rate_ * lactate/highLactateLevel_;
-    
-    if( x > lactate )
-        x = lactate;
-    
+    return glucose / fluidVolume;
+}
+
+double Blood::getGNGSubstrates() const
+{
+    return gngSubstrates + lactate + alanine + glutamine;
+}
+
+double Blood::baseBGL() const
+{
+    return baseGlucoseLevel;
+}
+
+double Blood::highBGL() const
+{
+    return highGlucoseLevel;
+}
+
+double Blood::volume() const
+{
+    return fluidVolume;
+}
+
+// rate is in units of mg per kg per minute
+double Blood::gngFromHighLactate(double rate)
+{
+    // Gluconeogenesis will occur even in the presence of high insulin in proportion to lactate concentration. High
+    // lactate concentration (e.g. due to high glycolytic activity) would cause gluconeogenesis to happen even if
+    // insulin concentration is high. But then Gluconeogenesis would contribute to glycogen store of the liver (rather
+    // than generating glucose).
+
+    double x = rate * lactate / highLactateLevel;
+    x = min(x, lactate);
+
     lactate -= x;
     return x;
 }
-
-
-
-
-    

@@ -1,233 +1,162 @@
-#include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
-#include <string>
-#include <string.h>
-#include <iostream>
-#include <fstream>
 #include "SimCtl.h"
-#include "HumanBody.h"
-#include <iomanip>
-#include <fcntl.h>
-#include <sys/stat.h>
-
+#include <algorithm>
 
 using namespace std;
 
-// Global variables
 
-SimCtl* sim;
-HumanBody	*body;
-unsigned SimCtl::ticks=0;
-
-void SimCtl::time_stamp()
+unsigned EventFireTime::operator()(const std::shared_ptr<Event>& event) const
 {
-    cout << sim->elapsed_days() << ":" << sim->elapsed_hours() << ":" <<  sim->elapsed_minutes() 
-	<< " " << ticks << " ";
+    return event->fireTime;
 }
 
-bool SimCtl::dayOver()
+Event::Event(unsigned fireTime, EventType type)
+    : fireTime{fireTime}, eventType{type}
 {
-        if( ((ticks % TICKS_PER_DAY) == 0) && (ticks > 0) )
-                return true;
-        else
-                return false;
 }
 
-void SimCtl::run_simulation()
+FoodEvent::FoodEvent(unsigned fireTime, unsigned quantity, unsigned foodID)
+    : Event{fireTime, EventType::FOOD}, quantity{quantity}, foodID{foodID}
 {
-    // Always in this loop
-    while(true) {
-        int val;
-        
-        while( (val = fire_event()) == 1 );
-        
-        // At this point:
-        // no more event to fire;
-        
-        body->processTick();
-        
-        ticks++;
-        
-        //cout << elapsed_days() << ":" << elapsed_hours() << ":" << elapsed_minutes() << endl;
-    }
 }
 
-int SimCtl::fire_event()
+ExerciseEvent::ExerciseEvent(unsigned fireTime, unsigned duration, unsigned exerciseID)
+    : Event{fireTime, EventType::EXERCISE}, duration{duration}, exerciseID{exerciseID}
 {
-    Event *event_ = (Event *)eventQ.priq_gethead();
-    
-    if( !event_ )
-    {
-        cout << "No event left" << endl;
-        exit(-1);
-    }
-    
-    if (event_->fireTime_ > ticks)
-        return -1;
-    
-    // Fire the event
-    
-    //cout << "ticks =" << ticks << ": " << elapsed_days() << "::" << elapsed_hours() << "::" << elapsed_minutes() << endl;
-    //cout << "event_->fireTime_ : " << event_->fireTime_ << endl;
-    
-    EventType event_type = event_->eventType_;
-    
-    switch(event_type) {
-        case FOOD:
-            body->processFoodEvent( ((FoodEvent*)event_)->foodID_, ((FoodEvent*)event_)->quantity_);
-            break;
-        case EXERCISE:
-            body->processExerciseEvent(((ExerciseEvent*)event_)->exerciseID_, ((ExerciseEvent*)event_)->duration_);
-            break;
-        case HALT:
-	    SimCtl::time_stamp();
-    	    cout << " weight " << body->bodyWeight << endl;
-            exit(0);
-        default:
-            break;
-    } // end switch case
-   	
-    event_ = (Event *)eventQ.priq_rmhead();
-   	delete event_;
-    return 1;
 }
 
-void SimCtl::addEvent(unsigned fireTime, unsigned type, unsigned subtype, unsigned howmuch)
+HaltEvent::HaltEvent(unsigned fireTime)
+    : Event{fireTime, EventType::HALT}
+{
+}
+
+SimCtl::SimCtl(std::string_view seedString,
+               std::map<BodyState, MetabolicParams> metabolicParameters,
+               std::map<unsigned, FoodType> foodTypes,
+               std::map<unsigned, ExerciseType> exerciseTypes)
+    : humanBody{this, move(metabolicParameters), move(foodTypes), move(exerciseTypes)}
+{
+    body          = &humanBody;
+    adiposeTissue = &humanBody.adiposeTissue;
+    blood         = &humanBody.blood;
+    brain         = &humanBody.brain;
+    liver         = &humanBody.liver;
+    heart         = &humanBody.heart;
+    intestine     = &humanBody.intestine;
+    kidneys       = &humanBody.kidneys;
+    muscles       = &humanBody.muscles;
+    portalVein    = &humanBody.portalVein;
+    stomach       = &humanBody.stomach;
+
+    seed_seq seed(seedString.begin(), seedString.end());
+    generator.seed(seed);
+}
+
+void SimCtl::addEvent(unsigned fireTime, EventType type, unsigned id, unsigned howmuch)
 {
     switch (type)
     {
-        {
-        case 0:
-            FoodEvent* e = new FoodEvent(fireTime, howmuch, subtype);
-            eventQ.priq_add(e);
+        case EventType::FOOD:
+            queue.emplace(new FoodEvent{fireTime, howmuch, id});
             break;
-        }
-        {
-        case 1:
-            ExerciseEvent* f = new ExerciseEvent(fireTime, howmuch, subtype);
-            eventQ.priq_add(f);
+        case EventType::EXERCISE:
+            queue.emplace(new ExerciseEvent{fireTime, howmuch, id});
             break;
-        }
-        {
-        case 2:
-            HaltEvent* g = new HaltEvent(fireTime);
-            eventQ.priq_add(g);
+        case EventType::HALT:
+            queue.emplace(new HaltEvent{fireTime});
             break;
-        }
-        {
         default:
             break;
-        }
     }
 }
 
-void  SimCtl::readEvents(string file)
+void SimCtl::addEvent(shared_ptr<Event> event)
 {
+    queue.add(move(event));
+}
 
-    //ifstream cfg(file);
-    ifstream ifl;
-    ifl.open(file);
-    string line;
-    char* str = NULL;
-    char* ts = NULL;
-    
-    if( ifl.is_open() )
+bool SimCtl::runTick()
+{
+    queue.advance();
+
+    if (queue.events_were_fired())
     {
-    
-        while( getline(ifl,line) )
+        handleEvents();
+        if (haltEventFired)    return false;
+    }
+
+    humanBody.processTick();
+
+    return true;
+}
+
+void SimCtl::runToHalt()
+{
+    while (runTick());
+}
+
+bool SimCtl::eventsWereFired() const
+{
+    return queue.events_were_fired();
+}
+
+vector<shared_ptr<Event>> SimCtl::getFiredEvents() const
+{
+    return queue.get_fired_events();
+}
+
+unsigned SimCtl::elapsedDays() const
+{
+    return queue.ticks() / TICKS_PER_DAY;
+}
+
+unsigned SimCtl::elapsedHours() const
+{
+    int x = queue.ticks() % TICKS_PER_DAY;
+    return x / TICKS_PER_HOUR;
+}
+
+unsigned SimCtl::elapsedMinutes() const
+{
+    int x = queue.ticks() % TICKS_PER_DAY;
+    return x % TICKS_PER_HOUR;
+}
+
+unsigned SimCtl::ticks() const
+{
+    return queue.ticks();
+}
+
+unsigned SimCtl::timeToTicks(unsigned days, unsigned hours, unsigned minutes)
+{
+    return days * TICKS_PER_DAY + hours * TICKS_PER_HOUR + minutes;
+}
+
+bool SimCtl::dayOver() const
+{
+    return queue.ticks() % TICKS_PER_DAY == 0 && queue.ticks() != 0;
+}
+
+void SimCtl::handleEvents()
+{
+    for (const auto& event : queue.get_fired_events())
+    {
+        switch (event->eventType)
         {
-            str = new char[line.length() + 1];
-            strcpy(str, line.c_str());
-            
-		// get the time stamp
-            char* tok = strtok(str, " ");
-        
-            
-            //First token is the time stamp
-            ts = new char[line.length() + 1];
-            strcpy(ts, tok);
-
-            tok = strtok(NULL, " ");
-            unsigned type = (unsigned)atoi(tok);
-            tok = strtok(NULL, " ");
-            unsigned subtype = (unsigned)atoi(tok);
-            tok = strtok(NULL, " ");
-            unsigned howmuch = (unsigned)atoi(tok);
-            
-            tok = strtok(ts, ":");
-            unsigned day = (unsigned)atoi(tok); // day
-            tok = strtok(NULL, ":");
-            unsigned hour = (unsigned)atoi(tok);
-            tok = strtok(NULL, ":");
-            unsigned minutes = (unsigned)atoi(tok);
-            unsigned fireTime = day* TICKS_PER_DAY + hour* TICKS_PER_HOUR + minutes;
-
-            //cout<< day<<":"<<hour<<":"<<minutes<< " " << type << " " << subtype << " " << howmuch << endl;
-            
-            
-            addEvent(fireTime, type, subtype, howmuch);
-            
-            delete [] str;
-            delete [] ts;
+            case EventType::FOOD:
+            {
+                shared_ptr<FoodEvent> food = dynamic_pointer_cast<FoodEvent>(event);
+                humanBody.processFoodEvent(food->foodID, food->quantity);
+                break;
+            }
+            case EventType::EXERCISE:
+            {
+                shared_ptr<ExerciseEvent> exercise = dynamic_pointer_cast<ExerciseEvent>(event);
+                humanBody.processExerciseEvent(exercise->exerciseID, exercise->duration);
+                break;
+            }
+            case EventType::HALT:
+                haltEventFired = true;
+                return;
         }
-        ifl.close();
-    }
-    else
-    {
-        cout << "Error opening " << file << endl;
-        exit(1);
     }
 }
-
-SimCtl::SimCtl(string seed_string)
-:generator(1)
-{
-    ticks = 0;
-
-    std::seed_seq seed (seed_string.begin(),seed_string.end());
-    generator.seed (seed);
-}
-
-
-/* Controlling process for the simulator.
- */
-
-int main(int argc, char *argv[])
-{
-    cout << std::fixed;
-    cout << std::setprecision(3);
-    
-    if (argc != 7) {
-        cout << "Syntax: carbmetsim foodsfile exercisefile metabolicratesfile eventsfile seedstring outputfile\n";
-        exit(1);
-    }
-
-    // redirect stdout
-    int fd = open(argv[6], O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-    if (fd == -1) {
-       cout << "Failed to open " << argv[6] << endl;
-       return 1;
-    }
-    if (dup2(fd, STDOUT_FILENO) == -1) {
-      cout << "Failed to redirect standard output" << endl;
-      return 1;
-   }
-   if (close(fd) == -1) {
-      cout << "Failed to close the file " << argv[6] << endl;
-      return 1;
-   }
-
-    // Create simulation controller
-    sim= new SimCtl(argv[5]);
-    body = new HumanBody();
-    body->readFoodFile(argv[1]);
-    body->readExerciseFile(argv[2]);
-    body->readParams(argv[3]); // read the organs parameters for various states.
-    body->setParams(); // set the organ parameters corresponding to the body's initial state.
-    sim->readEvents(argv[4]);
-    //srand(atoi(argv[5]));
-    sim->run_simulation();
-    return 0;
-}
-

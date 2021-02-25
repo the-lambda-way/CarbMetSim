@@ -1,106 +1,105 @@
-#ifndef SIM_H
-#define SIM_H
+#pragma once
 
-#include <string>
-#include <chrono>
+#include <string_view>
+#include <memory>
 #include <random>
-
-using namespace std;
-
-#include "priq.h"
-
-const int TICKS_PER_DAY = 24*60; // Simulated time granularity
-const int TICKS_PER_HOUR = 60; // Simulated time granularity
+#include <queue>
+#include <vector>
+#include "discrete_event_queue.h"
+#include "HumanBody.h"
 
 
-enum EventType {FOOD = 0, EXERCISE, HALT, METFORMIN, INSULIN_SHORT, INSULIN_LONG};
+// enum class EventType {FOOD, EXERCISE, HALT, METFORMIN, INSULIN_SHORT, INSULIN_LONG};
+enum class EventType {FOOD, EXERCISE, HALT};
 
-class Event : public PriQElt {
-public:
-    inline Event(unsigned fireTime , EventType the_type);
-    unsigned fireTime_;
-    EventType eventType_;
-};
-
-//Constructor for Event
-Event::Event(unsigned fireTime, EventType the_type) : PriQElt()
+class Event
 {
-    fireTime_ = fireTime;
-    eventType_ = the_type;
-    cost0 = fireTime;
-    cost1 = 0;
-}
-
-class FoodEvent : public Event {
 public:
-    inline FoodEvent(unsigned fireTime, unsigned quantity, unsigned foodID ): Event(fireTime, FOOD)
-    {
-        quantity_ = quantity;
-        foodID_ = foodID;
-    }
-    unsigned quantity_; // in grams
-    unsigned foodID_;
+    Event(unsigned fireTime, EventType type);
+    virtual ~Event() = default;
+
+    unsigned fireTime;
+    EventType eventType;
 };
 
-class ExerciseEvent : public Event {
-public:
-    inline ExerciseEvent(unsigned fireTime, unsigned duration, unsigned exerciseID ): Event(fireTime, EXERCISE)
-    {
-        duration_ = duration;
-        exerciseID_ = exerciseID;
-    }
-    unsigned duration_;
-    unsigned exerciseID_;
+// The event queue holds shared_ptr<Event>, so we need a custom projection.
+struct EventFireTime
+{
+    unsigned operator()(const std::shared_ptr<Event>& event) const;
 };
 
-class HaltEvent : public Event {
+class FoodEvent : public Event
+{
 public:
-    inline HaltEvent(unsigned fireTime): Event(fireTime, HALT)
-    {
-    }
+    FoodEvent(unsigned fireTime, unsigned quantity, unsigned foodID);
+
+    unsigned quantity; // in grams
+    unsigned foodID;
+};
+
+class ExerciseEvent : public Event
+{
+public:
+    ExerciseEvent(unsigned fireTime, unsigned duration, unsigned exerciseID);
+
+    unsigned duration;
+    unsigned exerciseID;
+};
+
+class HaltEvent : public Event
+{
+public:
+    HaltEvent(unsigned fireTime);
 };
 
 
-/* The global class implementing
- * the simulation controller.
- */
-
-class SimCtl {
+class SimCtl
+{
 public:
-    static unsigned 	ticks;
-    std::default_random_engine generator;
-    
-    PriQ  eventQ;
-    SimCtl(string seed_string);
-    inline unsigned elapsed_days();
-    inline unsigned elapsed_hours();
-    inline unsigned elapsed_minutes();
-    static bool dayOver();
-    static void time_stamp();
-    
-    void readEvents(string file);
-    void addEvent(unsigned fireTime, unsigned type, unsigned subtype, unsigned howmuch);
-    int fire_event();
-    void run_simulation();
-    
+    SimCtl(std::string_view seedString,
+           std::map<BodyState, MetabolicParams> metabolicParameters,
+           std::map<unsigned, FoodType> foodTypes,
+           std::map<unsigned, ExerciseType> exerciseTypes);
+
+    void addEvent(unsigned fireTime, EventType type, unsigned id, unsigned howmuch);
+    void addEvent(std::shared_ptr<Event> event);
+
+    bool runTick();
+    void runToHalt();
+
+    bool eventsWereFired() const;
+    std::vector<std::shared_ptr<Event>> getFiredEvents() const;
+
+    unsigned elapsedDays() const;
+    unsigned elapsedHours() const;
+    unsigned elapsedMinutes() const;
+    unsigned ticks() const;
+    static unsigned timeToTicks(unsigned days, unsigned hours, unsigned minutes);
+
+    bool dayOver() const;
+
+    // Interface to body and organ parameters
+    const AdiposeTissue* adiposeTissue;
+    const Blood*         blood;
+    const HumanBody*     body;
+    const Brain*         brain;
+    const Heart*         heart;
+    const Intestine*     intestine;
+    const Kidneys*       kidneys;
+    const Liver*         liver;
+    const Muscles*       muscles;
+    const PortalVein*    portalVein;
+    const Stomach*       stomach;
+
+private:
     friend class HumanBody;
-    friend int main(int argc, char *argv[]);
+    HumanBody humanBody;
+    std::default_random_engine generator{1};
+    discrete_event_queue<std::shared_ptr<Event>, EventFireTime> queue;
+
+    static const int TICKS_PER_DAY  = 24 * 60; // Simulated time granularity
+    static const int TICKS_PER_HOUR = 60;      // Simulated time granularity
+
+    bool haltEventFired = false;
+    void handleEvents();
 };
-
-
-inline unsigned SimCtl::elapsed_days() {
-    return(ticks/TICKS_PER_DAY);
-}
-
-inline unsigned SimCtl::elapsed_hours() {
-    int x = ticks % TICKS_PER_DAY;
-    return(x/TICKS_PER_HOUR);
-}
-
-inline unsigned SimCtl::elapsed_minutes() {
-    int x = ticks % TICKS_PER_DAY;
-    return (x % TICKS_PER_HOUR);
-}
-
-#endif
-
