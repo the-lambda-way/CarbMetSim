@@ -13,13 +13,12 @@ Continuous integration would be helpful for future expansion of the simulation.
 
 ## Documentation
 
-The documentation currently comes straight from the paper *CarbMetSim: A discrete-event simulator for
-carbohydrate metabolism in humans*. Should be edited to an appropriate format for general consumption, as well as adding source code documentation.
+The documentation is mostly incomplete and is often copied straight from the paper *CarbMetSim: A discrete-event simulator for carbohydrate metabolism in humans*. Should be edited to an appropriate format for general consumption, as well as adding source code documentation.
 
 
 ## Encapsulation
 
-Encapsulation needs to be improved across the board. Parameters should be accessed through public interfaces instead of variables or friendship. Some parameters in HumanBody are only used in a single organ, these should maybe be moved into those organs. More algorithms can be abstracted and put into "common.h".
+Encapsulation needs to be improved across the board. Parameters should be accessed through public interfaces instead of variables or friendship. Some parameters in HumanBody are only used in a single organ, these should maybe be moved into those organs. More algorithms might be encapsulated and put into "common.h".
 
 
 ## Body State Parameters

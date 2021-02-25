@@ -8,15 +8,17 @@ CarbMetSim implements key organs to the extent necessary to capture their impact
 
 # Getting Started
 
-To build the command line tool, run `make` at the root folder. Run with `carbmetsim foodsfile exercisefile paramsfile eventsfile seed outputfile`. See [Running on the command line](CLI.md) for an explanation of each argument.
+To build the command line tool, run `make` at the root folder. Run with `carbmetsim foodsfile exercisefile paramsfile eventsfile seed outputfile`. See [Running on the command line](Running on the command line.md) for an explanation of each argument.
 
-To use as a library, copy the contents of the `source/` folder into your codebase and include "SimCtl.h" in one of your source files. Instantiate an instance of `SimCtl` with an instance of `MetabolicParams`  and call `SimCtl::run_simulation()` on the object. An explanation of the fields in `MetabolicParams` can be found among the various organ documentations.
+To use as a library, copy the contents of the `source/` folder into your code base and include *SimCtl.h* in one of your source files. Instantiate an instance of `SimCtl`  with metabolic parameters, food types, and exercise types, then call `SimCtl::runTick()` on the object in a loop until it returns false. An explanation of the parameters can be found in the documentation for [SimCtl](Simulator.h).
 
 
 
 # Contents
 
-[Running on the command line](CLI.md)
+[Running on the command line](Running on the command line.md)
+
+[Parameters](Parameters.md)
 
 
 
@@ -28,9 +30,9 @@ Examples
 
 ## Simulator
 
-Simulator
+[Simulator](Simulator.md)
 
-Human body
+[Human body](Human Body.md)
 
 
 
@@ -62,9 +64,21 @@ Stomach
 
 [Overview](Events.md)
 
-Food
+[Food](Food.md)
 
-Exercise
+[Exercise](Exercise.md)
+
+
+
+## Metabolic Processes
+
+[Gluconeogenesis](Gluconeogenesis.md)
+
+[Glucose transport](Glucose Transport.md)
+
+[Glycogen synthesis and breakdown](Glycogen Synthesis and Breakdown.md)
+
+[Insuling](Insuling.md)
 
 
 
