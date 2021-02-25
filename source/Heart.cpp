@@ -15,13 +15,13 @@ void Heart::processTick()
 {
     static std::poisson_distribution<int> basalGlucoseAbsorbed__{1000.0 * basalGlucoseAbsorbed};
 
-    // double x = basalGlucoseAbsorbed * body->bodyWeight;
-    double x = static_cast<double>(basalGlucoseAbsorbed__(body->generator())) / 1000.0;
-    body->blood.removeGlucose(x);
+    // double amount = basalGlucoseAbsorbed * body->bodyWeight;
+    double amount = static_cast<double>(basalGlucoseAbsorbed__(body->generator())) / 1000.0;
+    body->blood.removeGlucose(amount);
 
-    oxidationPerTick = x;
+    oxidationPerTick = amount;
 
-    basalAbsorption.amount      = x;
+    basalAbsorption.amount      = amount;
     basalAbsorption.bloodBGL    = body->blood.getBGL();
     basalAbsorption.bloodMinBGL = body->blood.minGlucoseLevel;
 
@@ -29,7 +29,7 @@ void Heart::processTick()
     // Absorption via GLUT4
     double bgl = body->blood.getBGL();
     double scale = (1.0 - body->insulinResistance) * body->blood.insulinLevel * body->bodyWeight;
-    Glut4Absorption = scale * glut4VMAX * bgl / (bgl + glut4Km);
+    Glut4Absorption = mmk(scale * glut4VMAX, bgl, glut4Km);
 
     body->blood.removeGlucose(Glut4Absorption);
     oxidationPerTick += Glut4Absorption;

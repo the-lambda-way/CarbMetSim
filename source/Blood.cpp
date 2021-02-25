@@ -100,7 +100,7 @@ void Blood::processTick()
     else
         RBCsUpdated = false;
 
-    avgBGLOneDaySum += glucose / fluidVolume;
+    avgBGLOneDaySum += getBGL();
     ++avgBGLOneDayCount;
 
 }
@@ -172,7 +172,7 @@ void Blood::updateInsulinLevel()
 
         else
         {
-            double restIntensity = 3.5 * 2.0 / body->vo2Max;
+            double restIntensity = 3.5 * 2.0 / body->VO2Max;
 
             assert(((void)"%VO2 less than restIntensity when body is exercising",
                    body->percentVO2Max >= restIntensity));

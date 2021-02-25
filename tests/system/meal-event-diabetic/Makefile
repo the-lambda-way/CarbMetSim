@@ -13,6 +13,6 @@ meal-event-diabetic:
 
 .PHONY: clean-meal-event-diabetic
 clean-meal-event-diabetic:
-	@echo "Cleaning meal-event-diabetic test"
+	@echo "Cleaning meal-event-diabetic test..."
 	@$(RM) -rf $(MEAL_EVENT_DIAB_FLDR)/output/
 	@$(RM) -f $(MEAL_EVENT_DIAB_FLDR)/outDiab.diff

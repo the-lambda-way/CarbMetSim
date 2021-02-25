@@ -32,7 +32,7 @@ all: $(MAIN)
 # Main
 # ======================================================================================================================
 $(MAIN): $(MAIN).cpp $(OBJS)
-	@echo "Building $(@F) ..."
+	@echo "Building $(@F)..."
 	@$(COMPILE) $(MAIN).cpp $(OBJS) -o $(MAIN)
 
 
@@ -42,13 +42,13 @@ $(MAIN): $(MAIN).cpp $(OBJS)
 # (see the gnu make manual section about automatic variables)
 build/%.c.o: source/%.c source/%.h
 	@mkdir -p build
-	@echo "Building $(@F) ..."
+	@echo "Building $(@F)..."
 	@$(COMPILE) -c $< -o $@
 
 
 build/%.cpp.o: source/%.cpp source/%.h
 	@mkdir -p build
-	@echo "Building $(@F) ..."
+	@echo "Building $(@F)..."
 	@$(COMPILE) -c $< -o $@
 
 
@@ -67,25 +67,25 @@ tests: build/tests/main.test.o $(TEST_EXES)
 
 
 build/tests/system/%.test.out: tests/system/%.test.cpp $(OBJS)
-	@echo "Building $(@F) ..."
+	@echo "Building $(@F)..."
 	@mkdir -p $(@D)
 	@$(COMPILE) -ggdb build/tests/main.test.o $^ -o $@
 
 
 build/tests/integration/%.test.out: tests/integration/%.test.cpp source/%.cpp
-	@echo "Building $(@F) ..."
+	@echo "Building $(@F)..."
 	@mkdir -p $(@D)
 	@$(COMPILE) -ggdb build/tests/main.test.o $^ -o $@
 
 
 build/tests/unit/%.test.out: tests/unit/%.test.cpp source/%.cpp
-	@echo "Building $(@F) ..."
+	@echo "Building $(@F)..."
 	@mkdir -p $(@D)
 	@$(COMPILE) -ggdb build/tests/main.test.o $^ -o $@
 
 
 build/tests/main.test.o: tests/main.test.cpp
-	@echo "Building $(@F) ..."
+	@echo "Building $(@F)..."
 	@mkdir -p $(@D)
 	@$(COMPILE) -c $< -o $@
 
@@ -96,6 +96,7 @@ TEST_DEPS := $(TEST_EXES:.out=.d)
 
 
 # If your integration tests require another source file, add another rule below
+# --------------------------------------------------
 
 
 # ======================================================================================================================

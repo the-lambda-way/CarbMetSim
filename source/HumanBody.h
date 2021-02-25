@@ -42,15 +42,15 @@ enum class BodyState {FED_RESTING, FED_EXERCISING, POSTABSORPTIVE_RESTING, POSTA
 
 struct TotalsState
 {
-    double totalGlycolysisSoFar;
-    double totalExcretionSoFar;
-    double totalOxidationSoFar;
-    double totalGNGSoFar;
-    double totalLiverGlycogenStorageSoFar;
-    double totalLiverGlycogenBreakdownSoFar;
-    double totalMusclesGlycogenStorageSoFar;
-    double totalMusclesGlycogenBreakdownSoFar;
-    double totalGlucoseFromIntestineSoFar;
+    double glycolysis;
+    double excretion;
+    double oxidation;
+    double GNG;
+    double liverGlycogenStorage;
+    double liverGlycogenBreakdown;
+    double musclesGlycogenStorage;
+    double musclesGlycogenBreakdown;
+    double glucoseFromIntestine;
 };
 
 struct HumanParams
@@ -70,7 +70,7 @@ struct HumanParams
     // double bodyWeight = 65; // kg
     // must specify body weight in the params
 
-    double intensityPeakGlucoseProd = 0.2; // exercise intensity in %VO2Maxat which peak GNG, glycogen breakdown takes place
+    double intensityPeakGlucoseProd = 0.2; // exercise intensity in %VO2Max at which peak GNG, glycogen breakdown takes place
 
     double gngImpact                    = 6.0;
     double liverGlycogenBreakdownImpact = 6.0;
@@ -120,7 +120,7 @@ public:
     int    age;           // in years
     int    gender;        // 0 male, 1 female
     int    fitnessLevel;  // between 0 and 100
-    double vo2Max = 0;    // estimated from age, gender and fitnessLevel
+    double VO2Max = 0;    // estimated from age, gender and fitnessLevel
     double percentVO2Max; // for the current exercise
 
     double bodyWeight;
@@ -160,12 +160,12 @@ public:
     void resetTotals();
     TotalsState getTotals();
 
-    double glycolysis(double min, double max);
+    double glycolysis(double min, double max) const;
 
-    double insulinImpactOnGlycolysis();
-    double insulinImpactOnGNG();
-    double insulinImpactOnGlycogenSynthesisInLiver();
-    double insulinImpactOnGlycogenBreakdownInLiver();
+    double insulinImpactOnGlycolysis() const;
+    double insulinImpactOnGNG() const;
+    double insulinImpactOnGlycogenSynthesisInLiver() const;
+    double insulinImpactOnGlycogenBreakdownInLiver() const;
 
 	double tempGNG;
 	double tempGlycolysis;

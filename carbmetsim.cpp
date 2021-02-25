@@ -97,8 +97,8 @@ ParamMap createParamMap(MetabolicParams& params)
     out["KIDNEYS"]["gngKidneys"]    = &params.kidneys.gngKidneys;
 
     // Liver
-    out["LIVER"]["Glycogen"]                    = &params.liver.glycogen;
-    out["LIVER"]["MaxGlycogen"]                 = &params.liver.glycogenMax;
+    out["LIVER"]["glycogen"]                    = &params.liver.glycogen;
+    out["LIVER"]["glycogenMax"]                 = &params.liver.glycogenMax;
     out["LIVER"]["fluidVolume"]                 = &params.liver.fluidVolume;
     out["LIVER"]["Glut2Km"]                     = &params.liver.Glut2Km;
     out["LIVER"]["Glut2VMAX"]                   = &params.liver.Glut2VMAX;
@@ -111,12 +111,16 @@ ParamMap createParamMap(MetabolicParams& params)
     out["LIVER"]["glucoseToNEFA"]               = &params.liver.glucoseToNEFA;
     out["LIVER"]["maxLipogenesis"]              = &params.liver.maxLipogenesis;
 
+    // remove once compatability is no longer a concern
+    out["LIVER"]["Glycogen"]                    = &params.liver.glycogen;
+    out["LIVER"]["MaxGlycogen"]                 = &params.liver.glycogenMax;
+
     // Muscles
-    out["MUSCLES"]["Glycogen"]                           = &params.muscles.glycogen;
-    out["MUSCLES"]["MaxGlycogen"]                        = &params.muscles.glycogenMax;
+    out["MUSCLES"]["glycogen"]                           = &params.muscles.glycogen;
+    out["MUSCLES"]["glycogenMax"]                        = &params.muscles.glycogenMax;
     out["MUSCLES"]["Glut4Km"]                            = &params.muscles.Glut4Km;
     out["MUSCLES"]["Glut4VMAX"]                          = &params.muscles.Glut4VMAX;
-    out["MUSCLES"]["PeakGlut4VMAX"]                      = &params.muscles.PeakGlut4VMAX;
+    out["MUSCLES"]["peakGlut4VMAX"]                      = &params.muscles.peakGlut4VMAX;
     out["MUSCLES"]["maxGlucoseAbsorptionDuringExercise"] = &params.muscles.maxGlucoseAbsorptionDuringExercise;
     out["MUSCLES"]["basalGlucoseAbsorbed"]               = &params.muscles.basalGlucoseAbsorbed;
     out["MUSCLES"]["baaToGlutamine"]                     = &params.muscles.baaToGlutamine;
@@ -124,6 +128,11 @@ ParamMap createParamMap(MetabolicParams& params)
     out["MUSCLES"]["glycolysisMax"]                      = &params.muscles.glycolysisMax;
     out["MUSCLES"]["glucoseToGlycogen"]                  = &params.muscles.glucoseToGlycogen;
     out["MUSCLES"]["glycogenShareDuringExerciseMean"]    = &params.muscles.glycogenShareDuringExerciseMean;
+
+    // remove once compatability is no longer a concern
+    out["MUSCLES"]["Glycogen"]                           = &params.muscles.glycogen;
+    out["MUSCLES"]["MaxGlycogen"]                        = &params.muscles.glycogenMax;
+    out["MUSCLES"]["PeakGlut4VMAX"]                      = &params.muscles.peakGlut4VMAX;
 
     // Portal Vein
     out["PORTAL_VEIN"]["fluidVolume"] = &params.portalVein.fluidVolume;
@@ -215,7 +224,7 @@ public:
     {
         while (sim->runTick())    onTick();
 
-        auto haltEvent = dynamic_pointer_cast<HaltEvent>(sim->eventsFiredThisTick().back());
+        auto haltEvent = dynamic_pointer_cast<HaltEvent>(sim->getFiredEvents().back());
         onHaltEvent(*haltEvent);
     }
 
@@ -243,14 +252,17 @@ private:
             exit(1);
         }
 
-        string line;
-        while (getline(cfg, line))
-        {
-            istringstream str{line};
+        string        buf;
+        istringstream line;
+        string        bodyState, bodyOrgan, param;
+        double        val;
 
-            string bodyState, bodyOrgan, param;
-            double val;
-            str >> bodyState >> bodyOrgan >> param >> val;
+        while (getline(cfg, buf))
+        {
+            line.str(buf); // replaces contents
+            line.seekg(0);
+
+            line >> bodyState >> bodyOrgan >> param >> val;
 
             if (!contains(bodyStates, bodyState))
             {
@@ -292,17 +304,20 @@ private:
             exit(1);
         }
 
-        string line;
-        while (getline(cfg, line))
-        {
-            istringstream str{line};
-            unsigned id;
+        string        buf;
+        istringstream line;
+        unsigned      id;
 
-            str >> id;
+        while (getline(cfg, buf))
+        {
+            line.str(buf); // replaces contents
+            line.seekg(0);
+
+            line >> id;
             exerciseTypes[id].exerciseID = id;
 
-            str >> exerciseTypes[id].name;
-            str >> exerciseTypes[id].intensity;
+            line >> exerciseTypes[id].name
+                 >> exerciseTypes[id].intensity;
         }
     }
 
@@ -316,21 +331,24 @@ private:
             exit(1);
         }
 
-        string line;
-        while (getline(cfg, line))
-        {
-            istringstream str{line};
-            unsigned id;
+        string        buf;
+        istringstream line;
+        unsigned      id;
 
-            str >> id;
+        while (getline(cfg, buf))
+        {
+            line.str(buf); // replaces contents
+            line.seekg(0);
+
+            line >> id;
             foodTypes[id].foodID = id;
 
-            str >> foodTypes[id].name;
-            str >> foodTypes[id].servingSize; // in grams
-            str >> foodTypes[id].RAG;
-            str >> foodTypes[id].SAG;
-            str >> foodTypes[id].protein;
-            str >> foodTypes[id].fat;
+            line >> foodTypes[id].name
+                 >> foodTypes[id].servingSize // in grams
+                 >> foodTypes[id].RAG
+                 >> foodTypes[id].SAG
+                 >> foodTypes[id].protein
+                 >> foodTypes[id].fat;
         }
     }
 
@@ -344,25 +362,26 @@ private:
             exit(1);
         }
 
-        string line;
-        while (getline(cfg, line))
+        string        buf;
+        istringstream line;
+        unsigned      days, hours, minutes, subtype, howmuch;
+        string        type;
+
+        while (getline(cfg, buf))
         {
-            istringstream str{line};
+            line.str(buf); // replaces contents
+            line.seekg(0);
 
-            unsigned days, hours, minutes;
-            str >> days;
-            str.ignore(1); // ':'
-            str >> hours;
-            str.ignore(1); // ':'
-            str >> minutes;
-            unsigned fireTime = sim->timeToTicks(days, hours, minutes);
+            line >> days;
+            line.ignore(1); // ':'
+            line >> hours;
+            line.ignore(1); // ':'
+            line >> minutes;
 
-            string type;
-            str >> type;;
-            EventType event = eventMap.at(type);
+            line >> type >> subtype >> howmuch;
 
-            unsigned subtype, howmuch;
-            str >> subtype >> howmuch;
+            unsigned  fireTime = sim->timeToTicks(days, hours, minutes);
+            EventType event    = eventMap.at(type);
 
             sim->addEvent(fireTime, event, subtype, howmuch);
         }
@@ -372,6 +391,47 @@ private:
     {
         output << sim->elapsedDays() << ":" << sim->elapsedHours() << ":" << sim->elapsedMinutes()
                << " " << sim->ticks() << " ";
+    }
+
+    void onTick()
+    {
+        if (sim->eventsWereFired())
+        {
+            for (shared_ptr<Event> event : sim->getFiredEvents())
+            {
+                onFireEvent(event);
+
+                switch (event->eventType)
+                {
+                    case EventType::FOOD:
+                    {
+                        auto foodEvent = dynamic_pointer_cast<FoodEvent>(event);
+                        onFoodEvent(*foodEvent);
+                        break;
+                    }
+                    case EventType::EXERCISE:
+                    {
+                        auto exerciseEvent = dynamic_pointer_cast<ExerciseEvent>(event);
+                        onExerciseEvent(*exerciseEvent);
+                        break;
+                    }
+                    case EventType::HALT:
+                        return;
+                }
+            }
+        }
+
+        onPortalVein();
+        onStomach();
+        onIntestine();
+        onLiver();
+        onAdiposeTissue();
+        onBrain();
+        onHeart();
+        onBlood();
+        onMuscles();
+        onKidneys();
+        onBody();
     }
 
     void onAddFat(const FatState& state)
@@ -403,44 +463,6 @@ private:
         //        << "::" << sim->elapsedHours() << "::" << sim->elapsedMinutes()
         //        << endl;
         // output << "event->fireTime : " << event->fireTime << endl;
-    }
-
-    void onTick()
-    {
-        for (shared_ptr<Event> event : sim->eventsFiredThisTick())
-        {
-            onFireEvent(event);
-
-            switch (event->eventType)
-            {
-                case EventType::FOOD:
-                {
-                    auto foodEvent = dynamic_pointer_cast<FoodEvent>(event);
-                    onFoodEvent(*foodEvent);
-                    break;
-                }
-                case EventType::EXERCISE:
-                {
-                    auto exerciseEvent = dynamic_pointer_cast<ExerciseEvent>(event);
-                    onExerciseEvent(*exerciseEvent);
-                    break;
-                }
-                case EventType::HALT:
-                    return;
-            }
-        }
-
-        onPortalVein();
-        onStomach();
-        onIntestine();
-        onLiver();
-        onAdiposeTissue();
-        onBrain();
-        onHeart();
-        onBlood();
-        onMuscles();
-        onKidneys();
-        onBody();
     }
 
     void onAdiposeTissue()
@@ -537,28 +559,28 @@ private:
         timeStamp();
         output << " HumanBody:: TotalGlycogenStoragePerTick " << sim->body->totalGlycogenStoragePerTick << endl;
         timeStamp();
-        output << " HumanBody:: TotalGlycogenStorageSoFar " <<
-            sim->body->totalLiverGlycogenStorageSoFar + sim->body->totalMusclesGlycogenStorageSoFar
-            << endl;
+        output << " HumanBody:: TotalGlycogenStorageSoFar "
+               << sim->body->totalLiverGlycogenStorageSoFar + sim->body->totalMusclesGlycogenStorageSoFar
+               << endl;
 
         timeStamp();
         output << " HumanBody:: TotalGlycogenBreakdownPerTick "
-             << sim->body->totalGlycogenBreakdownPerTick
-             << endl;
+               << sim->body->totalGlycogenBreakdownPerTick
+               << endl;
         timeStamp();
         output << " HumanBody:: TotalGlycogenBreakdownSoFar "
-            << sim->body->totalLiverGlycogenBreakdownSoFar
-             + sim->body->totalMusclesGlycogenBreakdownSoFar
-            << endl;
+               << sim->body->totalLiverGlycogenBreakdownSoFar
+                + sim->body->totalMusclesGlycogenBreakdownSoFar
+               << endl;
 
         timeStamp();
         output << " HumanBody:: TotalEndogeneousGlucoseReleasePerTick "
-             << sim->body->totalEndogeneousGlucoseReleasePerTick
-             << endl;
+               << sim->body->totalEndogeneousGlucoseReleasePerTick
+               << endl;
         timeStamp();
         output << " HumanBody:: TotalEndogeneousGlucoseReleaseSoFar "
-             << sim->body->totalEndogeneousGlucoseReleaseSoFar
-             << endl;
+               << sim->body->totalEndogeneousGlucoseReleaseSoFar
+               << endl;
 
         timeStamp();
         output << " HumanBody:: TotalGlucoseReleasePerTick " << sim->body->totalGlucoseReleasePerTick << endl;
@@ -569,15 +591,15 @@ private:
         {
             timeStamp();
             output << " Totals for the day:"
-                   << " " << sim->body->dayEndTotals.totalGlycolysisSoFar
-                   << " " << sim->body->dayEndTotals.totalExcretionSoFar
-                   << " " << sim->body->dayEndTotals.totalOxidationSoFar
-                   << " " << sim->body->dayEndTotals.totalGNGSoFar
-                   << " " << sim->body->dayEndTotals.totalLiverGlycogenStorageSoFar
-                   << " " << sim->body->dayEndTotals.totalLiverGlycogenBreakdownSoFar
-                   << " " << sim->body->dayEndTotals.totalMusclesGlycogenStorageSoFar
-                   << " " << sim->body->dayEndTotals.totalMusclesGlycogenBreakdownSoFar
-                   << " " << sim->body->dayEndTotals.totalGlucoseFromIntestineSoFar
+                   << " " << sim->body->dayEndTotals.glycolysis
+                   << " " << sim->body->dayEndTotals.excretion
+                   << " " << sim->body->dayEndTotals.oxidation
+                   << " " << sim->body->dayEndTotals.GNG
+                   << " " << sim->body->dayEndTotals.liverGlycogenStorage
+                   << " " << sim->body->dayEndTotals.liverGlycogenBreakdown
+                   << " " << sim->body->dayEndTotals.musclesGlycogenStorage
+                   << " " << sim->body->dayEndTotals.musclesGlycogenBreakdown
+                   << " " << sim->body->dayEndTotals.glucoseFromIntestine
                    << endl;
         }
 
@@ -632,14 +654,14 @@ private:
 
         timeStamp();
         output << " Intestine:: RAGConsumed " << sim->intestine->totalRAGConsumed
-            << " SAGConsumed " << sim->intestine->totalSAGConsumed << endl;
+               << " SAGConsumed " << sim->intestine->totalSAGConsumed << endl;
 
         // output << " Intestine:: RAGConsumed " << sim->intestine->totalRAGDigested
         //        << " SAGConsumed " << sim->intestine->totalSAGDigested
         //        << " total " << sim->intestine->totalRAGDigested + sim->intestine->totalSAGDigested
         //        << endl;
 
-        onRemoveGlucose(sim->intestine->excessGlucoseInEnterocytes);
+        onRemoveGlucose(sim->intestine->glucoseFromBlood);
 
         // timeStamp();
         // output << "GL in Portal Vein: " << sim->intestine->glPortalVeinConcentration << endl;
@@ -831,11 +853,11 @@ private:
         {
             timeStamp();
             output << " Gastric Emptying:: Total Food " << totalFood
-                << " Calorific Density " << sim->stomach->calorificDensity
-                << " geSlope " << sim->stomach->geSlope
-                << " ragInBolus " << sim->stomach->ragInBolus
-                << " sagInBolus " << sim->stomach->sagInBolus
-                << endl;
+                   << " Calorific Density " << sim->stomach->calorificDensity
+                   << " geSlope " << sim->stomach->geSlope
+                   << " ragInBolus " << sim->stomach->ragInBolus
+                   << " sagInBolus " << sim->stomach->sagInBolus
+                   << endl;
 
             timeStamp();
             output << " Stomach:: SAG " << SAG
@@ -866,11 +888,11 @@ private:
         {
             timeStamp();
             output << " Gastric Emptying:: Total Food " << sim->stomach->totalFood
-                << " Calorific Density " << sim->stomach->calorificDensity
-                << " geSlope " << sim->stomach->geSlope
-                << " ragInBolus " << sim->stomach->ragInBolus
-                << " sagInBolus " << sim->stomach->sagInBolus
-                << endl;
+                   << " Calorific Density " << sim->stomach->calorificDensity
+                   << " geSlope " << sim->stomach->geSlope
+                   << " ragInBolus " << sim->stomach->ragInBolus
+                   << " sagInBolus " << sim->stomach->sagInBolus
+                   << endl;
         }
     }
 

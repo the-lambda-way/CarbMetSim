@@ -19,6 +19,7 @@ void PortalVein::processTick()
     body->blood.removeGlucose(glucoseFromBlood);
     glucose += glucoseFromBlood;
 
+    // Diagnostics
     fromBlood.amount      = glucoseFromBlood;
     fromBlood.bloodBGL    = bgl;
     fromBlood.bloodMinBGL = body->blood.minGlucoseLevel;

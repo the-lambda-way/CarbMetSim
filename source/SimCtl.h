@@ -22,7 +22,7 @@ public:
     EventType eventType;
 };
 
-// The priority queue holds shared_ptr<Event>, so we need a custom projection.
+// The event queue holds shared_ptr<Event>, so we need a custom projection.
 struct EventFireTime
 {
     unsigned operator()(const std::shared_ptr<Event>& event) const;

@@ -13,6 +13,6 @@ exercise-event-AhlborgArm30:
 
 .PHONY: clean-exercise-event-AhlborgArm30
 clean-exercise-event-AhlborgArm30:
-	@echo "Cleaning exercise-event-AhlborgArm30 test"
+	@echo "Cleaning exercise-event-AhlborgArm30 test..."
 	@$(RM) -rf $(EXERCISE_EVENT_AHLARM30_FLDR)/output/
 	@$(RM) -f $(EXERCISE_EVENT_AHLARM30_FLDR)/outAhlborgArm30.diff

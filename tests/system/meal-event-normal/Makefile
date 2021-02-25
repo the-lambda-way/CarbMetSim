@@ -13,6 +13,6 @@ meal-event-normal:
 
 .PHONY: clean-meal-event-normal
 clean-meal-event-normal:
-	@echo "Cleaning meal-event-normal test"
+	@echo "Cleaning meal-event-normal test..."
 	@$(RM) -rf $(MEAL_EVENT_NORM_FLDR)/output/
 	@$(RM) -f $(MEAL_EVENT_NORM_FLDR)/outNormal.diff

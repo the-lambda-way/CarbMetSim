@@ -117,11 +117,11 @@ void Muscles::glycogenToLactate(std::poisson_distribution<int>& glycolysisMin_)
 {
     double intensity = body->percentVO2Max;
 
-    double x = static_cast<double>(glycolysisMin_(body->generator()));
-    double g = x * body->bodyWeight / 1000.0;
-    g        = min(g, glycolysisMax * body->bodyWeight);
+    double x      = static_cast<double>(glycolysisMin_(body->generator()));
+    double amount = x * body->bodyWeight / 1000.0;
+    amount        = min(amount, glycolysisMax * body->bodyWeight);
 
-    glycolysisPerTick = g + intensity * (glycolysisMax * body->bodyWeight - g);
+    glycolysisPerTick = amount + intensity * (glycolysisMax * body->bodyWeight - amount);
 
     glycogen                 -= glycolysisPerTick;
     body->blood.lactate      += glycolysisPerTick;
@@ -141,13 +141,13 @@ void Muscles::basalAbsorption(std::poisson_distribution<int>& rand)
     static std::poisson_distribution<int> basalAbsorption__{1000.0 * basalGlucoseAbsorbed};
 
     double x = static_cast<double>(basalAbsorption__(body->generator()));
-    double g = x * body->bodyWeight / 1000.0;
+    double amount = x * body->bodyWeight / 1000.0;
 
-    body->blood.removeGlucose(g);
-    glucoseAbsorbedPerTick = g;
-    glucose               += g;
+    body->blood.removeGlucose(amount);
+    glucoseAbsorbedPerTick = amount;
+    glucose               += amount;
 
-    basalBase.amount      = g;
+    basalBase.amount      = amount;
     basalBase.bloodBGL    = body->blood.getBGL();
     basalBase.bloodMinBGL = body->blood.minGlucoseLevel;
 
@@ -166,14 +166,13 @@ void Muscles::basalAbsorption(std::poisson_distribution<int>& rand)
             scale *= body->blood.insulinLevel;
 
         scale *= peakGlut4VMAX - glycogen * (peakGlut4VMAX - Glut4VMAX) / glycogenMax;
-        scale *= mmk(Vmax, diff, Glut4Km);
-        g = scale * body->bodyWeight;
+        amount = mmk(scale * Vmax, diff, Glut4Km) * body->bodyWeight;
 
-        body->blood.removeGlucose(g);
-        glucoseAbsorbedPerTick += g;
-        glucose                += g;
+        body->blood.removeGlucose(amount);
+        glucoseAbsorbedPerTick += amount;
+        glucose                += amount;
 
-        basalGLUT4.amount      = g;
+        basalGLUT4.amount      = amount;
         basalGLUT4.bloodBGL    = body->blood.getBGL();
         basalGLUT4.bloodMinBGL = body->blood.minGlucoseLevel;
     }

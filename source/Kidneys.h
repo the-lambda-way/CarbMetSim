@@ -50,7 +50,7 @@ private:
     double gngKidneys;
 
     double reabsorptionThreshold = 11 * 180.1559 / 10; // mg/dl equivalent of 11 mmol/l
-    double glucoseExcretionRate  = 100 / (11 * 180.1559 / 10); // mg per minute per(mg/dl)
+    double glucoseExcretionRate  = 100 / (11 * 180.1559 / 10); // mg per minute per (mg/dl)
 
     double absorptionPerTick;
     double releasePerTick;

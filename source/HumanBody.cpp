@@ -22,7 +22,7 @@ HumanBody::HumanBody(SimCtl* sim,
     setParams(this->metabolicParameters[bodyState]);
 }
 
-double HumanBody::insulinImpactOnGlycolysis()
+double HumanBody::insulinImpactOnGlycolysis() const
 {
     return cdf(blood.insulinLevel, insulinImpactOnGlycolysis_Mean, insulinImpactOnGlycolysis_StdDev);
 }
@@ -34,7 +34,7 @@ double HumanBody::insulinImpactOnGNG()
 }
 ********************************************/
 
-double HumanBody::insulinImpactOnGNG()
+double HumanBody::insulinImpactOnGNG() const
 {
     assert(((void)"gngImpact less than 1", gngImpact >= 1.0));
 
@@ -44,7 +44,7 @@ double HumanBody::insulinImpactOnGNG()
         return gngImpact - blood.insulinLevel * (gngImpact - 1.0) / blood.baseInsulinLevel;
 }
 
-double HumanBody::insulinImpactOnGlycogenBreakdownInLiver()
+double HumanBody::insulinImpactOnGlycogenBreakdownInLiver() const
 {
     assert(((void)"liverGlycogenBreakdownImpact less than 1", liverGlycogenBreakdownImpact >= 1.0));
 
@@ -54,7 +54,7 @@ double HumanBody::insulinImpactOnGlycogenBreakdownInLiver()
         return liverGlycogenBreakdownImpact - blood.insulinLevel * (liverGlycogenBreakdownImpact - 1.0) / blood.baseInsulinLevel;
 }
 
-double HumanBody::insulinImpactOnGlycogenSynthesisInLiver()
+double HumanBody::insulinImpactOnGlycogenSynthesisInLiver() const
 {
     return cdf(blood.insulinLevel, insulinImpactGlycogenSynthesisInLiver_Mean, insulinImpactGlycogenSynthesisInLiver_StdDev);
 }
@@ -69,7 +69,7 @@ unsigned HumanBody::ticks()
     return sim->ticks();
 }
 
-double HumanBody::glycolysis(double min, double max)
+double HumanBody::glycolysis(double min, double max) const
 {
     double max_ = max * bodyWeight * glycolysisMaxImpact;
     double min_ = min * bodyWeight * glycolysisMinImpact;
@@ -159,7 +159,7 @@ void HumanBody::processTick()
     blood.processTick();
 
     totalGlycolysisPerTick = intestine.glycolysisPerTick + liver.glycolysisPerTick + muscles.glycolysisPerTick
-        + kidneys.glycolysisPerTick + blood.glycolysisPerTick;
+                           + kidneys.glycolysisPerTick + blood.glycolysisPerTick;
     totalGlycolysisSoFar += totalGlycolysisPerTick;
 
     totalGNGPerTick = kidneys.gngPerTick + liver.gngPerTick;
@@ -196,7 +196,7 @@ void HumanBody::processTick()
     {
         bodyState = BodyState::FED_RESTING;
         currEnergyExpenditure = 1.0 / 60.0;
-        percentVO2Max = 3.5 * 1.0 / vo2Max;
+        percentVO2Max = 3.5 * 1.0 / VO2Max;
         // energy expenditure in resting state is 1 MET
         // setParams();
     }
@@ -205,7 +205,7 @@ void HumanBody::processTick()
     {
         bodyState = BodyState::POSTABSORPTIVE_RESTING;
         currEnergyExpenditure = 1.0 / 60.0;
-        percentVO2Max = 3.5 * 1.0 / vo2Max;
+        percentVO2Max = 3.5 * 1.0 / VO2Max;
         // setParams();
     }
 
@@ -246,18 +246,17 @@ void HumanBody::setParams(const MetabolicParams& params)
     if (params.body.gender != 0 && params.body.gender != 1)    throw out_of_range("Invalid gender value.");
     gender = params.body.gender;
 
-
-    fitnessLevel                                  = params.body.fitnessLevel;
-    glut4Impact                                   = params.body.glut4Impact;
-    glycolysisMinImpact                           = params.body.glycolysisMinImpact;
-    glycolysisMaxImpact                           = params.body.glycolysisMaxImpact;
-    excretionKidneysImpact                        = params.body.excretionKidneysImpact;
-    liverGlycogenBreakdownImpact                  = params.body.liverGlycogenBreakdownImpact;
-    liverGlycogenSynthesisImpact                  = params.body.liverGlycogenSynthesisImpact;
+    fitnessLevel                 = params.body.fitnessLevel;
+    glut4Impact                  = params.body.glut4Impact;
+    glycolysisMinImpact          = params.body.glycolysisMinImpact;
+    glycolysisMaxImpact          = params.body.glycolysisMaxImpact;
+    excretionKidneysImpact       = params.body.excretionKidneysImpact;
+    liverGlycogenBreakdownImpact = params.body.liverGlycogenBreakdownImpact;
+    liverGlycogenSynthesisImpact = params.body.liverGlycogenSynthesisImpact;
     // maxLiverGlycogenBreakdownDuringExerciseImpact = params.body.maxLiverGlycogenBreakdownDuringExerciseImpact;
-    gngImpact                                     = params.body.gngImpact;
+    gngImpact                    = params.body.gngImpact;
 
-    bodyWeight         = params.body.bodyWeight;
+    bodyWeight        = params.body.bodyWeight;
     adiposeTissue.fat = fatFraction * bodyWeight * 1000.0;
 
     insulinImpactOnGlycolysis_Mean               = params.body.insulinImpactOnGlycolysis_Mean;
@@ -324,9 +323,9 @@ void HumanBody::setVO2Max()
     auto upperLevel = lower_bound(begin(fitnessLevels), end(fitnessLevels), fitnessLevel);
     int col = distance(fitnessLevels, upperLevel);
 
-    vo2Max = vo2Chart[gender][row][col];
+    VO2Max = vo2Chart[gender][row][col];
 
-    percentVO2Max = 3.5 * 1.0 / vo2Max;
+    percentVO2Max = 3.5 * 1.0 / VO2Max;
     // Assuming rest MET is 1.0
 }
 
@@ -361,9 +360,9 @@ void HumanBody::processExerciseEvent(unsigned exerciseID, unsigned duration)
 
     if (isExercising())    throw runtime_error("Exercise within Exercise!");
 
-    assert(((void)"vo2Max not known", vo2Max > 0));
+    assert(((void)"VO2Max not known", VO2Max > 0));
 
-    percentVO2Max = 3.5 * exerciseTypes[exerciseID].intensity / vo2Max;
+    percentVO2Max = 3.5 * exerciseTypes[exerciseID].intensity / VO2Max;
     if (percentVO2Max > 1.0)    throw runtime_error("Exercise intensity beyond the capacity of the user");
 
     // oldState = bodyState;

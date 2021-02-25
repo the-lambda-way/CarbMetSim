@@ -61,6 +61,7 @@ void Kidneys::gluconeogenesis()
     body->blood.addGlucose(gngPerTick);
     releasePerTick = gngPerTick;
 
+    // Diagnostics
     postGluconeogenesis.amount      = gngPerTick;
     postGluconeogenesis.bloodBGL    = body->blood.getBGL();
     postGluconeogenesis.bloodMinBGL = body->blood.minGlucoseLevel;
@@ -83,6 +84,7 @@ void Kidneys::glucoseExcretionInUrine()
 
     totalExcretion += excretionPerTick;
 
+    // Diagnostics
     postGlucoseExtraction.amount      = excretionPerTick;
     postGlucoseExtraction.bloodBGL    = body->blood.getBGL();
     postGlucoseExtraction.bloodMinBGL = body->blood.minGlucoseLevel;
