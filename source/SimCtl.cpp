@@ -71,7 +71,7 @@ void SimCtl::addEvent(unsigned fireTime, EventType type, unsigned id, unsigned h
 
 void SimCtl::addEvent(shared_ptr<Event> event)
 {
-    queue.add(move(event));
+    queue.push(move(event));
 }
 
 bool SimCtl::runTick()

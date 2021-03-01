@@ -9,6 +9,19 @@
 #include <vector>
 
 
+namespace DEQDetail
+{
+    // from GCC vector.h which is under GPL3
+    template<class T, class Alloc, class Predicate>
+    constexpr auto erase_if(std::vector<T, Alloc>& c, Predicate p) -> typename std::vector<T, Alloc>::size_type
+    {
+        const auto old_size = c.size();
+        c.erase(std::remove_if(c.begin(), c.end(), p), c.end());
+        return old_size - c.size();
+    }
+}
+
+
 // A container adapter that sorts elements by a firing time in discrete ticks, maintains an internal timer in ticks, and
 // reports and removes an event when the timer has reached its firing time.
 
@@ -53,9 +66,9 @@ public:
 
     explicit
     discrete_event_queue(const Projection& proj, const Container&& cont = Container{})
-        : events{std::move(cont)}, get_fire_time{proj}
+        : unfired_events{std::move(cont)}, get_fire_time{proj}
     {
-        std::make_heap(this->events.begin(), this->events.end(), event_greater{});
+        std::make_heap(this->unfired_events.begin(), this->unfired_events.end(), event_greater{});
         cache_next_fire_time();
     }
 
@@ -90,12 +103,12 @@ public:
 
     template<class Alloc, class Requires = Uses<Alloc>>
     discrete_event_queue(const discrete_event_queue& other, const Alloc& alloc)
-        : discrete_event_queue{other.get_fire_time, other.events, alloc}
+        : discrete_event_queue{other.get_fire_time, other.unfired_events, alloc}
     {}
 
     template<class Alloc, class Requires = Uses<Alloc>>
     discrete_event_queue(discrete_event_queue&& other, const Alloc& alloc)
-        : discrete_event_queue{std::move(other.get_fire_time), std::move(other.events), alloc}
+        : discrete_event_queue{std::move(other.get_fire_time), std::move(other.unfired_events), alloc}
     {}
 
     template<class InputIt>
@@ -117,12 +130,12 @@ public:
     // Capacity --------------------------------------------------------------------------------------------------------
     bool empty() const
     {
-        return events.empty();
+        return unfired_events.empty();
     }
 
     size_type size() const
     {
-        return events.size();
+        return unfired_events.size();
     }
 
     bool events_were_fired() const
@@ -149,7 +162,7 @@ public:
     Container get_events() const
     {
         Container out;
-        Container copy = events;
+        Container copy = unfired_events;
 
         for (auto last = copy.end(); last != copy.begin(); --last)
         {
@@ -184,15 +197,15 @@ public:
         tick = -1;
     }
 
-    void add(const value_type& v)
+    void push(const value_type& v)
     {
-        add(value_type{v});
+        push(value_type{v});
     }
 
-    void add(value_type&& v)
+    void push(value_type&& v)
     {
-        events.push_back(std::move(v));
-        std::push_heap(events.begin(), events.end(), event_greater{});
+        unfired_events.push_back(std::move(v));
+        std::push_heap(unfired_events.begin(), unfired_events.end(), event_greater{});
 
         cache_next_fire_time();
     }
@@ -200,42 +213,49 @@ public:
     template<class... Args>
     void emplace(Args&&... args)
     {
-        events.emplace_back(std::forward<Args>(args)...);
-        std::push_heap(events.begin(), events.end(), event_greater{});
+        unfired_events.emplace_back(std::forward<Args>(args)...);
+        std::push_heap(unfired_events.begin(), unfired_events.end(), event_greater{});
 
         cache_next_fire_time();
     }
 
-    bool remove(const value_type& t)
+    size_type erase(const value_type& t)
     {
-        return remove_if([=](const value_type& v) { return v == t; });
+        return erase_if([=](const value_type& v) { return v == t; });
     }
 
     template<class UnaryPredicate>
-    bool remove_if(UnaryPredicate p)
+    size_type erase_if(UnaryPredicate p)
     {
-        auto new_end = std::remove_if(events.begin(), events.end(), p);
-        if (new_end == events.end())    return false;
+        auto count = DEQDetail::erase_if(unfired_events, p);
 
-        events.erase(new_end, events.end());
-        std::make_heap(events.begin(), new_end, event_greater{});
+        if (count > 0) {
+            std::make_heap(unfired_events.begin(), unfired_events.end(), event_greater{});
+            cache_next_fire_time();
+        }
 
-        cache_next_fire_time();
-
-        return true;
+        return count;
     }
 
-    void clear_events()
+    void clear()
     {
-        events.clear();
+        unfired_events.clear();
         cache_next_fire_time();
+    }
+
+    void reset()
+    {
+        unfired_events.clear();
+        fired_events.clear();
+        tick = -1;
+        next_fire_time == -1;
     }
 
     void swap(discrete_event_queue& other)
         noexcept(And<std::is_nothrow_swappable<Projection>, std::is_nothrow_swappable<Container>>::value)
     {
         using std::swap;
-        swap(events,         other.events);
+        swap(unfired_events, other.unfired_events);
         swap(get_fire_time,  other.get_fire_time);
         swap(tick,           other.tick);
         swap(fired_events,   other.fired_events);
@@ -243,7 +263,7 @@ public:
     }
 
 private:
-    Container  events;
+    Container  unfired_events;
     Projection get_fire_time;
     unsigned   tick = -1; // -1 allows users to start the clock at 0 with the first call to advance
 
@@ -267,22 +287,22 @@ private:
 
     unsigned lead_fire_time() const
     {
-        return std::invoke(get_fire_time, events.front());
+        return std::invoke(get_fire_time, unfired_events.front());
     }
 
     void cache_next_fire_time()
     {
-        next_fire_time = events.empty() ? -1 : lead_fire_time();
+        next_fire_time = unfired_events.empty() ? -1 : lead_fire_time();
     }
 
     bool fire_next_ready_event()
     {
-        if (events.empty() || tick < lead_fire_time())    return false;
+        if (unfired_events.empty() || tick < lead_fire_time())    return false;
 
-        fired_events.push_back(events.front());
+        fired_events.push_back(unfired_events.front());
 
-        std::pop_heap(events.begin(), events.end(), event_greater{});
-        events.pop_back();
+        std::pop_heap(unfired_events.begin(), unfired_events.end(), event_greater{});
+        unfired_events.pop_back();
 
         return true;
     }

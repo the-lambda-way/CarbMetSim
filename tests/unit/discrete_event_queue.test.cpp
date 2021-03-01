@@ -129,8 +129,8 @@ SCENARIO("Add and emplace events.")
 
         THEN("both an lvalue and an rvalue can be pushed to the queue.")
         {
-            queue.add(event);
-            queue.add(0);
+            queue.push(event);
+            queue.push(0);
         }
     }
 
@@ -170,8 +170,8 @@ SCENARIO("Inspect the size of the queue.")
 
         WHEN("the queue is not empty")
         {
-            queue.add(1);
-            queue.add(2);
+            queue.push(1);
+            queue.push(2);
 
             THEN("the empty function should return false and the size function should return the number of events.")
             {
@@ -201,37 +201,37 @@ SCENARIO("Remove events.")
     GIVEN("an event queue with events")
     {
         discrete_event_queue<unsigned, identity> queue1;
-        queue1.add(0);
-        queue1.add(1);
+        queue1.push(0);
+        queue1.push(1);
 
         discrete_event_queue<unsigned, identity> queue2;
-        queue2.add(0);
-        queue2.add(1);
+        queue2.push(0);
+        queue2.push(1);
 
         THEN("an event can be removed based on value equality.")
         {
-            queue1.remove(1);
+            queue1.erase(1);
         }
 
         THEN("an event can be removed based on a condition.")
         {
-            queue2.remove_if([](const unsigned& v) { return v == 1; });
+            queue2.erase_if([](const unsigned& v) { return v == 1; });
         }
 
         WHEN("one or more equal events exist in the queue and are removed")
         {
-            queue1.add(2);
-            queue1.add(2);
-            bool result1 = queue1.remove(2);
+            queue1.push(2);
+            queue1.push(2);
+            auto count1 = queue1.erase(2);
 
-            queue2.add(2);
-            queue2.add(2);
-            bool result2 = queue2.remove_if([](const unsigned& v) { return v == 2; });
+            queue2.push(2);
+            queue2.push(2);
+            auto count2 = queue2.erase_if([](const unsigned& v) { return v == 2; });
 
-            THEN("the function returns true.")
+            THEN("the function returns the number of items removed.")
             {
-                REQUIRE(result1);
-                REQUIRE(result2);
+                REQUIRE(count1 == 2);
+                REQUIRE(count2 == 2);
             }
 
             THEN("the container should no longer contain any event equal to the one removed.")
@@ -246,16 +246,16 @@ SCENARIO("Remove events.")
 
         WHEN("an event does not exist in the queue and is asked to be removed")
         {
-            auto size1   = queue1.size();
-            bool result1 = queue1.remove(3);
+            auto size1  = queue1.size();
+            auto count1 = queue1.erase(3);
 
-            auto size2   = queue2.size();
-            bool result2 = queue2.remove_if([](const unsigned& v) { return v == 3; });
+            auto size2  = queue2.size();
+            auto count2 = queue2.erase_if([](const unsigned& v) { return v == 3; });
 
-            THEN("the function returns false.")
+            THEN("the function returns zero.")
             {
-                REQUIRE(!result1);
-                REQUIRE(!result2);
+                REQUIRE(count1 == 0);
+                REQUIRE(count2 == 0);
             }
 
             THEN("no events are removed from the container.")
@@ -279,7 +279,7 @@ SCENARIO("Clear all events.")
 
         WHEN("the queue is cleared")
         {
-            queue.clear_events();
+            queue.clear();
 
             THEN("the queue is empty.")
             {
