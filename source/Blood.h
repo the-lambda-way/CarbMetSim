@@ -13,7 +13,7 @@ struct RBCBin
 
 struct BloodParams
 {
-    double rbcBirthRate; // how many million RBCs take birth each minute
+    double rbcBirthRate = 144.0 * 60 * 24; // how many million RBCs take birth each day (144 million RBCs take birth every minute)
     double glycationProbSlope = 0.085 / 10000.0; // g*l_i + c is the probability that an unglycated RBC glycates during a minute
     double glycationProbConst = 0;
 
@@ -62,7 +62,7 @@ public:
     double volume() const;
     double gngFromHighLactate(double rate);
     void updateInsulinLevel();
-    
+
     double minGlucoseLevel;
 
     // All the metabolites are in units of milligrams of glucose
@@ -94,7 +94,7 @@ private:
     RBCBin ageBins[MAX_AGE + 1]; // Aging Bins
     int bin0 = 1; // Current age 0 bin
 
-    double rbcBirthRate = 144.0 * 60 * 24; // how many million RBCs take birth each day (144 million RBCs take birth every minute)
+    double rbcBirthRate; // how many million RBCs take birth each day (144 million RBCs take birth every minute)
     double glycationProbSlope; // g*l_i + c is the probability that an unglycated RBC glycates during a minute
     double glycationProbConst;
     double glycolysisMin;
