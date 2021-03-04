@@ -16,7 +16,7 @@ To use as a library, copy the contents of the `source/` folder into your code ba
 
 # Contents
 
-[Running on the command line](Running on the command line.md)
+[Running on the command line](Running-on-the-command-line.md)
 
 [Parameters](Parameters.md)
 
@@ -32,7 +32,7 @@ Examples
 
 [Simulator](Simulator.md)
 
-[Human body](Human Body.md)
+[Human body](Human-body.md)
 
 
 
@@ -74,9 +74,9 @@ Stomach
 
 [Gluconeogenesis](Gluconeogenesis.md)
 
-[Glucose transport](Glucose Transport.md)
+[Glucose transport](Glucose-transport.md)
 
-[Glycogen synthesis and breakdown](Glycogen Synthesis and Breakdown.md)
+[Glycogen synthesis and breakdown](Glycogen-synthesis-and-breakdown.md)
 
 [Insulin](Insulin.md)
 

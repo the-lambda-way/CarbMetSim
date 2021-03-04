@@ -6,7 +6,7 @@ CarbMetSim is implemented in an object-oriented manner. At the top level, CarbMe
 
 Default values of various parameters used by the components of the simulator were determined experimentally to provide a close match with published measurements performed on non-diabetic human subjects before and after a meal event. Table 1 in the [Glycolysis](Glycolysis.md) section shows the default values for glycolysis related parameters for different organs.
 
-Default values of configurable parameters that determine the impact of insulinLevel on various metabolic processes are shown in Table 1 of the [HumanBody](HumanBody.md) section.
+Default values of configurable parameters that determine the impact of insulinLevel on various metabolic processes are shown in Table 1 of the [HumanBody](Human-body.md) section.
 
 
 
