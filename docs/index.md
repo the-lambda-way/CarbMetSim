@@ -78,7 +78,7 @@ Stomach
 
 [Glycogen synthesis and breakdown](Glycogen Synthesis and Breakdown.md)
 
-[Insuling](Insuling.md)
+[Insulin](Insulin.md)
 
 
 
