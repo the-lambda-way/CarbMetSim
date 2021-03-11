@@ -13,7 +13,7 @@ struct RBCBin
 
 struct BloodParams
 {
-    double rbcBirthRate = 144.0 * 60 * 24; // how many million RBCs take birth each day (144 million RBCs take birth every minute)
+    double rbcBirthRate       = 144.0 * 60 * 24; // how many million RBCs take birth each day (144 million RBCs take birth every minute)
     double glycationProbSlope = 0.085 / 10000.0; // g*l_i + c is the probability that an unglycated RBC glycates during a minute
     double glycationProbConst = 0;
 
@@ -38,9 +38,7 @@ struct BloodParams
 class Blood
 {
     static const int ONE_DAY = 24 * 60;
-    static const int MAX_AGE = 120; // minutes in 120 days
     // static const int INSULIN_DELAY = 15;
-    static const int HUNDRED_DAYS = 100; // minutes in 100 days
 
     double baseGlucoseLevel = 100;
     double fluidVolume      = 50.0; // in deciliters
@@ -54,6 +52,9 @@ public:
 
     void removeGlucose(double howmuch);
     void addGlucose(double howmuch);
+
+    static const int MAX_AGE      = 120; // minutes in 120 days
+    static const int HUNDRED_DAYS = 100; // minutes in 100 days
 
     double getBGL() const;
     double getGNGSubstrates() const;
