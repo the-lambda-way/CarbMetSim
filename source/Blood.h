@@ -37,9 +37,6 @@ struct BloodParams
 
 class Blood
 {
-    static const int ONE_DAY = 24 * 60;
-    // static const int INSULIN_DELAY = 15;
-
     double baseGlucoseLevel = 100;
     double fluidVolume      = 50.0; // in deciliters
 
@@ -52,9 +49,6 @@ public:
 
     void removeGlucose(double howmuch);
     void addGlucose(double howmuch);
-
-    static const int MAX_AGE      = 120; // minutes in 120 days
-    static const int HUNDRED_DAYS = 100; // minutes in 100 days
 
     double getBGL() const;
     double getGNGSubstrates() const;
@@ -80,6 +74,9 @@ public:
     double gngSubstrates        = 0; // glycerol and other gng substrates (not including lactate, glutamine and alanine), all in units of glucose
     double glycolysisPerTick    = 0; // keep track of the glucose consumed via glycolysis this tick
     double totalGlycolysisSoFar = 0.0;
+
+    static const int MAX_AGE      = 120; // minutes in 120 days
+    static const int HUNDRED_DAYS = 100; // minutes in 100 days
 
     // Diagnostics
     double killRate[MAX_AGE - HUNDRED_DAYS];
@@ -115,4 +112,7 @@ private:
     double avgBGLOneDayCount = 0;
 
     void glycolysis();
+
+    static const int ONE_DAY = 24 * 60;
+    // static const int INSULIN_DELAY = 15;
 };
