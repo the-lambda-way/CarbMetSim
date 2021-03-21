@@ -111,7 +111,7 @@ double HumanBody::getGlucoseNeedsOutsideMuscles()
          + heart.oxidationPerTick;
 }
 
-TotalsState HumanBody::getTotals()
+TotalsState HumanBody::getTotals() const
 {
     return {
         totalGlycolysisSoFar,

@@ -158,7 +158,7 @@ public:
     double totalEndogeneousGlucoseReleaseSoFar;
     double totalGlucoseReleaseSoFar;
     void resetTotals();
-    TotalsState getTotals();
+    TotalsState getTotals() const;
 
     double glycolysis(double min, double max) const;
 
