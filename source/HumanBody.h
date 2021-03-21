@@ -144,7 +144,7 @@ public:
     void   processFoodEvent(unsigned foodID, unsigned howmuch);
     void   processExerciseEvent(unsigned exerciseID, unsigned duration);
     void   stomachEmpty();
-    bool   isExercising();
+    bool   isExercising() const;
     double currentEnergyExpenditure();
     double getGlucoseNeedsOutsideMuscles();
 
@@ -183,7 +183,7 @@ public:
 	double insulinImpactGlycogenBreakdownInLiver_Mean;
 
     std::default_random_engine& generator();
-    unsigned ticks();
+    unsigned ticks() const;
 
     // Diagnostics
     TotalsState dayEndTotals;

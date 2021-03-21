@@ -64,7 +64,7 @@ std::default_random_engine& HumanBody::generator()
     return sim->generator;
 }
 
-unsigned HumanBody::ticks()
+unsigned HumanBody::ticks() const
 {
     return sim->ticks();
 }
@@ -348,7 +348,7 @@ void HumanBody::processFoodEvent(unsigned foodID, unsigned howmuch)
     }
 }
 
-bool HumanBody::isExercising()
+bool HumanBody::isExercising() const
 {
     return bodyState == BodyState::FED_EXERCISING || bodyState == BodyState::POSTABSORPTIVE_EXERCISING;
 }
