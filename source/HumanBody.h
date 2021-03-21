@@ -145,8 +145,8 @@ public:
     void   processExerciseEvent(unsigned exerciseID, unsigned duration);
     void   stomachEmpty();
     bool   isExercising() const;
-    double currentEnergyExpenditure();
-    double getGlucoseNeedsOutsideMuscles();
+    double currentEnergyExpenditure() const;
+    double getGlucoseNeedsOutsideMuscles() const;
 
     double totalGlycolysisSoFar               = 0;
     double totalGNGSoFar                      = 0;

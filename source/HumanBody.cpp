@@ -79,7 +79,7 @@ double HumanBody::glycolysis(double min, double max) const
 }
 
 // returns energy expenditure in kcal/minute
-double HumanBody::currentEnergyExpenditure()
+double HumanBody::currentEnergyExpenditure() const
 {
     return bodyWeight * currEnergyExpenditure;
 }
@@ -101,7 +101,7 @@ void HumanBody::stomachEmpty()
     }
 }
 
-double HumanBody::getGlucoseNeedsOutsideMuscles()
+double HumanBody::getGlucoseNeedsOutsideMuscles() const
 {
     return intestine.glycolysisPerTick
          + liver.glycolysisPerTick
