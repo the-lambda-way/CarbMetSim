@@ -144,13 +144,13 @@ void SimCtl::handleEvents()
         {
             case EventType::FOOD:
             {
-                shared_ptr<FoodEvent> food = dynamic_pointer_cast<FoodEvent>(event);
+                auto food = dynamic_pointer_cast<FoodEvent>(event);
                 humanBody.processFoodEvent(food->foodID, food->quantity);
                 break;
             }
             case EventType::EXERCISE:
             {
-                shared_ptr<ExerciseEvent> exercise = dynamic_pointer_cast<ExerciseEvent>(event);
+                auto exercise = dynamic_pointer_cast<ExerciseEvent>(event);
                 humanBody.processExerciseEvent(exercise->exerciseID, exercise->duration);
                 break;
             }
