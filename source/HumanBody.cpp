@@ -209,7 +209,7 @@ void HumanBody::processTick()
         // setParams();
     }
 
-    if (sim->ticks() == 600)
+    if (sim->ticks() == 10 * SimCtl::TICKS_PER_HOUR)
     {
         tempGNG               = totalGNGSoFar;
         tempGlycolysis        = totalGlycolysisSoFar;
@@ -222,7 +222,7 @@ void HumanBody::processTick()
         peakBGL = blood.getBGL();
     }
 
-    if (sim->ticks() > 600)
+    if (sim->ticks() > 10 * SimCtl::TICKS_PER_HOUR)
         peakBGL = max(peakBGL, blood.getBGL());
 }
 
