@@ -603,10 +603,10 @@ private:
                    << endl;
         }
 
-        // if (sim->ticks() > 600)
+        // if (sim->ticks() > 10 * SimCtl::TICKS_PER_HOUR)
         //     output << sim->body->peakBGL << endl;
 
-        if (sim->ticks() == 960)
+        if (sim->ticks() == 16 * SimCtl::TICKS_PER_HOUR)
         {
             output << "Simulation Results:: GNG " << sim->body->totalGNGSoFar - sim->body->tempGNG
                    << " glycolysis " << sim->body->totalGlycolysisSoFar - sim->body->tempGlycolysis

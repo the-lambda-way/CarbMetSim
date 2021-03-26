@@ -91,14 +91,14 @@ public:
     const PortalVein*    portalVein;
     const Stomach*       stomach;
 
+    static const int TICKS_PER_DAY  = 24 * 60; // Simulated time granularity
+    static const int TICKS_PER_HOUR = 60;      // Simulated time granularity
+
 private:
     friend class HumanBody;
     HumanBody humanBody;
     std::default_random_engine generator{1};
     discrete_event_queue<std::shared_ptr<Event>, EventFireTime> queue;
-
-    static const int TICKS_PER_DAY  = 24 * 60; // Simulated time granularity
-    static const int TICKS_PER_HOUR = 60;      // Simulated time granularity
 
     bool haltEventFired = false;
     void handleEvents();
