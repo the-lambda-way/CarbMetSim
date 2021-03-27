@@ -248,7 +248,7 @@ public:
         unfired_events.clear();
         fired_events.clear();
         tick = -1;
-        next_fire_time == -1;
+        next_fire_time = -1;
     }
 
     void swap(discrete_event_queue& other)
