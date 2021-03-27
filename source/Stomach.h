@@ -4,7 +4,7 @@
 #include "common.h"
 
 class HumanBody;
-class FoodType;
+struct FoodType;
 
 
 struct StomachParams
