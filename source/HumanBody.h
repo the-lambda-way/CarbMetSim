@@ -87,16 +87,16 @@ struct HumanParams
 
 struct MetabolicParams
 {
-    BloodParams      blood;
-    BrainParams      brain;
-    HeartParams      heart;
+    BloodParams      blood      = BloodParams{};
+    BrainParams      brain      = BrainParams{};
+    HeartParams      heart      = HeartParams{};
     HumanParams      body;
-    IntestineParams  intestine;
-    KidneysParams    kidneys;
-    LiverParams      liver;
-    MusclesParams    muscles;
-    PortalVeinParams portalVein;
-    StomachParams    stomach;
+    IntestineParams  intestine  = IntestineParams{};
+    KidneysParams    kidneys    = KidneysParams{};
+    LiverParams      liver      = LiverParams{};
+    MusclesParams    muscles    = MusclesParams{};
+    PortalVeinParams portalVein = PortalVeinParams{};
+    StomachParams    stomach    = StomachParams{};
 };
 
 class HumanBody
